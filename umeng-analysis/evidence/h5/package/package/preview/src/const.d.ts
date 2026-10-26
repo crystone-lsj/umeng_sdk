@@ -1,0 +1,16 @@
+export declare const LOG_PREFIX = "[U-APM] -- ";
+export declare const ERROR_001: string;
+export declare const ERROR_002: string;
+export declare const ERROR_003: string;
+export declare const ERROR_004: string;
+export declare const ERROR_005: string;
+export declare const ERROR_006: string;
+export declare const ERROR_007: string;
+export declare const ERROR_008: string;
+export declare const UM_CACHE_KEY = "um_cache";
+export declare const SESSION_PREFIX = "s.";
+export declare const SESSION_SET: string;
+export declare const SESSION_ON: string;
+export declare const SESSION_CREATE: string;
+export declare const SESSION_SEND: string;
+export declare const SESSION_URI = "https://umini.shujupie.com/alipaym_logs";

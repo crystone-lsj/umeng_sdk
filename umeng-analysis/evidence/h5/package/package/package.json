@@ -1,0 +1,70 @@
+{
+  "name": "@umengfe/apm",
+  "version": "2.0.11",
+  "description": "友盟web|H5性能分析、错误追踪sdk",
+  "main": "./dist/esm/uapm.umd.js",
+  "module": "./dist/esm/uapm.esm.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/uapm.esm.js",
+      "require": "./dist/esm/uapm.umd.js"
+    }
+  },
+  "engines": {
+    "install-node": "16.18.1"
+  },
+  "files": [
+    "dist/esm/**.js",
+    "preview/src"
+  ],
+  "keywords": [
+    "友盟",
+    "umeng",
+    "apm",
+    "uapm",
+    "sdk"
+  ],
+  "typings": "preview/src/index.d.ts",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build && rollup -c --environment ENV:prod",
+    "serve": "vite preview --host",
+    "doc": "typedoc --entryPointStrategy  expand ./src --plugin typedoc-plugin-markdown",
+    "f2elint-scan": "f2elint scan",
+    "f2elint-fix": "f2elint fix",
+    "test": "jest --env=jsdom --coverage --coverageDirectory=./.ci/",
+    "ci:test": "jest --env=jsdom --coverage --json --coverageDirectory=./.ci/"
+  },
+  "typedocMain": "src/main.ts",
+  "devDependencies": {
+    "@apmplus/web": "^1.1.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.0",
+    "@rollup/plugin-babel": "^5.3.0",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@types/jest": "^27.0.2",
+    "@types/sinon": "^10.0.11",
+    "alife-logger": "^1.8.30",
+    "f2elint": "^1.2.3",
+    "jest": "^27.2.2",
+    "rollup": "^2.60.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "sinon": "^12.0.1",
+    "ts-jest": "^27.0.7",
+    "typedoc": "^0.22.4",
+    "typedoc-plugin-markdown": "^3.11.5",
+    "typescript": "^4.5.2",
+    "vite": "2.5.4",
+    "vite-plugin-dts": "^0.9.4",
+    "@apm-insight-web/rangers-site-sdk": "^0.5.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "f2elint commit-file-scan",
+      "commit-msg": "f2elint commit-msg-scan"
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/"
+  }
+}

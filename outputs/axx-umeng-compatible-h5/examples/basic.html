@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Umeng sampled H5 example</title>
+  </head>
+  <body>
+    <script type="module">
+      import { initAXXUmengSampled } from '../src/index.js';
+
+      const umeng = await initAXXUmengSampled({
+        salt: 'change-me-for-a-different-device-bucket',
+        rates: {
+          pv: 0.2,
+          api: 0.1,
+          error: 1,
+          perf: 0.05,
+          perf_fid: 0.1,
+          blank: 0.02
+        },
+        config: {
+          pid: 'your-umeng-pid',
+          dsn: 'your-umeng-dsn',
+          environment: 'production',
+          release: '1.0.0'
+        }
+      });
+
+      // Runtime updates affect subsequently checked event-level calls.
+      await umeng.setSamplingRates({ api: 0.5, pv: 0.35 });
+      window.umengSampled = umeng;
+    </script>
+  </body>
+</html>

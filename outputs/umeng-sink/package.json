@@ -1,0 +1,48 @@
+{
+  "name": "umeng-sink",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Self-hosted receiver for Umeng (UMCommon/UMAPM iOS + @umengfe/apm H5) report traffic",
+  "main": "./src/server.js",
+  "bin": {
+    "umeng-sink": "./src/cli.js"
+  },
+  "exports": {
+    ".": "./src/server.js",
+    "./thrift": "./src/thrift.js",
+    "./envelope": "./src/envelope.js",
+    "./h5": "./src/h5.js",
+    "./handler": "./src/handler.js",
+    "./http-adapter": "./src/http-adapter.js",
+    "./store": "./src/store.js",
+    "./aggregate": "./src/aggregate.js",
+    "./dashboard": "./src/dashboard.js",
+    "./archive-source": "./src/archive-source.js",
+    "./sls-mirror": "./src/sls-mirror.js",
+    "./dashboard-query": "./src/dashboard-query.js",
+    "./aliyun-sls-client": "./src/aliyun-sls-client.js",
+    "./elastic-search-client": "./src/elastic-search-client.js"
+  },
+  "files": [
+    "src",
+    "scripts"
+  ],
+  "scripts": {
+    "start": "node src/cli.js",
+    "test": "node --test",
+    "verify": "node scripts/e2e-verify.mjs",
+    "verify:failure": "node scripts/failure-verify.mjs",
+    "gate-check": "node scripts/h5-gate-check.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@jridgewell/trace-mapping": "0.3.31"
+  },
+  "license": "UNLICENSED",
+  "optionalDependencies": {
+    "@alicloud/log": "1.2.6"
+  }
+}

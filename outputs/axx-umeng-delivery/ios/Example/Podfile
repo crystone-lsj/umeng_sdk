@@ -1,0 +1,17 @@
+platform :ios, '12.0'
+use_frameworks! :linkage => :static
+
+target 'AXXUmengSampledExample' do
+  pod 'AXXUmengSampled', :path => '..'
+
+  # The local podspec already pins the official runtime dependencies:
+  # UMCommon 7.6.4, UMDevice 3.6.0, UMAPM 2.0.7.
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
+    end
+  end
+end

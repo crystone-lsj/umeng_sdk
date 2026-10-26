@@ -1,0 +1,30 @@
+{
+  "name": "axx-umeng-compatible-h5",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Feature-level sampling gateway for the official Umeng H5 APM SDK",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./dist": "./dist/axx-umeng-sampled.esm.js"
+  },
+  "files": [
+    "src",
+    "dist"
+  ],
+  "peerDependencies": {
+    "@umengfe/apm": "^2.0.11"
+  },
+  "peerDependenciesMeta": {
+    "@umengfe/apm": {
+      "optional": true
+    }
+  },
+  "scripts": {
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

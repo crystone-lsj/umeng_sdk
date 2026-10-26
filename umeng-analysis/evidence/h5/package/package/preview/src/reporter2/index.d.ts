@@ -1,0 +1,12 @@
+import { LogData } from './log_type';
+export declare function getSendQueue(): string[];
+export declare function flush(skip?: boolean): void;
+export declare function flushData(logText: string): void;
+export declare function rateLimit(c: number): void;
+export declare function initReporterListeners(): void;
+export declare function startBroker(): void;
+export declare function stopBroker(): void;
+export declare function batchSendData(data: LogData[]): void;
+export declare function sendData(data: LogData): void;
+export declare function getLogQueue(): LogData[];
+export declare function getErrorQueue(): LogData[];

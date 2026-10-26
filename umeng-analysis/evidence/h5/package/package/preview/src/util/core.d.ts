@@ -1,0 +1,12 @@
+export declare function isFunction(fn: any): boolean;
+export declare function isString(str: any): boolean;
+export declare function isObject(obj: any): boolean;
+export declare function isUndefined(d: any): boolean;
+export declare function isArray(d: any): boolean;
+export declare function isRegExp(d: any): boolean;
+export declare function isUndefinedOrNull(str: any): boolean;
+export declare function isEmpty(obj: any): boolean;
+export declare function safeParse(JSONString: string): any;
+export declare function objToJsonString(obj: any): any;
+export declare function forEach(this: any, arr: string[], cb: any): void;
+export declare function trim(str: any): any;
