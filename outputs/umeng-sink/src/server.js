@@ -6,18 +6,45 @@
  * listening socket and shutdown.
  */
 
-import { createServer } from 'node:http';
+import { createServer } from "node:http";
 
-import { DEFAULT_MAX_BODY_BYTES, DEFAULT_OPTIONS, createRequestHandler, normalizePath } from './handler.js';
-import { createRequestListener } from './http-adapter.js';
+import {
+  DEFAULT_MAX_BODY_BYTES,
+  DEFAULT_OPTIONS,
+  createRequestHandler,
+  normalizePath,
+} from "./handler.js";
+import { createRequestListener } from "./http-adapter.js";
 
-export { DEFAULT_MAX_BODY_BYTES, DEFAULT_OPTIONS, createRequestHandler, normalizePath };
+export {
+  DEFAULT_MAX_BODY_BYTES,
+  DEFAULT_OPTIONS,
+  createRequestHandler,
+  normalizePath,
+};
 
 export function createSinkServer(options = {}) {
-  const { handle, store, mirror, elkClient, elkClients, config, log } = createRequestHandler(options);
+  const {
+    handle,
+    store,
+    mirror,
+    elkClient,
+    elkClients,
+    h5SourceCatalog,
+    errorAnalysis,
+    config,
+    log,
+  } = createRequestHandler(options);
   const listener = createRequestListener(handle, {
     maxBodyBytes: config.maxBodyBytes,
-    onError: (error) => log(`[umeng-sink] request failed: ${error.stack ?? error.message}`),
+    maxBodyBytesForRequest: (request) => {
+      const pathname = normalizePath(request.url, config.basePath);
+      return pathname === "/__sink/api/source-maps"
+        ? config.sourceMapUploadMaxBytes
+        : config.maxBodyBytes;
+    },
+    onError: (error) =>
+      log(`[umeng-sink] request failed: ${error.stack ?? error.message}`),
   });
 
   const server = createServer((request, response) => {
@@ -30,12 +57,14 @@ export function createSinkServer(options = {}) {
     mirror,
     elkClient,
     elkClients,
+    h5SourceCatalog,
+    errorAnalysis,
     config,
     listen(port = config.port, host = config.host) {
       return new Promise((resolve, reject) => {
-        server.once('error', reject);
+        server.once("error", reject);
         server.listen(port, host, () => {
-          server.removeListener('error', reject);
+          server.removeListener("error", reject);
           resolve(server.address());
         });
       });

@@ -18,13 +18,18 @@ node src/cli.js --port 8787 --data-dir ./data
 UMENG_SINK_PORT=8787 UMENG_SINK_DATA_DIR=./data npm start
 ```
 
-| 参数 | 环境变量 | 默认值 |
-| --- | --- | --- |
-| `--port` | `UMENG_SINK_PORT` | `8787` |
-| `--host` | `UMENG_SINK_HOST` | `127.0.0.1`（对外暴露用 `0.0.0.0`） |
-| `--data-dir` | `UMENG_SINK_DATA_DIR` | `./data` |
+启用本地 H5 源码定位时，设置 `UMENG_SINK_H5_APPS_ROOT` 指向 monorepo 的
+`apps` 目录。服务启动时会自动发现该目录下的所有直接子项目，并按目录名建立映射；
+`UMENG_SINK_H5_APP_MAP` 只用于补充日志应用名到项目目录的别名，例如
+`{"学什么":"bx-app-h5"}`。新增子项目后需重启看板服务，源码目录本身不会暴露给浏览器。
+
+| 参数          | 环境变量               | 默认值                                  |
+| ------------- | ---------------------- | --------------------------------------- |
+| `--port`      | `UMENG_SINK_PORT`      | `8787`                                  |
+| `--host`      | `UMENG_SINK_HOST`      | `127.0.0.1`（对外暴露用 `0.0.0.0`）     |
+| `--data-dir`  | `UMENG_SINK_DATA_DIR`  | `./data`                                |
 | `--base-path` | `UMENG_SINK_BASE_PATH` | 无（如 `/umeng`，用于挂在网关子路径下） |
-| `--quiet` | `UMENG_SINK_QUIET=1` | 打印每次请求 |
+| `--quiet`     | `UMENG_SINK_QUIET=1`   | 打印每次请求                            |
 
 服务启动后打开：<http://127.0.0.1:8787/>（等价路径 `/__sink/dashboard`）。
 
@@ -45,7 +50,7 @@ UMENG_SINK_PORT=8787 UMENG_SINK_DATA_DIR=./data npm start
 iOS 上下文通过 `contextId == H5 uid` 精确关联后，可补齐机型、操作系统、App 版本、网络类型、运营商与地域；
 当天只有一个 iOS 上下文时可回退套用该上下文。无上下文时仅使用 H5 自带网络类型，其余维度保持“暂无数据”，不做推测填充。
 
-用户感知页面另设两个**互不混入 perf 样本**的真实 iOS 维度分布：按匹配 H5 PV uid 去重的上下文，以及按 contextId 去重的全部 Reporter 上下文。历史 perf 与当日新 iOS 上下文不匹配时，性能样本维度仍显示空值；运营商未采集时也保持空。
+后端仍保留两组**互不混入 perf 样本**的真实 iOS 维度聚合：按匹配 H5 PV uid 去重的上下文，以及按 contextId 去重的全部 Reporter 上下文，供接口和数据核对使用；当前用户感知页面不展示这组独立维度分布。历史 perf 与当日新 iOS 上下文不匹配时，性能样本维度仍显示空值；运营商未采集时也保持空。
 
 看板默认读取最新有归档的 UTC 日期，也可以在用户感知筛选区的日期选择器切换。页面可见时每 15 秒自动刷新，重新显示时立即刷新；“样本量”只计 `perf` 性能事件，不随 PV、API、错误或 iOS 快照增长。顶部会分别显示 PV、性能样本和 iOS 快照，并提示最近一次性能采样时间。修改接收端 JS 后需重启 Node 服务，再刷新浏览器标签页。数据 API 为
 `GET /__sink/api/dashboard?date=YYYY-MM-DD&slowThresholdMs=5000`；缺省慢加载阈值为 5000 ms，日期无效返回 400，慢加载阈值允许 100-20000 ms。图片兜底通道目前只作为原始证据归档，
@@ -62,22 +67,22 @@ curl -s 'localhost:8787/__sink/api/dashboard?date=2026-10-15'     # 看板聚合
 
 ## 端点契约
 
-| 端点 | 来源 | 响应 | 必须如此的原因 |
-| --- | --- | --- | --- |
-| `POST /unify_logs` | iOS UMCommon 分析埋点 | `200` + `application/thrift` + Thrift struct 字段 1 = int32 `1`（8 字节 `08 00 01 00 00 00 01 00`） | 客户端只在 **200 且 resp_code == 1** 时才算上传成功 |
-| `POST /zcfg`、`POST /heartbeat` | iOS 配置/心跳 | 同上 | 同上 |
-| `POST /apm_logs` | iOS UMAPM 性能日志 | `200` + `{"code":0,"msg":"ok"}` | — |
-| `POST /upload`、`/api/crashsdk/validate`、`/api/crashsdk/logcollect` | iOS UMAPM 崩溃日志 | `200` + `{"code":0,"msg":"ok"}` | — |
-| `GET /apm_cc` | iOS U-APM 云控 | `200` + `{}` | 空云控包：客户端回退本地默认，不下调采样率 |
-| `POST /apm_web_logs` | H5 主上报通道 | `200` + `text/plain` | **只能 200**：405 会被客户端封禁 10 分钟、406 封禁 1 年、419 记为解密失败 |
-| `POST /apm_web_ping` | H5 `sendBeacon` 通道 | 同上 | 同上 |
-| `GET /apm_web_img.gif` | H5 图片兜底埋点 | `200` + 1×1 GIF | 否则图片加载失败 |
-| `GET /apm_cc_web` | H5 云控 | `200` + `{}` | 同上 |
-| `GET /`、`GET /__sink/dashboard` | 自建 H5 看板 | `200` + HTML | 本项目自有端点 |
-| `GET /__sink/api/dashboard?date=YYYY-MM-DD` | 看板聚合 API | `200` + JSON；日期无效 `400` | 本项目自有端点 |
-| `POST /__sink/api/ios-context` | iOS 进程级上下文副本 | `200` + JSON；JSON/`contextId` 无效返回 `400` | 本项目自有端点；用于关联并补齐 H5 维度，不承载、不重定向官方 iOS SDK 原生上报 |
-| `POST /apm_img_upload` | H5 白屏截图 | `200` | 同上 |
-| 其他 | — | `404` 并记入 `unknown` channel | 便于发现遗漏端点 |
+| 端点                                                                 | 来源                  | 响应                                                                                                | 必须如此的原因                                                                |
+| -------------------------------------------------------------------- | --------------------- | --------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `POST /unify_logs`                                                   | iOS UMCommon 分析埋点 | `200` + `application/thrift` + Thrift struct 字段 1 = int32 `1`（8 字节 `08 00 01 00 00 00 01 00`） | 客户端只在 **200 且 resp_code == 1** 时才算上传成功                           |
+| `POST /zcfg`、`POST /heartbeat`                                      | iOS 配置/心跳         | 同上                                                                                                | 同上                                                                          |
+| `POST /apm_logs`                                                     | iOS UMAPM 性能日志    | `200` + `{"code":0,"msg":"ok"}`                                                                     | —                                                                             |
+| `POST /upload`、`/api/crashsdk/validate`、`/api/crashsdk/logcollect` | iOS UMAPM 崩溃日志    | `200` + `{"code":0,"msg":"ok"}`                                                                     | —                                                                             |
+| `GET /apm_cc`                                                        | iOS U-APM 云控        | `200` + `{}`                                                                                        | 空云控包：客户端回退本地默认，不下调采样率                                    |
+| `POST /apm_web_logs`                                                 | H5 主上报通道         | `200` + `text/plain`                                                                                | **只能 200**：405 会被客户端封禁 10 分钟、406 封禁 1 年、419 记为解密失败     |
+| `POST /apm_web_ping`                                                 | H5 `sendBeacon` 通道  | 同上                                                                                                | 同上                                                                          |
+| `GET /apm_web_img.gif`                                               | H5 图片兜底埋点       | `200` + 1×1 GIF                                                                                     | 否则图片加载失败                                                              |
+| `GET /apm_cc_web`                                                    | H5 云控               | `200` + `{}`                                                                                        | 同上                                                                          |
+| `GET /`、`GET /__sink/dashboard`                                     | 自建 H5 看板          | `200` + HTML                                                                                        | 本项目自有端点                                                                |
+| `GET /__sink/api/dashboard?date=YYYY-MM-DD`                          | 看板聚合 API          | `200` + JSON；日期无效 `400`                                                                        | 本项目自有端点                                                                |
+| `POST /__sink/api/ios-context`                                       | iOS 进程级上下文副本  | `200` + JSON；JSON/`contextId` 无效返回 `400`                                                       | 本项目自有端点；用于关联并补齐 H5 维度，不承载、不重定向官方 iOS SDK 原生上报 |
+| `POST /apm_img_upload`                                               | H5 白屏截图           | `200`                                                                                               | 同上                                                                          |
+| 其他                                                                 | —                     | `404` 并记入 `unknown` channel                                                                      | 便于发现遗漏端点                                                              |
 
 Body 上限 16 MiB（超出 413，且不会先缓冲进内存）；单条原始报文归档上限 512 KiB（超出只截断归档副本，解析仍按完整 body 进行）。
 
@@ -110,13 +115,21 @@ Body 上限 16 MiB（超出 413，且不会先缓冲进内存）；单条原始�
 
 ```js
 await initAXXUmengSampled({
-  salt: 'bx-app-h5.axx.umeng.v1',
-  rates: { api: 1, pv: 1, error: 1, perf: 1, perf_fcp: 1, perf_fid: 1, blank: 1 },
+  salt: "bx-app-h5.axx.umeng.v1",
+  rates: {
+    api: 1,
+    pv: 1,
+    error: 1,
+    perf: 1,
+    perf_fcp: 1,
+    perf_fid: 1,
+    blank: 1,
+  },
   config: {
-    dsn: 'http://127.0.0.1:8787',          // ← 指到自建接收端
-    pkgList: ['com.student.learnwhat'],
-    logLevel: 3
-  }
+    dsn: "http://127.0.0.1:8787", // ← 指到自建接收端
+    pkgList: ["com.student.learnwhat"],
+    logLevel: 3,
+  },
 });
 ```
 
@@ -130,14 +143,14 @@ await initAXXUmengSampled({
 每个 channel 每天一个文件：`<data-dir>/<channel>-YYYY-MM-DD.ndjson`，一行一个 JSON 文档，
 坏行不会影响相邻证据，可直接 `jq` 或按行 `readline` 消费。
 
-| channel | 内容 |
-| --- | --- |
-| `ios-analytics` | `/unify_logs`：Thrift 信封完整解码结果（保留兼容；当前 iOS 原生链路仍直发友盟） |
-| `ios-config` | `/zcfg`、`/heartbeat`（保留兼容） |
-| `ios-apm-logs` / `ios-apm-crash` / `ios-apm-config` | UMAPM `/apm_logs` / 崩溃 / 云控（保留兼容） |
-| `ios-context` | iOS 进程级上下文副本，用于 H5 维度关联 |
-| `h5-logs` / `h5-beacon` / `h5-image-ping` / `h5-remote-config` / `h5-screenshot` | H5 各通道 |
-| `unknown` | 未匹配路径 |
+| channel                                                                          | 内容                                                                            |
+| -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------- |
+| `ios-analytics`                                                                  | `/unify_logs`：Thrift 信封完整解码结果（保留兼容；当前 iOS 原生链路仍直发友盟） |
+| `ios-config`                                                                     | `/zcfg`、`/heartbeat`（保留兼容）                                               |
+| `ios-apm-logs` / `ios-apm-crash` / `ios-apm-config`                              | UMAPM `/apm_logs` / 崩溃 / 云控（保留兼容）                                     |
+| `ios-context`                                                                    | iOS 进程级上下文副本，用于 H5 维度关联                                          |
+| `h5-logs` / `h5-beacon` / `h5-image-ping` / `h5-remote-config` / `h5-screenshot` | H5 各通道                                                                       |
+| `unknown`                                                                        | 未匹配路径                                                                      |
 
 `ios-analytics` 记录结构（其余 channel 为 `receivedAt`、`channel`、`method`、`url`、`headers` 加各自字段）：
 
@@ -147,18 +160,48 @@ await initAXXUmengSampled({
   "channel": "ios-analytics",
   "method": "POST",
   "url": "/unify_logs",
-  "headers": { "contentType": "application/thrift", "msgType": "envelope/json",
-               "umengSdk": "1", "smImp": "1", "umengUtc": "1766195800000", "userAgent": "..." },
+  "headers": {
+    "contentType": "application/thrift",
+    "msgType": "envelope/json",
+    "umengSdk": "1",
+    "smImp": "1",
+    "umengUtc": "1766195800000",
+    "userAgent": "...",
+  },
   "bytes": 312,
-  "envelope": { "version": "V1.1", "address": "<appkey>", "signature": "...", "serialNum": 7,
-                "tsSecs": 1766195800, "length": 123, "guid": "...", "checksum": "...", "codex": 1,
-                "unknownFieldIds": [] },
+  "envelope": {
+    "version": "V1.1",
+    "address": "<appkey>",
+    "signature": "...",
+    "serialNum": 7,
+    "tsSecs": 1766195800,
+    "length": 123,
+    "guid": "...",
+    "checksum": "...",
+    "codex": 1,
+    "unknownFieldIds": [],
+  },
   "errors": [],
-  "integrity": { "entityBytes": 112, "declaredLength": 123, "signatureExpected": "...",
-                 "signatureMatches": true, "checksumExpected": "...", "checksumMatches": true,
-                 "declaredLengthMatches": true },
-  "entity": { "ok": true, "error": null, "json": { "header": { "...": "..." } } },
-  "rawBody": { "encoding": "base64", "bytes": 312, "truncated": false, "data": "..." }
+  "integrity": {
+    "entityBytes": 112,
+    "declaredLength": 123,
+    "signatureExpected": "...",
+    "signatureMatches": true,
+    "checksumExpected": "...",
+    "checksumMatches": true,
+    "declaredLengthMatches": true,
+  },
+  "entity": {
+    "ok": true,
+    "error": null,
+    "json": { "header": { "...": "..." } },
+  },
+  "rawBody": {
+    "encoding": "base64",
+    "bytes": 312,
+    "truncated": false,
+    "data": "...",
+  },
 }
 ```
 
@@ -176,12 +219,31 @@ await initAXXUmengSampled({
     "projectId": "gslearnwhat",
     "contextId": "00000000-0000-0000-0000-000000000000",
     "capturedAt": "2026-10-15T06:00:00.000Z",
-    "device": { "model": "iPhone", "modelIdentifier": "iPhone12,8", "os": "iOS", "osVersion": "18.2" },
-    "app": { "version": "1.2.3", "build": "123", "bundleIdentifier": "com.student.learnwhat" },
-    "screen": { "width": 390, "height": 844, "scale": 3, "pixelWidth": 1170, "pixelHeight": 2532 },
+    "device": {
+      "model": "iPhone",
+      "modelIdentifier": "iPhone12,8",
+      "os": "iOS",
+      "osVersion": "18.2",
+    },
+    "app": {
+      "version": "1.2.3",
+      "build": "123",
+      "bundleIdentifier": "com.student.learnwhat",
+    },
+    "screen": {
+      "width": 390,
+      "height": 844,
+      "scale": 3,
+      "pixelWidth": 1170,
+      "pixelHeight": 2532,
+    },
     "network": { "type": "wifi", "carrier": "China Mobile" },
-    "region": { "country": "CN", "language": "zh", "timezone": "Asia/Shanghai" }
-  }
+    "region": {
+      "country": "CN",
+      "language": "zh",
+      "timezone": "Asia/Shanghai",
+    },
+  },
 }
 ```
 
@@ -284,7 +346,9 @@ RAM 角色及最小写/查权限前，**没有真实云端连接、不能声称�
 export function createSlsClient() {
   return {
     // event 是经过 allowlist 的仪表盘投影，含 mirrorId；认证由服务端 RAM/凭据链完成。
-    async put(event, { signal }) { /* 官方 SLS SDK: 写到指定 Project/Logstore */ },
+    async put(event, { signal }) {
+      /* 官方 SLS SDK: 写到指定 Project/Logstore */
+    },
     // 使用 receivedAt UTC 天范围、channel 精确匹配；读完所有页后才可标 complete=true。
     async readDay(channel, utcDay, { limit, signal }) {
       return { events: [], complete: true }; // events 必须返回原封不动的镜像事件
@@ -394,57 +458,17 @@ ELK 返回错误、没有配置或单次查询超过 20000 条时看板返回 50
 
 ### H5 原始 Vue 错误还原
 
-此功能默认关闭。将 `bx-app-h5` 每次发布的**完整私有归档**（JS、map、manifest）
-按原始 `<artifactId>/` 目录持久保存，在服务端配置
-`UMENG_SINK_H5_ARCHIVE_DIR` 为这些目录的共同父目录，并设置至少 32 字符的
-`UMENG_SINK_SOURCE_AUTH_TOKEN`。归档不能放在 Web 静态目录，也不要把令牌放在
-H5/iOS 包、看板 HTML、URL 或版本库中。仅在受控内网或 HTTPS 后访问该接口。
+看板右上角的“上传 Source Map ZIP”是唯一的 Source Map 入口。ZIP 中应包含构建产物的
+`.js.map` 文件，并尽量包含 `sourcesContent`；上传后服务端解析并保存到
+`<dataDir>/source-maps/current.zip`，后续 ELK 看板查询会自动用错误日志中的脚本 URL、行号和
+列号恢复 `.vue` 文件、原始位置及前后各 3 行代码片段。上传状态可通过
+`GET /__sink/api/source-maps` 查看，上传接口为 `POST /__sink/api/source-maps`，请求体为
+`Content-Type: application/zip`。接口返回 ZIP 中的 map 数量和含有 `sourcesContent` 的可映射数量。
 
-`POST /__sink/api/h5-source` 使用 `Authorization: Bearer <令牌>` 和
-`Content-Type: application/json`；JSON 请求示例：
-
-```json
-{"h5Release":"abd65d92-a09d-4d99-b9c7-c1cd86f23a63","sourceFile":"https://q-fe.aixuexi.com/operation-system/bx-app-h5/assets/page-abc.js","line":42,"column":7,"errorType":"js_exception"}
-```
-
-服务按产物标识和**完整脚本地址**精确命中历史清单，校验历史 JS 与 map 的
-SHA-256，再以浏览器 1 起始行列号映射到 `.vue`；仅返回文件名、原始行列和
-最多前后各 3 行、单行至多 300 字符的代码。map 的位置按最近映射段还原，
-因此返回 `precision=source_map_segment`，不保证字符级精确。缺失产物标识、
-脚本未命中、摘要不符、资源错误无代码行、map 不含 Vue 映射等情况返回
-`{"status":"unavailable","reason":"..."}`，绝不下载当前线上文件替代历史产物。
-原始 Vue 不会进入常规看板聚合结果；调用者须对可查看源码的用户单独授权，
-不要将令牌直接下发给未受信任的浏览器。此步骤提供服务端还原接口，
-**尚未将代码片段接入看板可视化**。
-
-### 本地 Vite 开发错误还原验证
-
-以下是独立于上述生产归档的**开发环境验证**。真机访问同一台电脑正在运行的
-Vite 服务时，日志里的 `sourceFile` 是 `http://<局域网 IP>:5173/src/.../index.vue`；
-启动看板前显式设置 `UMENG_SINK_VITE_DEV_ORIGIN` 为真机实际访问的开发服务
-**origin**（例如 `http://10.16.110.107:5173`，没有尾部路径），并保留
-`--host 127.0.0.1`。ELK 的配置仍按上一节填写，索引仍为 `log-fe-*-gsl_test`。
-
-```bash
-export UMENG_SINK_VITE_DEV_ORIGIN='http://10.16.110.107:5173'
-node src/cli.js --port 8787 --host 127.0.0.1 --data-dir ./data
-```
-
-在**这台电脑**打开 `http://127.0.0.1:8787/`，选择报错所在日期和“错误分析”，
-展开最近错误。服务端只从配置的 Vite origin 读取 `/src/` 下的 `.vue` 模块及其
-内嵌 source map，不从日志中的 URL 任意访问网络；日志无需 `h5Release` 或
-`codeSnippet`，H5→iOS 桥也不传输源码。页面同时显示日志的原始生成位置和
-映射后的 Vue 位置、附近五行代码。资源加载错误没有 JS 执行行号，不会出现
-Vue 代码位置。只有本机回环连接、合法 localhost Host 和同源浏览器请求才可
-访问启用后的看板及聚合 API，该接口不再返回跨域许可；不要在代理后暴露本功能。
-
-**映射是当前运行的 Vite 开发模块，不是之前 `npm run build` 产出的 map。**
-旧日志与当前 Vite 模块若不是同一份，结果可能错配；看板会标明这一限制，
-不能当作可审计的历史精准定位。开发服务停掉或没有内嵌 map 时显示“未提供”，
-不会回退到另一版本的构建归档。完成验证后取消该环境变量并重启看板即可关闭。
-
-生产环境如果未在 H5 构建时配置 `VITE_AXX_TELEMETRY_ENDPOINT` 以实际产生携带
-`h5Release` 的错误日志，或 CI 未持久保存并提供对应归档，历史错误仍无法还原。
+服务端只读取 ZIP 中的 `.map` 文件，限制条目数、单文件大小和总解压大小，并拒绝路径穿越、加密
+和不支持的压缩格式。没有上传、脚本未命中、map 不含 Vue 映射或缺少 `sourcesContent` 时，错误
+记录仍保留，只是不增加 `devSource`。浏览器列号按 1 起始，Source Map 按最近映射段定位，返回的
+`precision` 为 `source_map_segment`，不保证字符级精确。
 
 注意：仅知道 `kibana_reader` 有索引只读权限还不足以让本机连接。部署环境还必须提供
 Elasticsearch 查询地址和对应认证方式。`https://axx-kibana.aixuexi.com/app/discover`

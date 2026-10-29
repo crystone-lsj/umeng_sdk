@@ -22,7 +22,11 @@
     "./sls-mirror": "./src/sls-mirror.js",
     "./dashboard-query": "./src/dashboard-query.js",
     "./aliyun-sls-client": "./src/aliyun-sls-client.js",
-    "./elastic-search-client": "./src/elastic-search-client.js"
+    "./source-map-upload": "./src/source-map-upload.js",
+    "./elastic-search-client": "./src/elastic-search-client.js",
+    "./ai-provider": "./src/ai-provider.js",
+    "./ccswitch-provider": "./src/ccswitch-provider.js",
+    "./error-analysis": "./src/error-analysis.js"
   },
   "files": [
     "src",

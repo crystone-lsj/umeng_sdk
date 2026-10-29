@@ -35,13 +35,14 @@ body{--bg:#f6f7fa;--ink:#2d3144;--line:#e8ebf0;--brand:#3b82fe}
 .perception-title{height:48px;display:flex;align-items:center;gap:16px}.perception-title h2{font-size:18px;font-weight:500;margin:0}.perception-title h2 span{font-size:14px;color:#9aa3b1}.local-badge{font-size:11px;color:#7991b2}
 .perception-tip{background:#f5f9ff;padding:12px 16px;color:#56657b;font-size:12px;line-height:1.6;margin-bottom:16px}.perception-tip #perf-freshness{display:block;color:#8791a2}
 .perception-filter{background:#fff;padding:10px 20px 16px;margin-bottom:16px}.global-filter{margin-top:16px}.filter-row{min-height:46px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;border-bottom:1px solid #f3f5f8}.filter-row:last-child{border:0}.filter-label{width:72px;flex:none;color:#2d3144}.filter-row label,.filter-note{font-size:12px;color:#8b95a3}.filter-row input,.filter-row select{height:30px;padding:0 8px;border:1px solid #d9dfe9;background:#fff;color:#374151;border-radius:2px;font-size:12px}.filter-row input[type=search]{width:230px}.filter-row .button{height:30px}.dimension-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.dimension-filters select{max-width:170px;min-width:115px}.dimension-filter{position:relative}.dimension-filter>summary{list-style:none;border:1px solid #d9dfe9;background:#fff;color:#374151;border-radius:3px;font-size:12px;min-width:115px;max-width:180px;padding:7px 22px 7px 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.dimension-filter>summary::-webkit-details-marker{display:none}.dimension-filter>summary:after{content:"⌄";position:absolute;right:8px}.dimension-filter[open]>summary{border-color:var(--brand);color:var(--brand)}.dimension-menu{position:absolute;top:calc(100% + 3px);left:0;z-index:12;min-width:220px;max-width:300px;background:#fff;border:1px solid #d9e0eb;box-shadow:0 9px 25px #17255425;border-radius:5px;padding:7px}.dimension-menu input[type=search]{box-sizing:border-box;width:100%;height:30px}.dimension-menu .app-name-form{display:flex;gap:5px;margin-top:7px}.dimension-menu .app-name-form input{min-width:0;flex:1;width:0}.dimension-options{max-height:230px;overflow:auto;margin-top:5px}.dimension-option{display:flex;align-items:center;gap:5px;min-height:30px;padding:3px 6px;cursor:pointer;overflow-wrap:anywhere}.dimension-option:hover{background:#f0f5ff}.dimension-option[hidden]{display:none}.dimension-option input{flex:none;height:auto}.dimension-empty{padding:9px;color:var(--muted);font-size:12px}
+.autocomplete-field{position:relative;display:inline-flex;align-items:center;min-width:0}.filter-row>.autocomplete-field{flex:none}.filter-row>.autocomplete-field>input{width:230px}.identity-filter{display:inline-flex;align-items:center;gap:5px;position:relative;white-space:nowrap}.identity-filter .autocomplete-field>input{width:150px}.autocomplete-options{position:absolute;top:calc(100% + 3px);left:0;z-index:20;box-sizing:border-box;min-width:230px;max-width:360px;max-height:240px;overflow:auto;padding:4px;border:1px solid #d9e0eb;border-radius:4px;background:#fff;box-shadow:0 9px 25px #17255425}.autocomplete-options[hidden]{display:none}.autocomplete-option{display:block;width:100%;padding:8px 9px;border:0;background:#fff;color:#374151;text-align:left;font-size:12px;line-height:1.3;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.autocomplete-option:hover,.autocomplete-option[aria-selected=true]{background:#f0f5ff;color:var(--brand)}.autocomplete-empty{padding:8px 9px;color:var(--muted);font-size:12px}
 .filter-row .client-time-option{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;flex:none;cursor:pointer}.filter-row .client-time-option input[type=checkbox]{width:14px;height:14px;margin:0;padding:0;flex:none;accent-color:var(--brand)}
 .perception-summary{background:#fff;margin:0 0 16px}.perception-summary>.perception-mode{padding:12px 20px 0}.perception-mode{display:flex;gap:0;align-items:center;flex-wrap:wrap;font-size:13px}.perception-mode label{padding:6px 16px;display:flex;gap:6px;align-items:center;cursor:pointer;white-space:nowrap;color:#465264}.perception-mode input{accent-color:var(--brand);margin:0}.perception-surface{padding:20px}
 .metric-availability{margin:10px 0 0;padding:9px 12px;background:#f5f9ff;color:#56657b;font-size:12px;line-height:1.6}.metric-availability.is-empty{background:#fff8ed;color:#865b18}
 .perception-kpis{display:flex;gap:0;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}.perception-kpis .kpi{position:relative;flex:0 0 228px;min-height:117px;box-sizing:border-box;border:1px solid #e7ebf1;border-right:0;border-radius:0;box-shadow:none;padding:0}.perception-kpis .kpi[data-selected]{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}.perception-kpis .kpi[data-selected] .value{color:var(--brand)}.perception-kpis .kpi:last-child{border-right:1px solid #e7ebf1}.perception-kpi-content{display:block;width:100%;min-height:115px;box-sizing:border-box;border:0;background:transparent;color:var(--ink);padding:16px 42px 16px 20px;text-align:left;font:inherit;cursor:pointer}.perception-kpi-content:focus-visible,.perception-kpi-help:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}.perception-kpis .kpi .label{display:block;font-size:14px;color:#374151}.perception-kpis .kpi .value{font-weight:500;font-size:25px;margin:8px 0 2px}.perception-kpis .kpi .sub{font-size:11px;color:#98a3b2}.perception-kpis .kpi .period{font-size:11px;color:#8793a3;margin-top:4px;white-space:nowrap}.perception-kpis .kpi .period span{margin-left:10px}.perception-kpi-help{position:absolute;right:16px;top:16px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:19px;height:19px;padding:0;border:1px solid #9ba8b9;border-radius:50%;background:#fff;color:#667085;font:600 12px/1 Arial,sans-serif;cursor:help}.perception-kpi-help span{display:block;line-height:1;transform:translateY(-1px)}.perception-kpi-help:hover,.perception-kpi-help:focus-visible{border-color:var(--brand);color:var(--brand)}.perception-kpi-tooltip{position:absolute;left:10px;top:42px;z-index:10;box-sizing:border-box;width:max-content;max-width:min(260px,calc(100vw - 60px));padding:9px 11px;border:1px solid #cfd9e8;border-radius:4px;background:#fff;box-shadow:0 6px 20px #17255426;color:#334155;font-size:12px;line-height:1.5;overflow-wrap:anywhere;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease}.perception-kpi-help:hover+.perception-kpi-tooltip,.perception-kpi-help:focus+.perception-kpi-tooltip{opacity:1;visibility:visible}
 .perception-block{padding:20px 0 24px;border-bottom:1px solid #edf0f4}.perception-block:last-child{border:0}.perception-block h3{margin:0 0 16px;font-size:18px;font-weight:500}.perception-block-title{display:flex;align-items:center;justify-content:space-between;gap:12px}.perception-block-title select{font-size:12px;height:30px;border:1px solid #dce2eb;background:#fff;color:#455366}.perception-chart{min-height:250px}.perception-chart .line-chart{height:260px}.perception-samples{max-width:620px;min-height:150px}.perception-samples .dist-row{grid-template-columns:90px 1fr 100px;margin:16px 0}.metric-dim-row{display:grid;grid-template-columns:minmax(90px,1fr) 60px 70px;align-items:center;gap:6px;margin:11px 0;font-size:12px}.metric-dim-row>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.metric-dim-row strong{text-align:right;font-size:12px;font-weight:500}.metric-dim-row small{grid-column:1/-1;color:#98a3b2;text-align:right;font-size:10px}.perception-block .note{border:0;font-size:11px;padding:0}
-#userPerception .dimension-panels{grid-template-columns:repeat(3,minmax(220px,1fr));gap:16px}#userPerception .dimension-panel{min-height:215px;padding:15px;border:1px solid #e9edf3}#userPerception .dimension-panel h4{font-size:14px;font-weight:500}#userPerception .dimension-panel .report-label{margin:6px 0 12px}
-.perception-table-panel{margin-top:16px;border:0;border-radius:2px;box-shadow:none}.perception-table-panel>header{padding:20px;border:0}.perception-table-panel h3{font-size:18px;font-weight:500}.perception-table-tools{padding:0 20px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}.perception-table-panel th{background:#fafbfc;color:#616d7c}.perception-table-panel th,.perception-table-panel td{padding:12px 10px;border-bottom:1px solid #edf0f4}.perception-pager{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:16px 20px;color:#7b8797;font-size:12px}.perception-pager .button:disabled{opacity:.4;cursor:default}.context-details{background:#fff;padding:16px 20px;margin:16px 0;color:#455366}.context-details summary{cursor:pointer}.context-details .distribution-grid{margin-top:16px}
+#userPerception .dimension-panels{grid-template-columns:repeat(3,minmax(220px,1fr));gap:16px}#userPerception .dimension-panel{min-height:0;padding:15px;border:1px solid #e9edf3}#userPerception .dimension-panel h4{font-size:14px;font-weight:500}#userPerception .dimension-panel .report-label{margin:6px 0 10px}
+.perception-table-panel{margin-top:16px;border:0;border-radius:2px;box-shadow:none}.perception-table-panel>header{padding:20px;border:0}.perception-table-panel h3{font-size:18px;font-weight:500}.perception-table-tools{padding:0 20px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}.perception-table-panel th{background:#fafbfc;color:#616d7c}.perception-table-panel th,.perception-table-panel td{padding:12px 10px;border-bottom:1px solid #edf0f4}.perception-pager{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:16px 20px;color:#7b8797;font-size:12px}.perception-pager .button:disabled{opacity:.4;cursor:default}
 @media(max-width:860px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}#userPerception .dimension-panels{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
  .range-buttons{display:flex;gap:4px;align-items:center;flex-wrap:wrap}.range-buttons button,.range-buttons summary{border:1px solid #d9e0eb;background:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;color:#344054;font:inherit}.range-buttons button[aria-pressed="true"]{color:#2f6bff;border-color:#2f6bff;background:#f0f5ff}.range-buttons details{position:relative}.range-more{position:absolute;z-index:10;top:100%;right:0;background:#fff;border:1px solid #d9e0eb;border-radius:5px;box-shadow:0 8px 24px #17255422;display:grid;min-width:120px;padding:5px}.range-more button{text-align:left;border:0;white-space:nowrap}
 .error-trend{padding:0 15px 10px}.error-trend .line-chart{height:260px}
@@ -55,6 +56,7 @@ body{--bg:#f6f7fa;--ink:#2d3144;--line:#e8ebf0;--brand:#3b82fe}
 .error-list-head,.error-row{display:grid;grid-template-columns:36px minmax(0,1fr) 112px 170px 16px;gap:12px;align-items:center}.error-list-head{padding:10px 15px;background:#f8fafc;border-bottom:1px solid var(--line);color:var(--muted);font-size:12px}.error-list-head[hidden]{display:none}.error-item{padding:0}.error-row{box-sizing:border-box;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:12px 15px;cursor:pointer}.error-row:hover{background:#f8faff}.error-row:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}.error-item[data-open] .error-row{background:#f8faff}.error-index,.error-version,.error-time{color:#667085;font-size:12px;font-variant-numeric:tabular-nums}.error-summary{min-width:0}.error-summary .error-title{font-size:13px}.error-message{margin-top:4px;color:#667085;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error-version{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error-time{white-space:nowrap}.error-expand-icon{color:#8492a6;text-align:center;transition:transform .28s ease}.error-item[data-open] .error-expand-icon{transform:rotate(180deg)}.error-detail-shell{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s ease}.error-item[data-open] .error-detail-shell{grid-template-rows:1fr}.error-detail-clip{min-height:0;overflow:hidden}.error-detail{padding:0 15px 16px 63px;border-top:1px solid var(--line);overflow-wrap:anywhere;opacity:0;transform:translateY(-6px);transition:opacity .22s ease,transform .28s ease}.error-item[data-open] .error-detail{opacity:1;transform:translateY(0)}.error-detail-line{display:flex;gap:12px;padding-top:10px;font-size:12px;line-height:1.5}.error-detail-line>span:first-child{flex:0 0 56px;color:var(--muted)}.error-detail-line>span:last-child{min-width:0}.error-detail .stack{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.error-detail-block{margin-top:12px}.error-detail-block .report-label{margin:0}
 @media(prefers-reduced-motion:reduce){.error-detail-shell,.error-detail,.error-expand-icon{transition:none}}
 .error-summary .error-title,.error-message{display:block}
+.error-analysis-row{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid #edf0f4;font-size:12px;line-height:1.5}.error-analysis-row>span:first-child{flex:0 0 56px;color:var(--muted)}.error-analysis-button{border:1px solid #cbd8ee;border-radius:4px;background:#fff;color:var(--brand);padding:4px 9px;font:inherit;cursor:pointer}.error-analysis-button:hover:not(:disabled),.error-analysis-button:focus-visible{border-color:var(--brand);background:var(--brand-soft)}.error-analysis-button:disabled{color:#8492a6;cursor:wait}.error-analysis-result{min-width:0}.error-analysis-result .mono{display:block}.error-analysis-result pre{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.error-analysis-result .hint{margin-top:0}
 @media(max-width:700px){.error-list-head{display:none}.error-row{grid-template-columns:32px minmax(0,1fr) 16px;gap:4px 9px}.error-summary{grid-column:2}.error-expand-icon{grid-column:3;grid-row:1}.error-version,.error-time{grid-column:2}.error-version{grid-row:2}.error-time{grid-row:3}.error-version:before{content:'版本  '}.error-time:before{content:'时间  '}.error-detail{padding-left:56px}}
 #errors .dimension-panels{grid-template-columns:repeat(3,minmax(220px,1fr));gap:16px}#errors .dimension-panel{min-height:215px;padding:15px;border:1px solid #e9edf3}#errors .dimension-panel h4{font-size:14px;font-weight:500}#errors .dimension-panel .report-label{margin:6px 0 12px}
 @media(max-width:860px){#errors .dimension-panels{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
@@ -79,7 +81,7 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
 .waterfall-item{padding:12px;border:1px solid var(--line);background:#fbfcff;min-width:0}
 .waterfall-item strong{font-size:16px;font-variant-numeric:tabular-nums}.waterfall-item small{display:block;color:var(--muted);margin-top:5px}
 .waterfall-track{height:5px;border-radius:9px;background:#e9eef8;margin-top:12px;overflow:hidden}.waterfall-track i{display:block;height:100%;background:var(--brand)}
-.dist-bar{display:block}
+.dist-row{grid-template-columns:minmax(0,1fr) auto;gap:12px;margin:7px 0;padding:10px 12px;background:#eef5ff}.dist-value{color:#334155}.perception-samples .dist-row{grid-template-columns:90px minmax(0,1fr) 100px;gap:8px;margin:16px 0;padding:0;background:transparent}.perception-samples .dist-bar{display:block}.metric-dim-row{grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;margin:4px 0;padding:6px 12px;background:#eef5ff}.metric-dim-row strong{color:#334155;font-variant-numeric:tabular-nums}.metric-dim-row small{color:#8b98aa}.error-distribution-block .dimension-panel .dist-row{grid-template-columns:minmax(0,1fr) auto}
 .dimension-panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
 .dimension-panel{border:1px solid var(--line);padding:13px;min-height:90px}.dimension-panel h4{margin:0 0 4px;font-size:13px}.dimension-panel .report-label{margin-bottom:10px}
 .dim-detail{display:block;color:var(--brand);font-size:11px;margin-top:8px}
@@ -105,8 +107,9 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
       <h1>H5 页面分析</h1>
       <div class="controls">
         <label for="date">归档日期</label><input id="date" type="date">
+        <button id="source-map-upload" class="button" type="button">上传 Source Map ZIP</button><input id="source-map-file" type="file" accept=".zip,application/zip,application/x-zip-compressed" hidden>
         <button id="refresh" class="button" type="button">刷新</button>
-        <span id="status" class="status"></span><span id="storage-status" class="storage-status" role="status"><label for="storage-source">数据来源：<select id="storage-source" aria-label="数据来源"><option value="test">测试环境 ELK</option><option value="online">线上环境 ELK</option></select></label></span>
+        <span id="status" class="status"></span><span id="source-map-status" class="status" role="status">未上传 Source Map</span><span id="storage-status" class="storage-status" role="status"><label for="storage-source">数据来源：<select id="storage-source" aria-label="数据来源"><option value="test">测试环境 ELK</option><option value="online">线上环境 ELK</option></select></label></span>
       </div>
     </header>
     <div id="loading">正在读取数据…</div>
@@ -115,7 +118,7 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
     <div id="global-filters" class="perception-filter global-filter">
       <div class="filter-row"><span class="filter-label">时间范围:</span><div class="range-buttons" id="user-ranges" role="group" aria-label="时间范围"><button type="button" data-range="hour">过去一个小时</button><button type="button" data-range="48hours">过去48小时</button><button type="button" data-range="today">今天</button><button type="button" data-range="7days" aria-pressed="true">最近七天</button><details id="user-more"><summary>更多</summary><div class="range-more"><button type="button" data-range="30days">最近30天</button><button type="button" data-range="60days">最近60天</button><button type="button" data-range="90days">最近90天</button></div></details></div><label for="user-date">自定义单日</label><input id="user-date" type="date" aria-label="自定义单日"><label class="client-time-option"><input id="client-time" type="checkbox">客户端发生时间</label><span id="range-label" class="filter-note">按接收时间筛选</span></div>
       <div class="filter-row"><span class="filter-label">筛选维度:</span><div id="user-dimension-filters" class="dimension-filters"></div><button type="button" class="button" id="user-reset-all">重置全部</button><span class="filter-note">应用于当前看板全部页面和指标；未采集字段无可选值。</span></div>
-      <div class="filter-row"><span class="filter-label">页面筛选:</span><select id="user-host" aria-label="页面 Host"><option value="">全部 Host</option></select><input id="page-filter" type="search" placeholder="搜索页面 URL 或路径" aria-label="搜索页面 URL 或路径"><button class="button" id="user-reset" type="button">重置页面筛选</button><span class="filter-note">应用于总览、趋势、页面、接口、错误和性能数据。</span></div>
+      <div class="filter-row"><span class="filter-label">页面筛选:</span><span class="autocomplete-field"><input id="page-filter" data-autocomplete-field="PAGE" type="search" placeholder="搜索页面 URL 或路径" aria-label="搜索页面 URL 或路径" autocomplete="off"><div id="page-filter-options" class="autocomplete-options" role="listbox" hidden></div></span><button class="button" id="user-reset" type="button">重置页面筛选</button><span class="filter-note">应用于总览、趋势、页面、接口、错误和性能数据。</span></div>
     </div>
 
     <section id="userPerception" class="section">
@@ -138,7 +141,6 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
         <div class="scroll"><table><thead><tr><th>页面</th><th class="numeric">首字节响应时间(TTFB)</th><th class="numeric">TCP连接</th><th class="numeric">页面可交互时间(TTI)</th><th class="numeric">页面完全加载</th><th class="numeric">1秒快开比</th><th class="numeric">2秒快开比</th><th class="numeric">5秒慢开比</th><th class="numeric">样本量</th></tr></thead><tbody id="user-rows"></tbody></table></div>
         <div id="user-empty" class="empty" hidden>暂无页面数据</div><div class="perception-pager"><span id="user-page-count"></span><button class="button" id="user-prev" type="button">上一页</button><span id="user-page-number">1</span><button class="button" id="user-next" type="button">下一页</button><span>10 条/页</span></div>
       </div>
-      <details class="context-details"><summary>iOS 上下文维度（独立于性能样本） <span class="hint" id="native-dimensions-note"></span></summary><div class="distribution-grid"><div class="distribution-card"><h4>已关联 H5 PV 的 iOS 访客</h4><div id="pv-context-dimensions"></div><div class="note">按 contextId 匹配的 PV uid 去重，并非关联到 perf 的加载样本。</div></div><div class="distribution-card"><h4>全部 iOS Reporter 上下文</h4><div id="native-context-dimensions"></div><div class="note">每个 contextId 只计一次，不把未关联的旧样本冒充为设备性能样本。</div></div></div></details>
     </section>
 
     <section id="slowLoading" class="section" hidden>
@@ -180,7 +182,8 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
 </div>
 <script>
 window.__SINK_BASE_PATH__ = __BASE_PATH__;
-var state = { range: '7days', elkEnvironment: 'test', userMode: 'p90', userTableMode: 'average', userHost: '', userPage: 0, errorPage: 0, pageFilter: '', userMetric: 'ttfb', errorMetric: 'errors', slowThreshold: 5000, clientTime: false, performanceFilters: {}, previousMetrics: null };
+var state = { range: '7days', elkEnvironment: 'test', userMode: 'p90', userTableMode: 'average', userPage: 0, errorPage: 0, pageFilter: '', userMetric: 'ttfb', errorMetric: 'errors', slowThreshold: 5000, clientTime: false, performanceFilters: {}, previousMetrics: null };
+var errorAnalysisJobs = Object.create(null);
 var userMetricLabels = { ttfb: '首字节响应时间(TTFB)', tcp: 'TCP连接', tti: '页面可交互时间(TTI)', pageLoad: '页面完全加载', oneSecondFastRate: '1秒快开比', twoSecondFastRate: '2秒快开比', fiveSecondSlowRate: '5秒慢开比' };
 var userMetricDescriptions = { ttfb: '从页面开始导航到收到服务器返回的第一个字节所经过的时间。', tcp: '建立 TCP 连接所经过的时间，数值越低表示网络连接建立越快。', tti: '页面达到可交互状态所经过的时间，表示用户可以开始稳定操作页面。', pageLoad: '从页面开始导航到页面加载完成事件触发所经过的时间。', oneSecondFastRate: '有效加载样本中，在 1 秒内完成加载的比例。', twoSecondFastRate: '有效加载样本中，在 2 秒内完成加载的比例。', fiveSecondSlowRate: '有效加载样本中，加载耗时超过 5 秒的比例。' };
 var errorTrendMetricLabels = { errors: '错误总数', affectedVisitors: '受影响访客数', issues: '独立问题', pageCount: '涉及页面' };
@@ -244,11 +247,6 @@ function metricValue(summary, mode) { return summary == null || summary[mode] ==
 function trendValue(summary, id, mode) { if (id === 'oneSecondFastRate' || id === 'twoSecondFastRate' || id === 'fiveSecondSlowRate') return summary == null ? null : summary.rate; return summary == null ? null : summary[mode]; }
 function formatTrendValue(id, value) { return value == null ? '—' : (id === 'oneSecondFastRate' || id === 'twoSecondFastRate' || id === 'fiveSecondSlowRate' ? pct(value) : ms(value)); }
 function filteredPages(rows) { var needle = state.pageFilter.toLowerCase(); return needle ? rows.filter(function (row) { return row.page.toLowerCase().indexOf(needle) >= 0; }) : rows; }
-function pageHosts(page) {
-  if (Array.isArray(page.pageHosts)) return page.pageHosts;
-  try { var host = new URL(page.page).host; return host ? [host] : []; } catch (_) { return []; }
-}
-function pageMatchesHost(page) { return !state.userHost || pageHosts(page).some(function (host) { return host.toLocaleLowerCase() === state.userHost.toLocaleLowerCase(); }); }
 function fillSelect(selector, order, labels, selected) { $(selector).innerHTML = order.map(function (id) { return '<option value="' + esc(id) + '"' + (id === selected ? ' selected' : '') + '>' + esc(labels[id] || id) + '</option>'; }).join(''); }
 function renderTrendChart(selector, trend, getValue, formatValue, data, seriesName, ariaLabel) {
   var points = [];
@@ -293,10 +291,9 @@ function renderLineChart(selector, trend, id, mode, data) {
 function renderErrorTrendChart(selector, trend, metric, data) {
   renderTrendChart(selector, trend, function (item) { return item[metric] == null ? 0 : item[metric]; }, function (value) { return integer(Math.round(value)); }, data, 'error', errorTrendMetricLabels[metric] || '错误趋势');
 }
-function renderDistribution(rows, emptyText, population) {
+function renderDistribution(rows, emptyText, showBars) {
   if (!rows || rows.length === 0) return '<div class="hint">' + esc(emptyText || '暂无数据') + '</div>';
-  var total = population == null ? rows.reduce(function (sum, row) { return sum + row.count; }, 0) : population;
-  return rows.map(function (row) { var width = total === 0 ? 0 : Math.max(1, Math.round(row.count / total * 100)); return '<div class="dist-row"><span class="dist-name" title="' + esc(row.value) + '">' + esc(row.value) + '</span><span class="dist-track"><span class="dist-bar" style="width:' + width + '%"></span></span><span class="dist-value">' + integer(row.count) + ' · ' + pct(row.rate) + '</span></div>'; }).join('');
+  return rows.map(function (row) { var width = row.rate == null ? 0 : Math.max(0, Math.min(100, Number(row.rate) || 0)); var track = showBars ? '<span class="dist-track"><span class="dist-bar" style="width:' + width + '%"></span></span>' : ''; return '<div class="dist-row"><span class="dist-name" title="' + esc(row.value) + '">' + esc(row.value) + '</span>' + track + '<span class="dist-value">' + integer(row.count) + ' · ' + pct(row.rate) + '</span></div>'; }).join('');
 }
 function renderDimensionPanels(dimensions, fields) {
   return fields.map(function (field) {
@@ -304,7 +301,7 @@ function renderDimensionPanels(dimensions, fields) {
     return '<div class="dimension-panel"><h4>' + esc(dimensionLabels[field] || field) + '</h4><span class="report-label">TOP5 · 按有来源样本排序</span>' + renderDistribution(rows.slice(0, 5), '暂无来源数据') + (rows.length > 5 ? '<span class="dim-detail">仅展示前五项</span>' : '') + '</div>';
   }).join('');
 }
-function renderErrorDimensionPanels(analysis, total) {
+function renderErrorDimensionPanels(analysis) {
   var definitions = [
     ['types', '错误类型', '按错误记录数排序'],
     ['versions', '客户端版本', '按错误记录数排序'],
@@ -315,7 +312,7 @@ function renderErrorDimensionPanels(analysis, total) {
   return definitions.map(function (definition) {
     var field = definition[0];
     var rows = analysis && analysis[field] || [];
-    return '<div class="dimension-panel"><h4>' + esc(definition[1]) + '</h4><span class="report-label">TOP5 · ' + esc(definition[2]) + ' · 占全部错误</span><div id="error-' + field + '">' + renderDistribution(rows.slice(0, 5), '暂无错误数据', total) + '</div>' + (rows.length > 5 ? '<span class="dim-detail">仅展示前五项</span>' : '') + '</div>';
+    return '<div class="dimension-panel"><h4>' + esc(definition[1]) + '</h4><span class="report-label">TOP5 · ' + esc(definition[2]) + ' · 占全部错误</span><div id="error-' + field + '">' + renderDistribution(rows.slice(0, 5), '暂无错误数据') + '</div>' + (rows.length > 5 ? '<span class="dim-detail">仅展示前五项</span>' : '') + '</div>';
   }).join('');
 }
 function renderSampleDistribution(selector, distribution) {
@@ -323,7 +320,7 @@ function renderSampleDistribution(selector, distribution) {
   var rows = [{ value: '良好', count: distribution.good }, { value: '一般', count: distribution.fair }, { value: '较差', count: distribution.poor }]
     .filter(function (row) { return row.count > 0; })
     .map(function (row) { return { value: row.value, count: row.count, rate: total ? row.count / total * 100 : null }; });
-  $(selector).innerHTML = renderDistribution(rows, '暂无页面加载样本');
+  $(selector).innerHTML = renderDistribution(rows, '暂无页面加载样本', true);
 }
 function renderTrend(trend, data) {
   var max = Math.max.apply(null, [1].concat(trend.map(function (item) { return item.pageViews + item.apiRequests + item.errors; })));
@@ -345,14 +342,77 @@ function renderMetricDimensionPanels(dimensions, metricId, mode) {
   var isRatio = metricId.indexOf('Rate') !== -1;
   return Object.keys(labels).map(function (field) {
     var rows = dimensions && dimensions[field] || [];
-    var max = Math.max.apply(null, [1].concat(rows.map(function (row) { return row.count; })));
     return '<div class="dimension-panel"><h4>' + labels[field] + '</h4><span class="report-label">TOP5 · ' + esc(userMetricLabels[metricId]) + ' · ' + (isRatio ? '比例' : esc({ average:'平均值',p50:'50%分位值',p90:'90%分位值',p95:'95%分位值' }[mode])) + '</span>' +
-      (rows.length ? rows.map(function (row) { var summary = row[metricId]; var value = isRatio ? ratioMetric(summary.rate) : metricValue(summary, mode); return '<div class="metric-dim-row"><span title="' + esc(row.value) + '">' + esc(row.value) + '</span><span class="dist-track"><span class="dist-bar" style="width:' + Math.round(row.count / max * 100) + '%"></span></span><strong>' + esc(value) + '</strong><small>' + integer(isRatio ? summary.sampleCount : summary.count) + ' 个有效样本</small></div>'; }).join('') : '<div class="hint">暂无来源数据</div>') + '</div>';
+      (rows.length ? rows.map(function (row) { var summary = row[metricId]; var value = isRatio ? ratioMetric(summary.rate) : metricValue(summary, mode); return '<div class="metric-dim-row"><span title="' + esc(row.value) + '">' + esc(row.value) + '</span><strong>' + esc(value) + '</strong></div>'; }).join('') : '<div class="hint">暂无来源数据</div>') + '</div>';
   }).join('');
 }
 function nativeLookback(data) { return data.native && data.native.lookbackContexts || 0; }
 var performanceFilterLabels = { AN:'应用名', AV:'全部 App 版本', OT:'全部系统类型', OV:'全部系统版本', EV:'全部事件类型' };
 var identityFilterLabels = { UNAME:'用户姓名', PHONE:'手机号' };
+var autocompleteLimit = 30;
+function autocompleteValues(field) {
+  if (field === 'PAGE') return currentData && currentData.userPerception && currentData.userPerception.pageOptions || [];
+  return currentData && currentData.userPerception && currentData.userPerception.filterOptions && currentData.userPerception.filterOptions[field] || [];
+}
+function closeAutocompleteOptions() {
+  document.querySelectorAll('.autocomplete-options').forEach(function (options) { options.hidden = true; options.replaceChildren(); });
+}
+function renderAutocompleteOptions(input) {
+  if (!input || !input.matches('[data-autocomplete-field]')) return;
+  var field = input.dataset.autocompleteField;
+  var options = input.closest('.autocomplete-field').querySelector('.autocomplete-options');
+  var query = input.value.trim().toLocaleLowerCase();
+  var values = autocompleteValues(field).filter(function (value) { return String(value).toLocaleLowerCase().includes(query); }).slice(0, autocompleteLimit);
+  options.replaceChildren();
+  if (!values.length) {
+    options.innerHTML = '<div class="autocomplete-empty">暂无匹配的日志选项</div>';
+    options.hidden = false;
+    return;
+  }
+  values.forEach(function (value, index) {
+    var option = document.createElement('button'); option.type = 'button'; option.className = 'autocomplete-option'; option.dataset.autocompleteOption = ''; option.dataset.autocompleteValue = String(value); option.setAttribute('role', 'option'); option.setAttribute('aria-selected', String(index === 0)); option.textContent = value;
+    options.appendChild(option);
+  });
+  options.hidden = false;
+}
+function resetAutocompleteField(field, input) {
+  if (field === 'PAGE') {
+    if (!state.pageFilter) return;
+    state.pageFilter = '';
+  } else {
+    if (!state.performanceFilters[field]) return;
+    delete state.performanceFilters[field];
+  }
+  input.value = '';
+  state.userPage = 0; state.errorPage = 0;
+  closeAutocompleteOptions(); loadFilterSilently();
+}
+function commitAutocompleteField(field, value, input) {
+  input.value = value;
+  if (field === 'PAGE') state.pageFilter = value;
+  else state.performanceFilters[field] = value;
+  state.userPage = 0; state.errorPage = 0;
+  closeAutocompleteOptions(); loadFilterSilently();
+}
+function moveAutocompleteSelection(input, direction) {
+  var options = Array.from(input.closest('.autocomplete-field').querySelectorAll('.autocomplete-option'));
+  if (!options.length) return;
+  var selected = options.findIndex(function (option) { return option.getAttribute('aria-selected') === 'true'; });
+  var next = Math.max(0, Math.min(options.length - 1, selected + direction));
+  options.forEach(function (option, index) { option.setAttribute('aria-selected', String(index === next)); });
+  options[next].scrollIntoView({ block: 'nearest' });
+}
+function selectAutocompleteOption(input) {
+  var option = input.closest('.autocomplete-field').querySelector('.autocomplete-option[aria-selected="true"]') || input.closest('.autocomplete-field').querySelector('.autocomplete-option');
+  if (option) commitAutocompleteField(input.dataset.autocompleteField, option.dataset.autocompleteValue, input);
+}
+function handleAutocompleteKeydown(event) {
+  var input = event.target;
+  if (!input.matches('[data-autocomplete-field]')) return;
+  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); renderAutocompleteOptions(input); moveAutocompleteSelection(input, event.key === 'ArrowDown' ? 1 : -1); }
+  else if (event.key === 'Enter') { event.preventDefault(); selectAutocompleteOption(input); }
+  else if (event.key === 'Escape') { closeAutocompleteOptions(); }
+}
 function syncRangeButtons() {
   var ranges = $('#user-ranges');
   if (!ranges) return;
@@ -363,6 +423,7 @@ function syncRangeButtons() {
 }
 function renderPerformanceFilters(options) {
   var holder = $('#user-dimension-filters');
+  closeAutocompleteOptions();
   Object.keys(performanceFilterLabels).forEach(function (field) {
     var dropdown = holder.querySelector('[data-field="' + field + '"]');
     if (!dropdown) {
@@ -403,12 +464,14 @@ function renderPerformanceFilters(options) {
     var input = holder.querySelector('[data-identity-field="' + field + '"]');
     if (!input) {
       var label = document.createElement('label'); label.className = 'identity-filter';
-      label.textContent = identityFilterLabels[field] + ' ';
-      input = document.createElement('input'); input.type = 'search'; input.dataset.identityField = field;
-      input.setAttribute('aria-label', identityFilterLabels[field] + '（精确匹配）');
-      input.placeholder = '精确输入' + identityFilterLabels[field]; input.autocomplete = 'off';
+      var text = document.createElement('span'); text.textContent = identityFilterLabels[field];
+      var wrapper = document.createElement('span'); wrapper.className = 'autocomplete-field';
+      input = document.createElement('input'); input.type = 'search'; input.dataset.identityField = field; input.dataset.autocompleteField = field;
+      input.setAttribute('aria-label', identityFilterLabels[field] + '（从日志候选中选择）');
+      input.placeholder = '搜索' + identityFilterLabels[field]; input.autocomplete = 'off';
       if (field === 'PHONE') input.inputMode = 'numeric';
-      label.appendChild(input); holder.appendChild(label);
+      var optionsMenu = document.createElement('div'); optionsMenu.className = 'autocomplete-options'; optionsMenu.setAttribute('role', 'listbox'); optionsMenu.hidden = true;
+      wrapper.append(input, optionsMenu); label.append(text, wrapper); holder.appendChild(label);
     }
     if (document.activeElement !== input) input.value = state.performanceFilters[field] || '';
   });
@@ -443,22 +506,9 @@ function renderUserPerception(data) {
   $('#user-dimensions').innerHTML = renderMetricDimensionPanels(data.userPerception.metricDimensions, state.userMetric, mode);
   var coverage = data.userPerception.contextCoverage || { total: 0, exact: 0, singleContextFallback: 0, h5NetworkOnly: 0, none: 0, contexts: 0 };
   $('#context-note').textContent = 'iOS 上下文 ' + integer(coverage.contexts) + ' 条 · 精确关联 ' + integer(coverage.exact) + ' / ' + integer(coverage.total) + ' 个加载样本 · 单上下文回退 ' + integer(coverage.singleContextFallback) + ' · 仅 H5 网络字段 ' + integer(coverage.h5NetworkOnly) + '。机型、系统、应用版本、运营商、地域来自 iOS 副本；未关联且无来源的维度不虚构。';
-  var native = data.native || {};
-  var iosFields = ['deviceModel', 'osVersion', 'appVersion', 'networkType', 'carrier', 'region'];
-  function renderIosContextDistribution(selector, values) {
-    $(selector).innerHTML = iosFields.map(function (field) { return '<div style="margin-bottom:12px"><div class="hint">' + esc(dimensionLabels[field]) + '</div>' + renderDistribution(values && values[field], '暂无来源数据') + '</div>'; }).join('');
-  }
-  renderIosContextDistribution('#pv-context-dimensions', native.linkedPageViewDimensions);
-  renderIosContextDistribution('#native-context-dimensions', native.dimensions);
-  $('#native-dimensions-note').textContent = 'PV 精确关联 ' + integer(native.matchedPageViews) + ' 次 / ' + integer(native.matchedVisitors) + ' 个访客；iOS 上下文 ' + integer(native.contexts) + ' 个。运营商等缺失字段保持空。';
-  var hosts = Array.from(new Set(data.userPerception.pages.flatMap(pageHosts))).filter(Boolean).sort();
-  if (state.userHost && !hosts.includes(state.userHost)) hosts.unshift(state.userHost);
-  var hostSelect = $('#user-host');
-  hostSelect.innerHTML = '<option value="">全部 Host</option>' + hosts.map(function (host) { return '<option value="' + esc(host) + '">' + esc(host) + '</option>'; }).join('');
-  hostSelect.value = state.userHost;
   if (state.range === 'date') $('#user-date').value = $('#date').value;
   syncRangeButtons();
-  var rows = filteredPages(data.userPerception.pages).filter(pageMatchesHost);
+  var rows = filteredPages(data.userPerception.pages);
   var pages = Math.max(1, Math.ceil(rows.length / 10));
   state.userPage = Math.min(state.userPage, pages - 1);
   $('#user-page-number').textContent = String(state.userPage + 1);
@@ -482,6 +532,39 @@ function errorTrendCard(id, label, value, sub) {
   var tooltipId = 'error-kpi-tip-' + id;
   return '<div class="kpi error-kpi"' + (selected ? ' data-selected' : '') + '><button class="error-kpi-content" type="button" data-error-metric="' + esc(id) + '" aria-pressed="' + selected + '"><span class="label">' + esc(label) + '</span><span class="value">' + esc(value) + '</span></button><button type="button" class="error-kpi-help" aria-label="' + esc(label) + '说明" aria-describedby="' + tooltipId + '"><span aria-hidden="true">?</span></button><span id="' + tooltipId + '" class="error-kpi-tooltip" role="tooltip">' + esc(sub) + '</span></div>';
 }
+function startErrorAnalysis(item, key) {
+  if (!currentData || (errorAnalysisJobs[key] && ['queued', 'running'].indexOf(errorAnalysisJobs[key].status) >= 0)) return;
+  errorAnalysisJobs[key] = { status: 'queued', result: null, error: null };
+  renderRecentErrors(currentData);
+  fetch(apiPath('/__sink/api/error-analysis'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: {
+    eventId: item.eventId || null, errorKey: item.errorKey || key, name: item.name || null, message: item.message || null,
+    file: item.file || null, line: item.line || null, column: item.column || null, stack: item.stack || null,
+    page: item.page || null, app: item.app || null,
+  } }), cache: 'no-store' }).then(async function (response) {
+    var payload = await response.json().catch(function () { return {}; });
+    if (!response.ok) throw new Error(payload.error || ('HTTP ' + response.status));
+    errorAnalysisJobs[key] = payload;
+    if (currentData) renderRecentErrors(currentData);
+    if (payload.status === 'queued' || payload.status === 'running') pollErrorAnalysis(payload.jobId, key);
+  }).catch(function (error) {
+    errorAnalysisJobs[key] = { status: 'failed', error: error.message || '分析失败' };
+    if (currentData) renderRecentErrors(currentData);
+  });
+}
+function pollErrorAnalysis(jobId, key) {
+  window.setTimeout(function () {
+    fetch(apiPath('/__sink/api/error-analysis/' + encodeURIComponent(jobId)), { cache: 'no-store' }).then(async function (response) {
+      var payload = await response.json().catch(function () { return {}; });
+      if (!response.ok) throw new Error(payload.error || ('HTTP ' + response.status));
+      errorAnalysisJobs[key] = payload;
+      if (currentData) renderRecentErrors(currentData);
+      if (payload.status === 'queued' || payload.status === 'running') pollErrorAnalysis(jobId, key);
+    }).catch(function (error) {
+      errorAnalysisJobs[key] = { status: 'failed', error: error.message || '分析失败' };
+      if (currentData) renderRecentErrors(currentData);
+    });
+  }, 350);
+}
 function renderRecentErrors(data) {
   var pageSize = 15, total = data.errors.length, pages = Math.max(1, Math.ceil(total / pageSize));
   state.errorPage = Math.max(0, Math.min(state.errorPage, pages - 1));
@@ -495,17 +578,27 @@ function renderRecentErrors(data) {
   $('#error-pager').hidden = total === 0;
   $('#error-list-head').hidden = total === 0;
   $('#error-list').innerHTML = data.errors.slice(start, start + pageSize).map(function (item, index) {
-    var key = JSON.stringify([item.at, item.name, item.message, item.page]);
+    var key = item.errorKey || JSON.stringify([item.at, item.name, item.message, item.page]);
     var location = item.file ? esc(item.file) + (item.line != null ? ':' + esc(item.line) : '') + (item.column != null ? ':' + esc(item.column) : '') : '未上报';
     var details = [['阶段', item.stage], ['原因', item.reasonCode], ['资源', item.resourceType], ['HTTP', item.httpStatus]]
       .filter(function (entry) { return entry[1] != null && entry[1] !== ''; })
       .map(function (entry) { return '<div class="error-detail-line"><span>' + entry[0] + '</span><span>' + esc(entry[1]) + '</span></div>'; }).join('');
     var stack = item.stack ? '<div class="error-detail-block"><span class="report-label">堆栈</span><pre class="stack">' + esc(item.stack) + '</pre></div>' : '';
     var recovered = item.devSource && item.devSource.status === 'restored' ? item.devSource : null;
-    var sourcePosition = recovered ? '<div class="error-detail-line"><span>Vue 源码位置</span><span class="mono">' + esc(recovered.file) + ':' + esc(recovered.line) + ':' + esc(recovered.column) + '</span></div><div class="hint">由看板本地归档中的 source map 还原；未访问 H5 运行地址。上方代码位置为日志原始位置。</div>' : '';
-    var snippet = '<div class="error-detail-block"><span class="report-label">代码片段</span>' + (recovered ? '<pre class="stack">' + esc(recovered.lines.map(function (line, offset) { return (recovered.startLine + offset) + '  ' + line; }).join('\n')) + '</pre>' : item.codeSnippet ? '<pre class="stack">' + esc(item.codeSnippet) + '</pre>' : '<div class="hint">未提供</div>') + '</div>';
+    var sourcePosition = recovered ? '<div class="error-detail-line"><span>Vue 源码位置</span><span class="mono">' + esc(recovered.file) + ':' + esc(recovered.line) + ':' + esc(recovered.column) + '</span></div><div class="hint">由已上传的 Source Map 还原；未访问 H5 运行地址。上方代码位置为日志原始位置。</div>' : '';
+    var job = typeof errorAnalysisJobs === 'object' ? errorAnalysisJobs[key] : null;
+    var analysis;
+    if (!job) analysis = '<button type="button" class="error-analysis-button" data-error-analysis="' + esc(key) + '">AI 分析</button>';
+    else if (job.status === 'queued' || job.status === 'running') analysis = '<button type="button" class="error-analysis-button" disabled>AI 分析中</button>';
+    else if (job.status === 'failed') analysis = '<div class="error-analysis-result"><div class="hint">' + esc(job.error || 'AI 分析失败') + '</div><button type="button" class="error-analysis-button" data-error-analysis="' + esc(key) + '">重新分析</button></div>';
+    else if (job.result && job.result.status === 'selected') {
+      var result = job.result;
+      var lines = Array.isArray(result.lines) ? result.lines.map(function (line, offset) { return (Number(result.startLine) + offset) + '  ' + line; }).join('\n') : '';
+      analysis = '<div class="error-analysis-result"><span class="mono">' + esc(result.file) + ':' + esc(result.line) + (result.column != null ? ':' + esc(result.column) : '') + '</span><pre class="stack">' + esc(lines) + '</pre><div class="hint">' + esc(result.reason || '已从本地候选源码中定位') + ' · 置信度 ' + esc(result.confidence || 'low') + (result.precision ? ' · 精度 ' + esc(result.precision) : '') + (result.matchReason ? ' · 依据 ' + esc(result.matchReason) : '') + (result.sourceVersion ? ' · 版本 ' + esc(result.sourceVersion) : '') + '</div></div>';
+    } else analysis = '<div class="error-analysis-result"><div class="hint">不确定：' + esc(job.result?.reason || '未能从候选源码中确定位置') + '</div></div>';
+    var analysisBlock = '<div class="error-analysis-row"><span>AI 分析</span><span>' + analysis + '</span></div>';
     var isOpen = openKeys.has(key), detailId = 'error-detail-' + (start + index);
-    return '<article class="error-item" data-error-key="' + esc(key) + '"' + (isOpen ? ' data-open' : '') + '><button type="button" class="error-row" aria-expanded="' + isOpen + '" aria-controls="' + detailId + '"><span class="error-index">' + (start + index + 1) + '</span><span class="error-summary"><span class="error-title">' + esc(item.name || '未上报类型') + '</span><span class="error-message" title="' + esc(item.message || '未上报消息') + '">' + esc(item.message || '未上报消息') + '</span></span><span class="error-version" title="' + esc(item.version || '未上报') + '">' + esc(item.version || '未上报') + '</span><time class="error-time" datetime="' + esc(item.at || '') + '">' + esc(datetime(item.at)) + '</time><span class="error-expand-icon" aria-hidden="true">⌄</span></button><div id="' + detailId + '" class="error-detail-shell" aria-hidden="' + !isOpen + '"><div class="error-detail-clip"><div class="error-detail"><div class="error-detail-line"><span>页面路径</span><span class="mono">' + esc(item.page || '未上报') + '</span></div><div class="error-detail-line"><span>代码位置</span><span class="mono">' + location + '</span></div>' + sourcePosition + details + snippet + stack + '</div></div></div></article>';
+    return '<article class="error-item" data-error-key="' + esc(key) + '"' + (isOpen ? ' data-open' : '') + '><button type="button" class="error-row" aria-expanded="' + isOpen + '" aria-controls="' + detailId + '"><span class="error-index">' + (start + index + 1) + '</span><span class="error-summary"><span class="error-title">' + esc(item.name || '未上报类型') + '</span><span class="error-message" title="' + esc(item.message || '未上报消息') + '">' + esc(item.message || '未上报消息') + '</span></span><span class="error-version" title="' + esc(item.version || '未上报') + '">' + esc(item.version || '未上报') + '</span><time class="error-time" datetime="' + esc(item.at || '') + '">' + esc(datetime(item.at)) + '</time><span class="error-expand-icon" aria-hidden="true">⌄</span></button><div id="' + detailId + '" class="error-detail-shell" aria-hidden="' + !isOpen + '"><div class="error-detail-clip"><div class="error-detail"><div class="error-detail-line"><span>页面路径</span><span class="mono">' + esc(item.page || '未上报') + '</span></div><div class="error-detail-line"><span>代码位置</span><span class="mono">' + location + '</span></div>' + sourcePosition + details + analysisBlock + stack + '</div></div></div></article>';
   }).join('');
   $('#error-empty').hidden = total > 0;
 }
@@ -521,7 +614,7 @@ function renderErrors(data, isElk) {
   if (!errorTrendMetricLabels[state.errorMetric]) state.errorMetric = 'errors';
   $('#error-trend-note').textContent = (state.clientTime ? '客户端发生时间' : '接收时间') + (isElk ? ' · page_error' : ' · error') + ' · ' + errorTrendMetricLabels[state.errorMetric];
   renderErrorTrendChart('#error-trend', trend, state.errorMetric, data);
-  $('#error-dimensions').innerHTML = renderErrorDimensionPanels(analysis, data.overview.errors);
+  $('#error-dimensions').innerHTML = renderErrorDimensionPanels(analysis);
   renderRows('#error-page-rows', analysis.pages, function (row) { return [
     '<span class="page-cell" title="' + esc(row.value) + '">' + esc(row.value) + '</span>', integer(row.count), pct(row.rate), datetime(row.lastAt)
   ]; }, '#error-page-empty', [false, true, true, false]);
@@ -544,7 +637,7 @@ function render(data) {
   if (Object.keys(state.performanceFilters).length) perfCount = data.userPerception.contextCoverage.total || 0;
   var latestPerf = data.userPerception.pages.reduce(function (latest, page) { return page.lastPerfAt && (!latest || page.lastPerfAt > latest) ? page.lastPerfAt : latest; }, null);
   $('#status').textContent = isElk ? '已观测加载 ' + integer(data.overview.pageViews) + ' · 错误 ' + integer(data.overview.errors) + ' · 样本 ' + integer(perfCount) : (data.range ? datetime(data.range.from) + ' ~ ' + datetime(data.range.to) + '（本地时间）' : data.date + '（UTC 归档日）') + ' · PV ' + integer(data.overview.pageViews) + ' · 性能样本 ' + integer(perfCount) + '（内嵌导航回退 ' + integer(data.userPerception.navigationFallbackSamples || 0) + '）' + ' · iOS 快照 ' + integer(data.native.snapshots) + ' · 归档 ' + integer(data.archive.records) + ' 条';
-  $('#perf-freshness').textContent = isElk ? '从测试环境读取；加载次数不等于完整 PV，未实测的指标留空。最近加载样本（本地时间）：' + (latestPerf ? datetime(latestPerf) : '暂无') : (state.clientTime ? '客户端时间有效记录 ' + integer(data.clientTimeCoverage.valid) + ' 条，缺失/偏差超过24小时的日志 ' + integer(data.clientTimeCoverage.missingOrSkewed) + ' 条。' : '') + '最近性能采样（本地时间）：' + (latestPerf ? datetime(latestPerf) : '尚未收到') + (Object.keys(state.performanceFilters).length || state.pageFilter || state.userHost ? '；当前筛选已应用于全部看板指标。' : (data.overview.pageViews > perfCount ? '；已有新 PV 不代表产生了新 perf 样本。' : '。'));
+  $('#perf-freshness').textContent = isElk ? '从测试环境读取；加载次数不等于完整 PV，未实测的指标留空。最近加载样本（本地时间）：' + (latestPerf ? datetime(latestPerf) : '暂无') : (state.clientTime ? '客户端时间有效记录 ' + integer(data.clientTimeCoverage.valid) + ' 条，缺失/偏差超过24小时的日志 ' + integer(data.clientTimeCoverage.missingOrSkewed) + ' 条。' : '') + '最近性能采样（本地时间）：' + (latestPerf ? datetime(latestPerf) : '尚未收到') + (Object.keys(state.performanceFilters).length || state.pageFilter ? '；当前筛选已应用于全部看板指标。' : (data.overview.pageViews > perfCount ? '；已有新 PV 不代表产生了新 perf 样本。' : '。'));
   renderUserPerception(data); renderSlowLoading(data);
   $('#overview-kpis').innerHTML = isElk ? [card('已观测加载', integer(data.overview.pageViews), '仅 page_load；非完整 PV'), card('独立访客 UV', integer(data.overview.uniqueVisitors), '按 contextId 去重'), card('会话数', integer(data.overview.sessions), '按 sessionId 去重'), card('页面错误', integer(data.overview.errors), '仅 page_error'), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '按已测得耗时汇总')].join('') : [card('浏览量 PV', integer(data.overview.pageViews), '页面 PV 事件'), card('独立访客 UV', integer(data.overview.uniqueVisitors), '按 uid 去重'), card('会话数', integer(data.overview.sessions), '按 sid 去重'), card('JS 错误', integer(data.overview.errors), '可展开查看堆栈'), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '按请求记录汇总')].join('');
   var native = data.native || { contexts: 0, snapshots: 0, memoryWarnings: 0, latestResidentMemoryBytes: null, networkChanges: 0 };
@@ -565,7 +658,6 @@ function restoreView() {
   if (state.range === 'date' && !$('#date').value) state.range = '7days';
   state.clientTime = params.get('view.clientTime') === '1'; $('#client-time').checked = state.clientTime;
   state.pageFilter = params.get('view.pageFilter') || '';
-  state.userHost = params.get('view.pageHost') || '';
   $('#page-filter').value = state.pageFilter;
   Object.keys(performanceFilterLabels).forEach(function (field) {
     var value = params.get('dim.' + field);
@@ -580,12 +672,19 @@ function persistView() {
   if (state.range === 'date' && $('#date').value) url.searchParams.set('view.date', $('#date').value);
   if (state.clientTime) url.searchParams.set('view.clientTime', '1');
   if (state.pageFilter) url.searchParams.set('view.pageFilter', state.pageFilter);
-  if (state.userHost) url.searchParams.set('view.pageHost', state.userHost);
   Object.keys(state.performanceFilters).filter(function (field) { return !identityFilterLabels[field]; }).forEach(function (field) { url.searchParams.set('dim.' + field, state.performanceFilters[field]); });
   history.replaceState(null, '', url.pathname + url.search + url.hash);
 }
 restoreView();
 var loadSequence = 0;
+async function loadSourceMapStatus() {
+  try {
+    var response = await fetch(apiPath('/__sink/api/source-maps'), { cache: 'no-store' });
+    if (!response.ok) return;
+    var result = await response.json();
+    if (result.uploaded) $('#source-map-status').textContent = '已上传 ' + integer(result.mappedFiles) + '/' + integer(result.maps) + ' 个可映射文件';
+  } catch (_) {}
+}
 function restoreViewport(viewport) {
   if (!viewport || typeof window.scrollTo !== 'function') return;
   var restore = function () { window.scrollTo(viewport.x, viewport.y); };
@@ -596,6 +695,10 @@ function restoreViewport(viewport) {
 function focusWithoutScrolling(element) {
   if (!element || typeof element.focus !== 'function') return;
   try { element.focus({ preventScroll: true }); } catch (_) { element.focus(); }
+}
+function loadFilterSilently() {
+  var viewport = { x: window.scrollX, y: window.scrollY };
+  return load({ preserveViewport: viewport, silent: true });
 }
 function rangeWindow(key) {
   var now = new Date(), start = new Date(now);
@@ -623,7 +726,6 @@ async function load(options) {
     query.set('elkEnvironment', state.elkEnvironment);
     query.set('slowThresholdMs', state.slowThreshold);
     if (state.pageFilter) query.set('pageFilter', state.pageFilter);
-    if (state.userHost) query.set('pageHost', state.userHost);
     Object.keys(state.performanceFilters).forEach(function (field) { query.set('dim.' + field, state.performanceFilters[field]); });
     var response = await fetch(apiPath('/__sink/api/dashboard'), {method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},body:query.toString(),cache:'no-store'});
     if (!response.ok) throw new Error('HTTP ' + response.status);
@@ -649,18 +751,38 @@ document.querySelectorAll('.nav button').forEach(function (button) { button.addE
 $('#client-time').addEventListener('change', function (event) { state.clientTime = event.target.checked; state.errorPage = 0; load(); });
 $('#date').addEventListener('change', function () { state.range = 'date'; state.errorPage = 0; load(); });
 $('#refresh').addEventListener('click', load);
+$('#source-map-upload').addEventListener('click', function () { $('#source-map-file').click(); });
+$('#source-map-file').addEventListener('change', async function (event) {
+  var file = event.target.files && event.target.files[0];
+  event.target.value = '';
+  if (!file) return;
+  var viewport = { x: window.scrollX, y: window.scrollY };
+  $('#source-map-status').textContent = '正在解析 Source Map…';
+  try {
+    var response = await fetch(apiPath('/__sink/api/source-maps'), {
+      method: 'POST', headers: { 'Content-Type': 'application/zip', 'X-Source-Map-File-Name': file.name },
+      body: file, cache: 'no-store'
+    });
+    var result = await response.json();
+    if (!response.ok) throw new Error(result.error || ('HTTP ' + response.status));
+    $('#source-map-status').textContent = '已上传 ' + integer(result.mappedFiles) + '/' + integer(result.maps) + ' 个可映射文件';
+    await load({ preserveViewport: viewport, silent: true });
+  } catch (error) {
+    $('#source-map-status').textContent = 'Source Map 上传失败：' + error.message;
+  }
+});
 $('#storage-source').addEventListener('change', function (event) {
   state.elkEnvironment = event.target.value === 'online' ? 'online' : 'test';
   state.userPage = 0; state.errorPage = 0; load();
 });
 $('#user-mode').addEventListener('change', function (event) { if (event.target.matches('input')) { state.userMode = event.target.value; if (currentData) render(currentData); } });
 $('#user-table-mode').addEventListener('change', function (event) { if (event.target.matches('input')) { state.userTableMode = event.target.value; if (currentData) render(currentData); } });
-var pageFilterLoadTimer = null;
 $('#page-filter').addEventListener('input', function (event) {
-  state.pageFilter = event.target.value.trim(); state.userPage = 0; state.errorPage = 0;
-  window.clearTimeout(pageFilterLoadTimer);
-  pageFilterLoadTimer = window.setTimeout(load, 250);
+  var input = event.target;
+  renderAutocompleteOptions(input);
+  if (!input.value.trim()) resetAutocompleteField(input.dataset.autocompleteField, input);
 });
+$('#page-filter').addEventListener('focus', function (event) { renderAutocompleteOptions(event.target); });
 $('#user-dimension-filters').addEventListener('change', function (event) {
   var radio = event.target.closest('input[type=radio]'); if (!radio) return;
   var dropdown = radio.closest('[data-field]');
@@ -669,8 +791,7 @@ $('#user-dimension-filters').addEventListener('change', function (event) {
   else delete state.performanceFilters[dropdown.dataset.field];
   dropdown.open = false; dropdown.querySelector('input[type=search]').value = '';
   focusWithoutScrolling(dropdown.querySelector('summary'));
-  restoreViewport(viewport);
-  state.userPage = 0; state.errorPage = 0; load({ preserveViewport: viewport });
+  state.userPage = 0; state.errorPage = 0; load({ preserveViewport: viewport, silent: true });
 });
 $('#user-dimension-filters').addEventListener('submit', function (event) {
   if (!event.target.matches('.app-name-form')) return;
@@ -678,15 +799,12 @@ $('#user-dimension-filters').addEventListener('submit', function (event) {
   var name = event.target.querySelector('input').value.trim();
   if (!name) return;
   state.performanceFilters.AN = name; state.userPage = 0; state.errorPage = 0;
-  event.target.closest('details').open = false; load();
+  event.target.closest('details').open = false; loadFilterSilently();
 });
-var identityFilterLoadTimer = null;
 $('#user-dimension-filters').addEventListener('input', function (event) {
   if (event.target.matches('[data-identity-field]')) {
-    var field = event.target.dataset.identityField, value = event.target.value.trim();
-    if (value) state.performanceFilters[field] = value; else delete state.performanceFilters[field];
-    state.userPage = 0; state.errorPage = 0; window.clearTimeout(identityFilterLoadTimer);
-    identityFilterLoadTimer = window.setTimeout(load, 1000);
+    renderAutocompleteOptions(event.target);
+    if (!event.target.value.trim()) resetAutocompleteField(event.target.dataset.identityField, event.target);
     return;
   }
   if (!event.target.matches('input[type=search]')) return;
@@ -694,6 +812,20 @@ $('#user-dimension-filters').addEventListener('input', function (event) {
   event.target.closest('.dimension-filter').querySelectorAll('.dimension-option').forEach(function (label) {
     var radio = label.querySelector('input'); label.hidden = !!radio.value && !label.textContent.toLocaleLowerCase().includes(query);
   });
+});
+$('#user-dimension-filters').addEventListener('focusin', function (event) {
+  if (event.target.matches('[data-identity-field]')) renderAutocompleteOptions(event.target);
+});
+document.addEventListener('keydown', handleAutocompleteKeydown);
+document.addEventListener('click', function (event) {
+  var option = event.target.closest('[data-autocomplete-option]');
+  if (option) {
+    var input = option.closest('.autocomplete-field').querySelector('[data-autocomplete-field]');
+    commitAutocompleteField(input.dataset.autocompleteField, option.dataset.autocompleteValue, input);
+    return;
+  }
+  if (event.target.closest('.autocomplete-field')) return;
+  closeAutocompleteOptions();
 });
 $('#user-dimension-filters').addEventListener('toggle', function (event) {
   if (!event.target.matches('details[open]')) return;
@@ -705,11 +837,16 @@ document.addEventListener('click', function (event) {
   $('#user-dimension-filters').querySelectorAll('details[open]').forEach(function (details) { details.open = false; });
 });
 $('#user-reset-all').addEventListener('click', function () {
-  state.range = '7days'; state.performanceFilters = {}; state.userHost = ''; state.pageFilter = ''; state.clientTime = false; state.userPage = 0; state.errorPage = 0;
-  $('#date').value = ''; $('#user-date').value = ''; $('#client-time').checked = false; $('#page-filter').value = ''; load();
+  var viewport = { x: window.scrollX, y: window.scrollY };
+  state.range = '7days'; state.performanceFilters = {}; state.pageFilter = ''; state.clientTime = false; state.userPage = 0; state.errorPage = 0;
+  $('#date').value = ''; $('#user-date').value = ''; $('#client-time').checked = false; $('#page-filter').value = '';
+  load({ preserveViewport: viewport, silent: true });
 });
-$('#user-host').addEventListener('change', function (event) { state.userHost = event.target.value; state.userPage = 0; state.errorPage = 0; load(); });
-$('#user-reset').addEventListener('click', function () { state.userHost = ''; state.pageFilter = ''; state.userPage = 0; state.errorPage = 0; $('#page-filter').value = ''; load(); });
+$('#user-reset').addEventListener('click', function () {
+  var viewport = { x: window.scrollX, y: window.scrollY };
+  state.pageFilter = ''; state.userPage = 0; state.errorPage = 0; $('#page-filter').value = '';
+  load({ preserveViewport: viewport, silent: true });
+});
 $('#user-prev').addEventListener('click', function () { state.userPage--; if (currentData) render(currentData); });
 $('#user-next').addEventListener('click', function () { state.userPage++; if (currentData) render(currentData); });
 $('#user-date').addEventListener('change', function (event) { $('#date').value = event.target.value; state.range = 'date'; state.errorPage = 0; load(); });
@@ -720,12 +857,26 @@ $('#user-ranges').addEventListener('click', function (event) {
   syncRangeButtons(); $('#user-more').open = false;
   restoreViewport(viewport); load({ preserveViewport: viewport, silent: true });
 });
-$('#user-export').addEventListener('click', function () { if (!currentData) return; var rows = filteredPages(currentData.userPerception.pages).filter(pageMatchesHost); var columns = ['页面','TTFB','TCP连接','TTI','页面完全加载','1秒快开比','2秒快开比','5秒慢开比','样本量']; var csv = [columns].concat(rows.map(function (p) { return [p.page,metricValue(p.ttfb,state.userTableMode),metricValue(p.tcp,state.userTableMode),metricValue(p.tti,state.userTableMode),metricValue(p.pageLoad,state.userTableMode),ratioMetric(p.oneSecondFastRate.rate),ratioMetric(p.twoSecondFastRate.rate),ratioMetric(p.fiveSecondSlowRate.rate),p.sampleCount]; })).map(function (row) { return row.map(function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }).join(','); }).join('\r\n'); var link = document.createElement('a'); link.href = URL.createObjectURL(new Blob(['\uFEFF',csv], {type:'text/csv;charset=utf-8'})); link.download = 'h5-user-perception-' + currentData.date + '.csv'; link.click(); setTimeout(function () { URL.revokeObjectURL(link.href); }, 1000); });
+$('#user-export').addEventListener('click', function () { if (!currentData) return; var rows = filteredPages(currentData.userPerception.pages); var columns = ['页面','TTFB','TCP连接','TTI','页面完全加载','1秒快开比','2秒快开比','5秒慢开比','样本量']; var csv = [columns].concat(rows.map(function (p) { return [p.page,metricValue(p.ttfb,state.userTableMode),metricValue(p.tcp,state.userTableMode),metricValue(p.tti,state.userTableMode),metricValue(p.pageLoad,state.userTableMode),ratioMetric(p.oneSecondFastRate.rate),ratioMetric(p.twoSecondFastRate.rate),ratioMetric(p.fiveSecondSlowRate.rate),p.sampleCount]; })).map(function (row) { return row.map(function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; }).join(','); }).join('\r\n'); var link = document.createElement('a'); link.href = URL.createObjectURL(new Blob(['\uFEFF',csv], {type:'text/csv;charset=utf-8'})); link.download = 'h5-user-perception-' + currentData.date + '.csv'; link.click(); setTimeout(function () { URL.revokeObjectURL(link.href); }, 1000); });
 $('#user-metric').addEventListener('change', function (event) { state.userMetric = event.target.value; if (currentData) render(currentData); });
 $('#user-kpis').addEventListener('click', function (event) { var button = event.target.closest('[data-metric]'); if (button) { state.userMetric = button.dataset.metric; if (currentData) render(currentData); } });
 $('#error-kpis').addEventListener('click', function (event) { var button = event.target.closest('[data-error-metric]'); if (button) { state.errorMetric = button.dataset.errorMetric; if (currentData) render(currentData); } });
 $('#error-pager').addEventListener('click', function (event) { var button = event.target.closest('[data-error-page]'); if (!button || !currentData) return; var page = Number(button.dataset.errorPage); if (Number.isInteger(page) && page >= 0 && page < Math.ceil(currentData.errors.length / 15)) { state.errorPage = page; renderRecentErrors(currentData); } });
-$('#error-list').addEventListener('click', function (event) { var row = event.target.closest('.error-row'); if (!row || !$('#error-list').contains(row)) return; var item = row.parentElement, isOpen = !item.hasAttribute('data-open'); item.toggleAttribute('data-open', isOpen); row.setAttribute('aria-expanded', String(isOpen)); item.querySelector('.error-detail-shell').setAttribute('aria-hidden', String(!isOpen)); });
+$('#error-list').addEventListener('click', function (event) {
+  var button = event.target.closest('.error-analysis-button');
+  if (button && $('#error-list').contains(button)) {
+    event.stopPropagation();
+    var key = button.dataset.errorAnalysis;
+    var item = currentData && currentData.errors.find(function (entry) {
+      return (entry.errorKey || JSON.stringify([entry.at, entry.name, entry.message, entry.page])) === key;
+    });
+    if (item && key) startErrorAnalysis(item, key);
+    return;
+  }
+  var row = event.target.closest('.error-row');
+  if (!row || !$('#error-list').contains(row)) return;
+  var item = row.parentElement, isOpen = !item.hasAttribute('data-open'); item.toggleAttribute('data-open', isOpen); row.setAttribute('aria-expanded', String(isOpen)); item.querySelector('.error-detail-shell').setAttribute('aria-hidden', String(!isOpen));
+});
 $('#slow-threshold').addEventListener('change', function (event) { state.slowThreshold = Number(event.target.value); load(); });
 function selectLocationSection() {
   var section = document.getElementById(location.hash.slice(1));
@@ -736,18 +887,19 @@ window.addEventListener('popstate', selectLocationSection);
 var currentData = null; var originalRender = render;
 render = function (data) { currentData = data; originalRender(data); };
 selectLocationSection();
+loadSourceMapStatus();
 load();
 </script>
 </body>
 </html>`;
 
-function encodeBasePath(basePath = '') {
-  const value = basePath === '/' ? '' : basePath;
-  return JSON.stringify(value).replace(/</g, '\\u003c');
+function encodeBasePath(basePath = "") {
+  const value = basePath === "/" ? "" : basePath;
+  return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-export function renderDashboard(basePath = '') {
-  return html.replace('__BASE_PATH__', encodeBasePath(basePath));
+export function renderDashboard(basePath = "") {
+  return html.replace("__BASE_PATH__", encodeBasePath(basePath));
 }
 
 export { html as dashboardHtml };

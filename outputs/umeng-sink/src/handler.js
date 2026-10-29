@@ -17,57 +17,76 @@
  * binding a socket. `src/http-adapter.js` owns framing, size limits and write-out.
  */
 
-import { buildSuccessResponse, decodeEnvelopeRequest } from './envelope.js';
-import { PERF_FILTER_FIELDS } from './aggregate.js';
-import { queryDashboard } from './dashboard-query.js';
-import { SlsMirror } from './sls-mirror.js';
-import { parseDcArgs, parseH5Body } from './h5.js';
-import { renderDashboard } from './dashboard.js';
-import { SinkStore } from './store.js';
-import { optionalIdentity } from './identity.js';
-import { normalizeElkTotal, projectElkSource } from './elastic-search-client.js';
-import { queryElkDashboard } from './elk-dashboard.js';
-import { recoverH5VueSource } from './h5-source-recovery.js';
-import { createHash, timingSafeEqual } from 'node:crypto';
+import { buildSuccessResponse, decodeEnvelopeRequest } from "./envelope.js";
+import { PERF_FILTER_FIELDS } from "./aggregate.js";
+import { queryDashboard } from "./dashboard-query.js";
+import { SlsMirror } from "./sls-mirror.js";
+import { parseDcArgs, parseH5Body } from "./h5.js";
+import { renderDashboard } from "./dashboard.js";
+import { SinkStore } from "./store.js";
+import { optionalIdentity } from "./identity.js";
+import {
+  normalizeElkTotal,
+  projectElkSource,
+} from "./elastic-search-client.js";
+import { queryElkDashboard } from "./elk-dashboard.js";
+import {
+  SourceMapStore,
+  SourceMapUploadError,
+  MAX_UPLOAD_BYTES,
+} from "./source-map-upload.js";
+import { H5SourceCatalog } from "./h5-source-catalog.js";
+import { ErrorAnalysisService } from "./error-analysis.js";
 
 const ONE_PIXEL_GIF = Buffer.from(
-  'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
-  'base64'
+  "R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7",
+  "base64",
 );
 
 export const DEFAULT_MAX_BODY_BYTES = 16 * 1024 * 1024;
 
 export const DEFAULT_OPTIONS = Object.freeze({
   port: 8787,
-  host: '127.0.0.1',
-  basePath: '',
-  dataDir: './data',
+  host: "127.0.0.1",
+  basePath: "",
+  dataDir: "./data",
   maxBodyBytes: DEFAULT_MAX_BODY_BYTES,
+  sourceMapUploadMaxBytes: MAX_UPLOAD_BYTES,
+  h5AppsRoot: null,
+  h5DefaultApp: "bx-app-h5",
+  h5AppMap: {},
   quiet: false,
   logger: null,
-  elkIndexPattern: 'log-fe-*-gsl_test',
+  elkIndexPattern: "log-fe-*-gsl_test",
+  aiAnalysisMaxConcurrent: 2,
+  aiAnalysisTtlMs: 10 * 60 * 1000,
+  aiAnalysisCacheTtlMs: 5 * 60 * 1000,
 });
 
-const IOS_ANALYTICS_PATHS = new Set(['/unify_logs']);
-const IOS_CONFIG_PATHS = new Set(['/zcfg', '/heartbeat']);
-const H5_LOG_PATHS = new Set(['/apm_web_logs']);
-const H5_BEACON_PATHS = new Set(['/apm_web_ping']);
-const H5_REMOTE_CONFIG_PATHS = new Set(['/apm_cc_web']);
-const APM_NATIVE_PATHS = new Set(['/apm_logs']);
-const APM_NATIVE_CONFIG_PATHS = new Set(['/apm_cc']);
-const CRASH_PATHS = new Set(['/upload', '/api/crashsdk/validate', '/api/crashsdk/logcollect']);
-const ELK_ENVIRONMENTS = new Set(['test', 'online']);
+const IOS_ANALYTICS_PATHS = new Set(["/unify_logs"]);
+const IOS_CONFIG_PATHS = new Set(["/zcfg", "/heartbeat"]);
+const H5_LOG_PATHS = new Set(["/apm_web_logs"]);
+const H5_BEACON_PATHS = new Set(["/apm_web_ping"]);
+const H5_REMOTE_CONFIG_PATHS = new Set(["/apm_cc_web"]);
+const APM_NATIVE_PATHS = new Set(["/apm_logs"]);
+const APM_NATIVE_CONFIG_PATHS = new Set(["/apm_cc"]);
+const CRASH_PATHS = new Set([
+  "/upload",
+  "/api/crashsdk/validate",
+  "/api/crashsdk/logcollect",
+]);
+const ELK_ENVIRONMENTS = new Set(["test", "online"]);
 
-const HTML = 'text/html; charset=utf-8';
-const TEXT_PLAIN = 'text/plain; charset=utf-8';
-const THRIFT = 'application/thrift';
+const HTML = "text/html; charset=utf-8";
+const TEXT_PLAIN = "text/plain; charset=utf-8";
+const THRIFT = "application/thrift";
 
 const CORS_HEADERS = Object.freeze({
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
-  'Access-Control-Allow-Headers':
-    'Content-Type, Msg-Type, X-Umeng-Sdk, Sm-Imp, X-Umeng-Utc, X-Requested-With',
-  'Access-Control-Max-Age': '86400',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+  "Access-Control-Allow-Headers":
+    "Content-Type, Msg-Type, X-Umeng-Sdk, Sm-Imp, X-Umeng-Utc, X-Requested-With, X-Source-Map-File-Name",
+  "Access-Control-Max-Age": "86400",
 });
 
 function withCorsHeaders(response) {
@@ -85,48 +104,49 @@ function corsPreflightResponse() {
 function jsonResponse(status, payload) {
   return {
     status,
-    headers: { 'Content-Type': 'application/json; charset=utf-8' },
-    body: Buffer.from(JSON.stringify(payload), 'utf8'),
+    headers: { "Content-Type": "application/json; charset=utf-8" },
+    body: Buffer.from(JSON.stringify(payload), "utf8"),
   };
 }
 
 function bodyResponse(status, contentType, body) {
   return {
     status,
-    headers: { 'Content-Type': contentType },
-    body: Buffer.isBuffer(body) ? body : Buffer.from(body ?? '', 'utf8'),
+    headers: { "Content-Type": contentType },
+    body: Buffer.isBuffer(body) ? body : Buffer.from(body ?? "", "utf8"),
   };
 }
 
 /** Strips an optional deployment prefix and normalises the trailing slash. */
-export function normalizePath(rawUrl, basePath = '') {
-  const raw = rawUrl ?? '/';
+export function normalizePath(rawUrl, basePath = "") {
+  const raw = rawUrl ?? "/";
   let pathname;
   try {
-    pathname = new URL(raw, 'http://localhost').pathname;
+    pathname = new URL(raw, "http://localhost").pathname;
   } catch {
-    pathname = String(raw).split('?')[0];
+    pathname = String(raw).split("?")[0];
   }
-  if (basePath && basePath !== '/' && pathname.startsWith(basePath)) {
-    pathname = pathname.slice(basePath.length) || '/';
+  if (basePath && basePath !== "/" && pathname.startsWith(basePath)) {
+    pathname = pathname.slice(basePath.length) || "/";
   }
-  if (pathname.length > 1 && pathname.endsWith('/')) pathname = pathname.slice(0, -1);
-  return pathname.length === 0 ? '/' : pathname;
+  if (pathname.length > 1 && pathname.endsWith("/"))
+    pathname = pathname.slice(0, -1);
+  return pathname.length === 0 ? "/" : pathname;
 }
 
 function requestContext(request) {
   const headers = request.headers ?? {};
   return {
-    method: request.method ?? 'GET',
-    url: request.url ?? '/',
+    method: request.method ?? "GET",
+    url: request.url ?? "/",
     headers: {
-      contentType: headers['content-type'] ?? null,
-      msgType: headers['msg-type'] ?? null,
-      umengSdk: headers['x-umeng-sdk'] ?? null,
-      smImp: headers['sm-imp'] ?? null,
-      umengUtc: headers['x-umeng-utc'] ?? null,
-      xRequestedWith: headers['x-requested-with'] ?? null,
-      userAgent: headers['user-agent'] ?? null,
+      contentType: headers["content-type"] ?? null,
+      msgType: headers["msg-type"] ?? null,
+      umengSdk: headers["x-umeng-sdk"] ?? null,
+      smImp: headers["sm-imp"] ?? null,
+      umengUtc: headers["x-umeng-utc"] ?? null,
+      xRequestedWith: headers["x-requested-with"] ?? null,
+      userAgent: headers["user-agent"] ?? null,
       referer: headers.referer ?? null,
     },
   };
@@ -140,70 +160,176 @@ function requestContext(request) {
 export function createRequestHandler(options = {}) {
   const config = { ...DEFAULT_OPTIONS, ...options };
   const elkClient = options.elkClient ?? null;
-  const configuredElkClients = options.elkClients && typeof options.elkClients === 'object'
-    ? options.elkClients : {};
+  const configuredElkClients =
+    options.elkClients && typeof options.elkClients === "object"
+      ? options.elkClients
+      : {};
   const elkClients = {
     test: configuredElkClients.test ?? elkClient,
     online: configuredElkClients.online ?? options.elkOnlineClient ?? null,
   };
-  const dashboardSource = options.dashboardSource ?? 'local';
-  const mirror = options.slsClient ? new SlsMirror(options.slsClient, {
-    log: (message) => { if (!config.quiet) (config.logger ?? console.warn)(message); },
-    maxPending: options.slsMaxPending,
-    timeoutMs: options.slsTimeoutMs,
-  }) : null;
-  const store = options.store ?? new SinkStore({ dataDir: config.dataDir, mirror });
+  const dashboardSource = options.dashboardSource ?? "local";
+  const mirror = options.slsClient
+    ? new SlsMirror(options.slsClient, {
+        log: (message) => {
+          if (!config.quiet) (config.logger ?? console.warn)(message);
+        },
+        maxPending: options.slsMaxPending,
+        timeoutMs: options.slsTimeoutMs,
+      })
+    : null;
+  const store =
+    options.store ?? new SinkStore({ dataDir: config.dataDir, mirror });
+  const sourceMapStore =
+    options.sourceMapStore ??
+    new SourceMapStore({
+      dataDir: store.dataDir,
+      maxUploadBytes: config.sourceMapUploadMaxBytes,
+    });
+  const h5SourceCatalog =
+    options.h5SourceCatalog ??
+    new H5SourceCatalog({
+      appsRoot: config.h5AppsRoot,
+      defaultApp: config.h5DefaultApp,
+      appMap: config.h5AppMap,
+    });
   const now = options.now ?? (() => new Date());
   const log = (message) => {
     if (config.quiet) return;
-    if (typeof config.logger === 'function') config.logger(message);
+    if (typeof config.logger === "function") config.logger(message);
     else process.stdout.write(`${message}\n`);
   };
+  const errorAnalysis =
+    options.errorAnalysisService ??
+    new ErrorAnalysisService({
+      catalog: h5SourceCatalog,
+      provider: options.aiProvider,
+      maxConcurrent: config.aiAnalysisMaxConcurrent,
+      ttlMs: config.aiAnalysisTtlMs,
+      cacheTtlMs: config.aiAnalysisCacheTtlMs,
+      logger: log,
+    });
 
   async function route(request) {
     const pathname = normalizePath(request.url, config.basePath);
-    const query = new URL(request.url ?? '/', 'http://localhost').searchParams;
+    const query = new URL(request.url ?? "/", "http://localhost").searchParams;
     const context = requestContext(request);
-    const body = Buffer.isBuffer(request.body) ? request.body : Buffer.from(request.body ?? '');
+    const body = Buffer.isBuffer(request.body)
+      ? request.body
+      : Buffer.from(request.body ?? "");
 
-    if (pathname === '/__sink/api/h5-source') {
-      if (request.method !== 'POST') return jsonResponse(405, { error: 'POST required' });
-      if (!config.sourceArchiveDir || !config.sourceAuthToken) return jsonResponse(503, { error: 'Source recovery is not configured' });
-      const authorization = request.headers?.authorization;
-      const expected = createHash('sha256').update(`Bearer ${config.sourceAuthToken}`).digest();
-      const received = createHash('sha256').update(typeof authorization === 'string' ? authorization : '').digest();
-      if (!timingSafeEqual(expected, received)) return jsonResponse(403, { error: 'Forbidden' });
-      if (!/^application\/json(?:\s*;|$)/i.test(context.headers.contentType ?? '') || body.length > 4096) {
-        return jsonResponse(400, { error: 'Expected a small JSON request' });
+    if (pathname === "/__sink/api/source-maps") {
+      if (request.method === "GET")
+        return jsonResponse(200, await sourceMapStore.status());
+      if (request.method !== "POST")
+        return jsonResponse(405, { error: "POST required" });
+      if (
+        !/^application\/(?:zip|x-zip-compressed)(?:\s*;|$)/i.test(
+          context.headers.contentType ?? "",
+        )
+      ) {
+        return jsonResponse(415, { error: "expected application/zip" });
       }
-      let input;
-      try { input = JSON.parse(body.toString('utf8')); } catch { return jsonResponse(400, { error: 'Invalid JSON' }); }
-      if (!input || typeof input !== 'object' || Array.isArray(input)) return jsonResponse(400, { error: 'Invalid input' });
-      return jsonResponse(200, await recoverH5VueSource(input, config.sourceArchiveDir));
+      try {
+        const fileName =
+          request.headers?.["x-source-map-file-name"] ?? "source-maps.zip";
+        return jsonResponse(200, await sourceMapStore.upload(body, fileName));
+      } catch (error) {
+        if (error instanceof SourceMapUploadError)
+          return jsonResponse(
+            error.code === "SOURCE_MAP_UPLOAD_TOO_LARGE" ? 413 : 400,
+            { error: error.message },
+          );
+        throw error;
+      }
     }
 
-    if (pathname === '/__sink/health') {
-      return jsonResponse(200, { ok: true, now: now().toISOString(), dataDir: store.dataDir,
-        elk: elkClients.test ? elkClients.test.describe() : { configured: false },
-        elkEnvironments: Object.fromEntries(Object.entries(elkClients).map(([environment, client]) => [
-          environment, client ? client.describe() : { configured: false },
-        ])) });
+    if (
+      request.method === "GET" &&
+      pathname === "/__sink/api/h5-source/status"
+    ) {
+      return jsonResponse(200, h5SourceCatalog.status());
     }
-    if (pathname === '/__sink/events') {
-      const limit = Number.parseInt(query.get('limit') ?? '50', 10);
-      const channel = query.get('channel');
+
+    if (pathname === "/__sink/api/error-analysis") {
+      if (request.method === "GET")
+        return jsonResponse(200, errorAnalysis.status());
+      if (request.method !== "POST")
+        return jsonResponse(405, { error: "POST required" });
+      if (
+        !/^application\/json(?:\s*;|$)/i.test(context.headers.contentType ?? "")
+      ) {
+        return jsonResponse(415, { error: "expected application/json" });
+      }
+      if (!errorAnalysis.configured)
+        return jsonResponse(503, { error: "AI analysis is not configured" });
+      let input;
+      try {
+        input = JSON.parse(body.toString("utf8"));
+      } catch {
+        return jsonResponse(400, { error: "body must be JSON" });
+      }
+      try {
+        return jsonResponse(202, errorAnalysis.create(input));
+      } catch (error) {
+        if (error instanceof TypeError)
+          return jsonResponse(400, { error: error.message });
+        if (error?.code === "AI_NOT_CONFIGURED")
+          return jsonResponse(503, { error: "AI analysis is not configured" });
+        throw error;
+      }
+    }
+    if (
+      request.method === "GET" &&
+      pathname.startsWith("/__sink/api/error-analysis/")
+    ) {
+      const jobId = pathname.slice("/__sink/api/error-analysis/".length);
+      const job = errorAnalysis.get(jobId);
+      return job
+        ? jsonResponse(200, job)
+        : jsonResponse(404, { error: "analysis job not found" });
+    }
+
+    if (pathname === "/__sink/health") {
       return jsonResponse(200, {
-        events: store.recent({ limit: Number.isFinite(limit) ? Math.min(Math.max(limit, 1), 500) : 50, channel }),
+        ok: true,
+        now: now().toISOString(),
+        dataDir: store.dataDir,
+        elk: elkClients.test
+          ? elkClients.test.describe()
+          : { configured: false },
+        elkEnvironments: Object.fromEntries(
+          Object.entries(elkClients).map(([environment, client]) => [
+            environment,
+            client ? client.describe() : { configured: false },
+          ]),
+        ),
       });
     }
-    if (pathname === '/__sink/stats') {
-      return jsonResponse(200, { ...store.stats(), ...(mirror && { slsMirror: mirror.stats }) });
+    if (pathname === "/__sink/events") {
+      const limit = Number.parseInt(query.get("limit") ?? "50", 10);
+      const channel = query.get("channel");
+      return jsonResponse(200, {
+        events: store.recent({
+          limit: Number.isFinite(limit)
+            ? Math.min(Math.max(limit, 1), 500)
+            : 50,
+          channel,
+        }),
+      });
+    }
+    if (pathname === "/__sink/stats") {
+      return jsonResponse(200, {
+        ...store.stats(),
+        ...(mirror && { slsMirror: mirror.stats }),
+      });
     }
     const selectElkEnvironment = (params) => {
-      const environment = params.get('environment') ?? params.get('elkEnvironment') ?? 'test';
+      const environment =
+        params.get("environment") ?? params.get("elkEnvironment") ?? "test";
       if (!ELK_ENVIRONMENTS.has(environment)) {
-        const error = new Error('environment must be test or online');
-        error.code = 'INVALID_ELK_ENVIRONMENT';
+        const error = new Error("environment must be test or online");
+        error.code = "INVALID_ELK_ENVIRONMENT";
         throw error;
       }
       return environment;
@@ -212,153 +338,340 @@ export function createRequestHandler(options = {}) {
       const environment = selectElkEnvironment(params);
       return { environment, client: elkClients[environment] };
     };
-    if (request.method === 'GET' && pathname === '/__sink/api/elk/status') {
+    if (request.method === "GET" && pathname === "/__sink/api/elk/status") {
       let selected;
-      try { selected = getElkClient(query); } catch (error) { return jsonResponse(400, { error: error.message }); }
-      const { environment, client } = selected;
-      if (!client) return jsonResponse(503, { ok: false, configured: false, environment, error: 'ELK reader is not configured' });
       try {
-        return jsonResponse(200, { ...await client.status(), environment });
+        selected = getElkClient(query);
+      } catch (error) {
+        return jsonResponse(400, { error: error.message });
+      }
+      const { environment, client } = selected;
+      if (!client)
+        return jsonResponse(503, {
+          ok: false,
+          configured: false,
+          environment,
+          error: "ELK reader is not configured",
+        });
+      try {
+        return jsonResponse(200, { ...(await client.status()), environment });
       } catch (error) {
         client.logError?.(error);
-        return jsonResponse(502, { ok: false, configured: true, error: error?.code === 'ELK_TIMEOUT' ? 'ELK read timeout' : 'ELK query unavailable' });
+        return jsonResponse(502, {
+          ok: false,
+          configured: true,
+          error:
+            error?.code === "ELK_TIMEOUT"
+              ? "ELK read timeout"
+              : "ELK query unavailable",
+        });
       }
     }
-    if (request.method === 'GET' && pathname === '/__sink/api/elk/fields') {
+    if (request.method === "GET" && pathname === "/__sink/api/elk/fields") {
       let selected;
-      try { selected = getElkClient(query); } catch (error) { return jsonResponse(400, { error: error.message }); }
-      const { environment, client } = selected;
-      if (!client) return jsonResponse(503, { ok: false, configured: false, environment, error: 'ELK reader is not configured' });
       try {
-        return jsonResponse(200, { environment, indexPattern: client.indexPattern, fields: await client.fieldCaps() });
+        selected = getElkClient(query);
       } catch (error) {
-        client.logError?.(error);
-        return jsonResponse(502, { ok: false, configured: true, error: error?.code === 'ELK_TIMEOUT' ? 'ELK read timeout' : 'ELK query unavailable' });
+        return jsonResponse(400, { error: error.message });
       }
-    }
-    if (request.method === 'GET' && pathname === '/__sink/api/elk/search') {
-      let selected;
-      try { selected = getElkClient(query); } catch (error) { return jsonResponse(400, { error: error.message }); }
       const { environment, client } = selected;
-      if (!client) return jsonResponse(503, { ok: false, configured: false, environment, error: 'ELK reader is not configured' });
-      const from = query.get('from') ?? new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-      const to = query.get('to') ?? new Date().toISOString();
-      const isUtc = (value) => /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) && Number.isFinite(Date.parse(value));
-      if (!isUtc(from) || !isUtc(to) || Date.parse(to) <= Date.parse(from)) return jsonResponse(400, { error: 'from/to must be UTC ISO timestamps with a positive interval' });
+      if (!client)
+        return jsonResponse(503, {
+          ok: false,
+          configured: false,
+          environment,
+          error: "ELK reader is not configured",
+        });
       try {
-        const response = await client.search({ from, to, an: query.get('AN') ?? query.get('an'), ev: query.get('EV') ?? query.get('ev'), mod: query.get('MOD') ?? query.get('mod'), limit: query.get('limit') });
-        const hits = Array.isArray(response?.hits?.hits) ? response.hits.hits : [];
         return jsonResponse(200, {
-          source: 'elk', environment, indexPattern: client.indexPattern, tookMs: response?.took ?? null,
-          total: normalizeElkTotal(response?.hits?.total),
-          hits: hits.map((hit) => ({ id: hit?._id ?? null, index: hit?._index ?? null, sort: hit?.sort ?? null, source: projectElkSource(hit?._source) })),
+          environment,
+          indexPattern: client.indexPattern,
+          fields: await client.fieldCaps(),
         });
       } catch (error) {
         client.logError?.(error);
-        return jsonResponse(502, { ok: false, configured: true, error: error?.code === 'ELK_TIMEOUT' ? 'ELK read timeout' : 'ELK query unavailable' });
+        return jsonResponse(502, {
+          ok: false,
+          configured: true,
+          error:
+            error?.code === "ELK_TIMEOUT"
+              ? "ELK read timeout"
+              : "ELK query unavailable",
+        });
       }
     }
-    if (request.method === 'POST' && pathname === '/__sink/api/ios-context') {
+    if (request.method === "GET" && pathname === "/__sink/api/elk/search") {
+      let selected;
+      try {
+        selected = getElkClient(query);
+      } catch (error) {
+        return jsonResponse(400, { error: error.message });
+      }
+      const { environment, client } = selected;
+      if (!client)
+        return jsonResponse(503, {
+          ok: false,
+          configured: false,
+          environment,
+          error: "ELK reader is not configured",
+        });
+      const from =
+        query.get("from") ??
+        new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+      const to = query.get("to") ?? new Date().toISOString();
+      const isUtc = (value) =>
+        /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value) &&
+        Number.isFinite(Date.parse(value));
+      if (!isUtc(from) || !isUtc(to) || Date.parse(to) <= Date.parse(from))
+        return jsonResponse(400, {
+          error: "from/to must be UTC ISO timestamps with a positive interval",
+        });
+      try {
+        const response = await client.search({
+          from,
+          to,
+          an: query.get("AN") ?? query.get("an"),
+          ev: query.get("EV") ?? query.get("ev"),
+          mod: query.get("MOD") ?? query.get("mod"),
+          limit: query.get("limit"),
+        });
+        const hits = Array.isArray(response?.hits?.hits)
+          ? response.hits.hits
+          : [];
+        return jsonResponse(200, {
+          source: "elk",
+          environment,
+          indexPattern: client.indexPattern,
+          tookMs: response?.took ?? null,
+          total: normalizeElkTotal(response?.hits?.total),
+          hits: hits.map((hit) => ({
+            id: hit?._id ?? null,
+            index: hit?._index ?? null,
+            sort: hit?.sort ?? null,
+            source: projectElkSource(hit?._source),
+          })),
+        });
+      } catch (error) {
+        client.logError?.(error);
+        return jsonResponse(502, {
+          ok: false,
+          configured: true,
+          error:
+            error?.code === "ELK_TIMEOUT"
+              ? "ELK read timeout"
+              : "ELK query unavailable",
+        });
+      }
+    }
+    if (request.method === "POST" && pathname === "/__sink/api/ios-context") {
       let context;
       try {
-        context = JSON.parse(body.toString('utf8'));
+        context = JSON.parse(body.toString("utf8"));
       } catch {
-        return jsonResponse(400, { error: 'body must be a JSON object' });
+        return jsonResponse(400, { error: "body must be a JSON object" });
       }
-      if (!context || typeof context !== 'object' || Array.isArray(context)) {
-        return jsonResponse(400, { error: 'body must be a JSON object' });
+      if (!context || typeof context !== "object" || Array.isArray(context)) {
+        return jsonResponse(400, { error: "body must be a JSON object" });
       }
-      if (typeof context.schema !== 'string' || context.schema.length === 0) {
-        return jsonResponse(400, { error: 'schema is required' });
+      if (typeof context.schema !== "string" || context.schema.length === 0) {
+        return jsonResponse(400, { error: "schema is required" });
       }
-      if (typeof context.contextId !== 'string' || context.contextId.length < 8) {
-        return jsonResponse(400, { error: 'contextId must contain at least 8 characters' });
+      if (
+        typeof context.contextId !== "string" ||
+        context.contextId.length < 8
+      ) {
+        return jsonResponse(400, {
+          error: "contextId must contain at least 8 characters",
+        });
       }
       if (context.contextId.length > 256) {
-        return jsonResponse(400, { error: 'contextId must be at most 256 characters' });
+        return jsonResponse(400, {
+          error: "contextId must be at most 256 characters",
+        });
       }
       if (!/^[A-Za-z0-9][A-Za-z0-9._:-]*$/.test(context.contextId)) {
-        return jsonResponse(400, { error: 'contextId contains invalid characters' });
+        return jsonResponse(400, {
+          error: "contextId contains invalid characters",
+        });
       }
       const checked = optionalIdentity(context);
       if (checked.error) return jsonResponse(400, { error: checked.error });
-      const event = store.write('ios-context', { context }, null);
-      return jsonResponse(200, { ok: true, contextId: context.contextId, receivedAt: event.receivedAt });
+      const event = store.write("ios-context", { context }, null);
+      return jsonResponse(200, {
+        ok: true,
+        contextId: context.contextId,
+        receivedAt: event.receivedAt,
+      });
     }
 
-    if (request.method === 'POST' && pathname === '/__sink/api/h5-navigation') {
+    if (request.method === "POST" && pathname === "/__sink/api/h5-navigation") {
       let report;
       try {
-        report = JSON.parse(body.toString('utf8'));
+        report = JSON.parse(body.toString("utf8"));
       } catch {
-        return jsonResponse(400, { error: 'body must be JSON' });
+        return jsonResponse(400, { error: "body must be JSON" });
       }
-      if (!report || typeof report !== 'object' || Array.isArray(report) || report.schema !== 'h5-navigation-v1' ||
-          !/^[a-zA-Z0-9]{32}$/.test(report.uid ?? '') ||
-          typeof report.page !== 'string' || report.page.length > 2048 ||
-          !/^https?:$/.test((() => { try { return new URL(report.page).protocol; } catch { return ''; } })()) ||
-          !report.metrics || typeof report.metrics !== 'object' || Array.isArray(report.metrics)) {
-        return jsonResponse(400, { error: 'invalid navigation identity or payload' });
+      if (
+        !report ||
+        typeof report !== "object" ||
+        Array.isArray(report) ||
+        report.schema !== "h5-navigation-v1" ||
+        !/^[a-zA-Z0-9]{32}$/.test(report.uid ?? "") ||
+        typeof report.page !== "string" ||
+        report.page.length > 2048 ||
+        !/^https?:$/.test(
+          (() => {
+            try {
+              return new URL(report.page).protocol;
+            } catch {
+              return "";
+            }
+          })(),
+        ) ||
+        !report.metrics ||
+        typeof report.metrics !== "object" ||
+        Array.isArray(report.metrics)
+      ) {
+        return jsonResponse(400, {
+          error: "invalid navigation identity or payload",
+        });
       }
       const numericFields = [
-        'unload', 'redirect', 'appcache', 'dns', 'tcp', 'ssl', 'ttfb', 'trans',
-        'dom', 'load', 'res', 'firstbyte', 'ready', 'total', 'fpt', 'fcp', 'tti',
+        "unload",
+        "redirect",
+        "appcache",
+        "dns",
+        "tcp",
+        "ssl",
+        "ttfb",
+        "trans",
+        "dom",
+        "load",
+        "res",
+        "firstbyte",
+        "ready",
+        "total",
+        "fpt",
+        "fcp",
+        "tti",
       ];
       const metrics = {};
       for (const key of numericFields) {
         const value = report.metrics[key];
         if (value === undefined || value === null) continue;
-        if (typeof value !== 'number' || !Number.isFinite(value) || value < 0 || value > 600000) {
-          return jsonResponse(400, { error: `invalid navigation metric: ${key}` });
+        if (
+          typeof value !== "number" ||
+          !Number.isFinite(value) ||
+          value < 0 ||
+          value > 600000
+        ) {
+          return jsonResponse(400, {
+            error: `invalid navigation metric: ${key}`,
+          });
         }
         metrics[key] = Math.round(value);
       }
       if (!Number.isFinite(metrics.total) || metrics.total <= 0) {
-        return jsonResponse(400, { error: 'a positive total is required' });
+        return jsonResponse(400, { error: "a positive total is required" });
       }
-      if (report.clientAt != null && (!Number.isSafeInteger(report.clientAt) || report.clientAt <= 0)) {
-        return jsonResponse(400, { error: 'clientAt must be a positive epoch millisecond integer' });
+      if (
+        report.clientAt != null &&
+        (!Number.isSafeInteger(report.clientAt) || report.clientAt <= 0)
+      ) {
+        return jsonResponse(400, {
+          error: "clientAt must be a positive epoch millisecond integer",
+        });
       }
       const checked = optionalIdentity(report, { navigation: true });
       if (checked.error) return jsonResponse(400, { error: checked.error });
       const identity = checked.identity;
-      const optionalSize = (value) => typeof value === 'string' && /^\d{1,5}x\d{1,5}$/.test(value) ? value : null;
+      const optionalSize = (value) =>
+        typeof value === "string" && /^\d{1,5}x\d{1,5}$/.test(value)
+          ? value
+          : null;
       const parsed = {
-        header: { ...(identity.projectId ? { pid: identity.projectId } : {}),
-          uid: report.uid, ...(identity.sessionId ? { sid: identity.sessionId } : {}) },
-        logs: [{ type: 'perf', common: {
-          page: report.page,
-          sr: optionalSize(report.screenSize),
-          vp: optionalSize(report.viewport),
-          // Keep optional observed clientAt separate; never label receipt as ctime.
-        }, log: metrics }],
+        header: {
+          ...(identity.projectId ? { pid: identity.projectId } : {}),
+          uid: report.uid,
+          ...(identity.sessionId ? { sid: identity.sessionId } : {}),
+        },
+        logs: [
+          {
+            type: "perf",
+            common: {
+              page: report.page,
+              sr: optionalSize(report.screenSize),
+              vp: optionalSize(report.viewport),
+              // Keep optional observed clientAt separate; never label receipt as ctime.
+            },
+            log: metrics,
+          },
+        ],
         logCount: 1,
       };
       // Own parsed representation, not an official SDK wire-format claim.
       // Avoid retaining unvalidated extra JSON (including query-bearing URLs) in rawBody.
-      const event = store.write('h5-navigation', { ...context, schema: report.schema,
-        clientAt: report.clientAt ?? null, ...identity, parsed, source: 'embedded-navigation-timing' }, null);
+      const event = store.write(
+        "h5-navigation",
+        {
+          ...context,
+          schema: report.schema,
+          clientAt: report.clientAt ?? null,
+          ...identity,
+          parsed,
+          source: "embedded-navigation-timing",
+        },
+        null,
+      );
       return jsonResponse(200, { ok: true, receivedAt: event.receivedAt });
     }
 
-    if (['GET', 'POST'].includes(request.method) && pathname === '/__sink/api/dashboard') {
-      if (request.method === 'POST' && !/^application\/x-www-form-urlencoded(?:\s*;|$)/i.test(context.headers.contentType ?? '')) {
-        return jsonResponse(415, { error: 'expected form-encoded dashboard query' });
+    if (
+      ["GET", "POST"].includes(request.method) &&
+      pathname === "/__sink/api/dashboard"
+    ) {
+      if (
+        request.method === "POST" &&
+        !/^application\/x-www-form-urlencoded(?:\s*;|$)/i.test(
+          context.headers.contentType ?? "",
+        )
+      ) {
+        return jsonResponse(415, {
+          error: "expected form-encoded dashboard query",
+        });
       }
-      const params = request.method === 'POST' ? new URLSearchParams(body.toString('utf8')) : query;
-      const date = params.get('date');
-      const from = params.get('from');
-      const to = params.get('to');
-      const slowThresholdMs = params.get('slowThresholdMs');
-      const timeField = params.get('timeField') ?? undefined;
-      const pageFilter = params.get('pageFilter') ?? '';
-      const pageHost = params.get('pageHost') ?? '';
-      let elkEnvironment = 'test';
-      if (dashboardSource === 'elk') {
-        try { elkEnvironment = selectElkEnvironment(params); } catch (error) { return jsonResponse(400, { error: error.message }); }
+      const params =
+        request.method === "POST"
+          ? new URLSearchParams(body.toString("utf8"))
+          : query;
+      const date = params.get("date");
+      const from = params.get("from");
+      const to = params.get("to");
+      const slowThresholdMs = params.get("slowThresholdMs");
+      const timeField = params.get("timeField") ?? undefined;
+      const pageFilter = params.get("pageFilter") ?? "";
+      const pageHost = params.get("pageHost") ?? "";
+      let elkEnvironment = "test";
+      if (dashboardSource === "elk") {
+        try {
+          elkEnvironment = selectElkEnvironment(params);
+        } catch (error) {
+          return jsonResponse(400, { error: error.message });
+        }
       }
-      const performanceFilters = Object.fromEntries(PERF_FILTER_FIELDS.filter((field) => params.has('dim.' + field)).map((field) => [field, params.get('dim.' + field)]));
-      if ([...params.keys()].some((key) => key.startsWith('dim.') && !PERF_FILTER_FIELDS.includes(key.slice(4)))) return jsonResponse(400, { error: 'unknown performance dimension' });
+      const performanceFilters = Object.fromEntries(
+        PERF_FILTER_FIELDS.filter((field) => params.has("dim." + field)).map(
+          (field) => [field, params.get("dim." + field)],
+        ),
+      );
+      if (
+        [...params.keys()].some(
+          (key) =>
+            key.startsWith("dim.") &&
+            !PERF_FILTER_FIELDS.includes(key.slice(4)),
+        )
+      )
+        return jsonResponse(400, { error: "unknown performance dimension" });
       try {
         const dashboardOptions = {
           dataDir: store.dataDir,
@@ -369,65 +682,130 @@ export function createRequestHandler(options = {}) {
           pageFilter,
           pageHost,
           performanceFilters,
-          slowThresholdMs: slowThresholdMs == null ? undefined : Number(slowThresholdMs),
+          slowThresholdMs:
+            slowThresholdMs == null ? undefined : Number(slowThresholdMs),
         };
-        if (dashboardSource === 'elk') {
+        if (dashboardSource === "elk") {
           const selectedElkClient = elkClients[elkEnvironment];
-          if (!selectedElkClient) return jsonResponse(503, { error: 'ELK reader is not configured', environment: elkEnvironment });
-          try {
-            return jsonResponse(200, await queryElkDashboard(dashboardOptions, selectedElkClient, {
-              appName: options.elkAppName ?? '学什么', now,
-              sourceArchiveDir: config.sourceArchiveDir,
+          if (!selectedElkClient)
+            return jsonResponse(503, {
+              error: "ELK reader is not configured",
               environment: elkEnvironment,
-            }));
+            });
+          try {
+            return jsonResponse(
+              200,
+              await queryElkDashboard(dashboardOptions, selectedElkClient, {
+                appName: options.elkAppName ?? "学什么",
+                now,
+                sourceMapStore,
+                environment: elkEnvironment,
+              }),
+            );
           } catch (error) {
-            if (['INVALID_PERFORMANCE_FILTER', 'INVALID_PAGE_FILTER', 'INVALID_TIME_FIELD', 'INVALID_RANGE', 'INVALID_DATE', 'INVALID_SLOW_THRESHOLD'].includes(error?.code)) throw error;
+            if (
+              [
+                "INVALID_PERFORMANCE_FILTER",
+                "INVALID_PAGE_FILTER",
+                "INVALID_TIME_FIELD",
+                "INVALID_RANGE",
+                "INVALID_DATE",
+                "INVALID_SLOW_THRESHOLD",
+              ].includes(error?.code)
+            )
+              throw error;
             selectedElkClient.logError?.(error);
-            return jsonResponse(502, { error: error?.message === 'ELK_TOO_MANY_RECORDS'
-              ? 'Too many ELK records; narrow the time range' : 'ELK dashboard query unavailable' });
+            return jsonResponse(502, {
+              error:
+                error?.message === "ELK_TOO_MANY_RECORDS"
+                  ? "Too many ELK records; narrow the time range"
+                  : "ELK dashboard query unavailable",
+            });
           }
         }
-        return jsonResponse(200, await queryDashboard(dashboardOptions, mirror, log));
+        return jsonResponse(
+          200,
+          await queryDashboard(dashboardOptions, mirror, log),
+        );
       } catch (error) {
-        if (error?.code === 'INVALID_PERFORMANCE_FILTER') return jsonResponse(400, { error: error.message });
-        if (error?.code === 'INVALID_PAGE_FILTER') return jsonResponse(400, { error: error.message });
-        if (error?.code === 'INVALID_TIME_FIELD') return jsonResponse(400, { error: error.message });
-        if (error?.code === 'INVALID_RANGE') return jsonResponse(400, { error: error.message });
-        if (error?.code === 'INVALID_DATE') return jsonResponse(400, { error: 'date must be YYYY-MM-DD' });
-        if (error?.code === 'INVALID_SLOW_THRESHOLD') return jsonResponse(400, { error: error.message });
+        if (error?.code === "INVALID_PERFORMANCE_FILTER")
+          return jsonResponse(400, { error: error.message });
+        if (error?.code === "INVALID_PAGE_FILTER")
+          return jsonResponse(400, { error: error.message });
+        if (error?.code === "INVALID_TIME_FIELD")
+          return jsonResponse(400, { error: error.message });
+        if (error?.code === "INVALID_RANGE")
+          return jsonResponse(400, { error: error.message });
+        if (error?.code === "INVALID_DATE")
+          return jsonResponse(400, { error: "date must be YYYY-MM-DD" });
+        if (error?.code === "INVALID_SLOW_THRESHOLD")
+          return jsonResponse(400, { error: error.message });
         throw error;
       }
     }
-    if (request.method === 'GET' && (pathname === '/' || pathname === '/__sink/dashboard')) {
+    if (
+      request.method === "GET" &&
+      (pathname === "/" || pathname === "/__sink/dashboard")
+    ) {
       return bodyResponse(200, HTML, renderDashboard(config.basePath));
     }
 
-    if (request.method === 'GET' && pathname === '/apm_web_img.gif') {
-      store.write('h5-image-ping', { ...context, query: Object.fromEntries(query) }, null);
-      return bodyResponse(200, 'image/gif', ONE_PIXEL_GIF);
+    if (request.method === "GET" && pathname === "/apm_web_img.gif") {
+      store.write(
+        "h5-image-ping",
+        { ...context, query: Object.fromEntries(query) },
+        null,
+      );
+      return bodyResponse(200, "image/gif", ONE_PIXEL_GIF);
     }
 
-    if (H5_REMOTE_CONFIG_PATHS.has(pathname) || APM_NATIVE_CONFIG_PATHS.has(pathname)) {
-      store.write(APM_NATIVE_CONFIG_PATHS.has(pathname) ? 'ios-apm-config' : 'h5-remote-config', {
-        ...context,
-        query: Object.fromEntries(query),
-      });
+    if (
+      H5_REMOTE_CONFIG_PATHS.has(pathname) ||
+      APM_NATIVE_CONFIG_PATHS.has(pathname)
+    ) {
+      store.write(
+        APM_NATIVE_CONFIG_PATHS.has(pathname)
+          ? "ios-apm-config"
+          : "h5-remote-config",
+        {
+          ...context,
+          query: Object.fromEntries(query),
+        },
+      );
       // Empty cloud-control payload: clients fall back to local defaults.
       return jsonResponse(200, {});
     }
 
     if (CRASH_PATHS.has(pathname)) {
-      store.write('ios-apm-crash', { ...context, query: Object.fromEntries(query), bodyBytes: body.length }, body);
-      return jsonResponse(200, { code: 0, msg: 'ok' });
+      store.write(
+        "ios-apm-crash",
+        {
+          ...context,
+          query: Object.fromEntries(query),
+          bodyBytes: body.length,
+        },
+        body,
+      );
+      return jsonResponse(200, { code: 0, msg: "ok" });
     }
 
     if (IOS_CONFIG_PATHS.has(pathname)) {
-      store.write('ios-config', { ...context, query: Object.fromEntries(query), bodyBytes: body.length }, body);
+      store.write(
+        "ios-config",
+        {
+          ...context,
+          query: Object.fromEntries(query),
+          bodyBytes: body.length,
+        },
+        body,
+      );
       return bodyResponse(200, THRIFT, buildSuccessResponse());
     }
 
     if (IOS_ANALYTICS_PATHS.has(pathname)) {
-      const decoded = decodeEnvelopeRequest(body, { maxEntityBytes: config.maxBodyBytes });
+      const decoded = decodeEnvelopeRequest(body, {
+        maxEntityBytes: config.maxBodyBytes,
+      });
       const record = {
         ...context,
         bytes: body.length,
@@ -435,60 +813,87 @@ export function createRequestHandler(options = {}) {
         errors: decoded.errors,
         integrity: decoded.integrity,
         entity: decoded.entity
-          ? { ok: decoded.entity.ok, error: decoded.entity.error ?? null, json: decoded.entity.json }
+          ? {
+              ok: decoded.entity.ok,
+              error: decoded.entity.error ?? null,
+              json: decoded.entity.json,
+            }
           : null,
       };
       if (decoded.entity?.ok && decoded.entity.json == null) {
         record.entityText = decoded.entity.text;
       }
-      store.write('ios-analytics', record, body);
-      if (!decoded.ok) log(`[umeng-sink] /unify_logs decode issues: ${decoded.errors.join('; ')}`);
+      store.write("ios-analytics", record, body);
+      if (!decoded.ok)
+        log(
+          `[umeng-sink] /unify_logs decode issues: ${decoded.errors.join("; ")}`,
+        );
       // The native client only proceeds when resp_code == 1.
       return bodyResponse(200, THRIFT, buildSuccessResponse());
     }
 
     if (H5_LOG_PATHS.has(pathname) || H5_BEACON_PATHS.has(pathname)) {
       const parsed = parseH5Body(body);
-      const dcArgs = parseDcArgs(query.get('dc-args'));
+      const dcArgs = parseDcArgs(query.get("dc-args"));
       store.write(
-        H5_LOG_PATHS.has(pathname) ? 'h5-logs' : 'h5-beacon',
+        H5_LOG_PATHS.has(pathname) ? "h5-logs" : "h5-beacon",
         {
           ...context,
           query: Object.fromEntries(query),
           bytes: body.length,
           dcArgs,
           parsed: parsed.ok
-            ? { header: parsed.header, logs: parsed.logs, logCount: parsed.logCount }
+            ? {
+                header: parsed.header,
+                logs: parsed.logs,
+                logCount: parsed.logCount,
+              }
             : { error: parsed.error },
         },
-        parsed.ok ? null : body
+        parsed.ok ? null : body,
       );
       // Anything other than 200 triggers a client-side ban (405 -> 10 min, 406 -> 1 year).
-      return bodyResponse(200, TEXT_PLAIN, '');
+      return bodyResponse(200, TEXT_PLAIN, "");
     }
 
-    if (pathname === '/apm_img_upload') {
-      store.write('h5-screenshot', { ...context, query: Object.fromEntries(query), bytes: body.length }, body);
-      return bodyResponse(200, TEXT_PLAIN, '');
+    if (pathname === "/apm_img_upload") {
+      store.write(
+        "h5-screenshot",
+        { ...context, query: Object.fromEntries(query), bytes: body.length },
+        body,
+      );
+      return bodyResponse(200, TEXT_PLAIN, "");
     }
 
     if (APM_NATIVE_PATHS.has(pathname)) {
-      store.write('ios-apm-logs', { ...context, query: Object.fromEntries(query), bytes: body.length }, body);
-      return jsonResponse(200, { code: 0, msg: 'ok' });
+      store.write(
+        "ios-apm-logs",
+        { ...context, query: Object.fromEntries(query), bytes: body.length },
+        body,
+      );
+      return jsonResponse(200, { code: 0, msg: "ok" });
     }
 
-    store.write('unknown', { ...context, path: pathname });
-    return bodyResponse(404, TEXT_PLAIN, 'not found');
+    store.write("unknown", { ...context, path: pathname });
+    return bodyResponse(404, TEXT_PLAIN, "not found");
   }
 
   async function handle(request = {}) {
     const pathname = normalizePath(request.url, config.basePath);
-    if (pathname === '/__sink/api/h5-source') {
-      return route(request);
-    }
-    if (request.method === 'OPTIONS') return corsPreflightResponse();
+    if (request.method === "OPTIONS") return corsPreflightResponse();
     return withCorsHeaders(await route(request));
   }
 
-  return { handle, store, mirror, elkClient, elkClients, config, log, now };
+  return {
+    handle,
+    store,
+    mirror,
+    elkClient,
+    elkClients,
+    h5SourceCatalog,
+    errorAnalysis,
+    config,
+    log,
+    now,
+  };
 }
