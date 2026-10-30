@@ -28,6 +28,10 @@ const error = {
   eventType: "page_error",
   eventId: "error-1",
   timestamp: String(at + 300),
+  AN: "学什么",
+  AV: "1.1.7",
+  UNAME: "测试用户",
+  PHONE: "13800000000",
   appVersion: "5.29.2",
   h5Release: "h5-2026.10",
   DTL: JSON.stringify({
@@ -207,6 +211,9 @@ test("ELK dashboard aggregates independent EVs, joins native snapshots and never
     assert.equal(data.errors[0].column, 7);
     assert.equal(data.errors[0].codeSnippet, null);
     assert.equal(data.errors[0].version, "5.29.2");
+    assert.equal(data.errors[0].appVersion, "5.29.2");
+    assert.equal(data.errors[0].userName, "测试用户");
+    assert.equal(data.errors[0].phone, "13800000000");
     assert.equal(data.overview.sessions, 1);
     assert.equal(data.overview.uniqueVisitors, 1);
     assert.equal(data.overview.apiRequests, 1);

@@ -290,6 +290,8 @@ function errorSummary(typeLog, commonLog, record, visitorId, clientVersion) {
     clientAt: clientTimestamp(record, commonLog),
     page: pageKey(commonLog.page),
     app: commonLog.AN ?? null,
+    phone: commonLog.PHONE ?? null,
+    userName: commonLog.UNAME ?? null,
     eventId: record.eventId ?? null,
     name,
     message,
@@ -299,6 +301,8 @@ function errorSummary(typeLog, commonLog, record, visitorId, clientVersion) {
     column: typeLog.col ?? null,
     codeSnippet: typeLog.codeSnippet ?? null,
     visitorId,
+    appVersion: clientVersion ?? commonLog.appVersion ?? null,
+    // Keep the legacy field for existing dashboard consumers and archived data.
     version: clientVersion ?? commonLog.appVersion ?? null,
     channel: record.channel,
     stage:

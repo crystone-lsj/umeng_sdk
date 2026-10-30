@@ -53,11 +53,11 @@ body{--bg:#f6f7fa;--ink:#2d3144;--line:#e8ebf0;--brand:#3b82fe}
 @media(max-width:520px){#error-kpis{grid-template-columns:minmax(0,min(216px,100%))}.error-kpi:not(:last-child){border-right:1px solid #e7ebf1;border-bottom:0}}
 @media(prefers-reduced-motion:reduce){.error-kpi-tooltip{transition:none}}
 .error-pager{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:6px;padding:14px 15px;color:var(--muted);font-size:12px}.error-pager[hidden]{display:none}.error-pager .button{min-width:30px;padding:0 7px}.error-pager .button[aria-current="page"]{background:var(--brand);border-color:var(--brand);color:#fff}.error-pager .button:disabled{opacity:.4;cursor:default}.error-pager .page-size{margin-left:8px}
-.error-list-head,.error-row{display:grid;grid-template-columns:36px minmax(0,1fr) 112px 170px 16px;gap:12px;align-items:center}.error-list-head{padding:10px 15px;background:#f8fafc;border-bottom:1px solid var(--line);color:var(--muted);font-size:12px}.error-list-head[hidden]{display:none}.error-item{padding:0}.error-row{box-sizing:border-box;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:12px 15px;cursor:pointer}.error-row:hover{background:#f8faff}.error-row:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}.error-item[data-open] .error-row{background:#f8faff}.error-index,.error-version,.error-time{color:#667085;font-size:12px;font-variant-numeric:tabular-nums}.error-summary{min-width:0}.error-summary .error-title{font-size:13px}.error-message{margin-top:4px;color:#667085;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error-version{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error-time{white-space:nowrap}.error-expand-icon{color:#8492a6;text-align:center;transition:transform .28s ease}.error-item[data-open] .error-expand-icon{transform:rotate(180deg)}.error-detail-shell{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s ease}.error-item[data-open] .error-detail-shell{grid-template-rows:1fr}.error-detail-clip{min-height:0;overflow:hidden}.error-detail{padding:0 15px 16px 63px;border-top:1px solid var(--line);overflow-wrap:anywhere;opacity:0;transform:translateY(-6px);transition:opacity .22s ease,transform .28s ease}.error-item[data-open] .error-detail{opacity:1;transform:translateY(0)}.error-detail-line{display:flex;gap:12px;padding-top:10px;font-size:12px;line-height:1.5}.error-detail-line>span:first-child{flex:0 0 56px;color:var(--muted)}.error-detail-line>span:last-child{min-width:0}.error-detail .stack{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.error-detail-block{margin-top:12px}.error-detail-block .report-label{margin:0}
+.error-list-head,.error-row{display:grid;grid-template-columns:36px minmax(0,1fr) 120px 100px 100px 170px 16px;gap:12px;align-items:center}.error-list-head{padding:10px 15px;background:#f8fafc;border-bottom:1px solid var(--line);color:var(--muted);font-size:12px}.error-list-head[hidden]{display:none}.error-item{padding:0}.error-row{box-sizing:border-box;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:12px 15px;cursor:pointer}.error-row:hover{background:#f8faff}.error-row:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}.error-item[data-open] .error-row{background:#f8faff}.error-index,.error-phone,.error-user-name,.error-version,.error-time{color:#667085;font-size:12px;font-variant-numeric:tabular-nums}.error-summary{min-width:0}.error-summary .error-title{font-size:13px}.error-message{margin-top:4px;color:#667085;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error-phone,.error-user-name,.error-version{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error-time{white-space:nowrap}.error-expand-icon{color:#8492a6;text-align:center;transition:transform .28s ease}.error-item[data-open] .error-expand-icon{transform:rotate(180deg)}.error-detail-shell{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s ease}.error-item[data-open] .error-detail-shell{grid-template-rows:1fr}.error-detail-clip{min-height:0;overflow:hidden}.error-detail{padding:0 15px 16px 63px;border-top:1px solid var(--line);overflow-wrap:anywhere;opacity:0;transform:translateY(-6px);transition:opacity .22s ease,transform .28s ease}.error-item[data-open] .error-detail{opacity:1;transform:translateY(0)}.error-detail-line{display:flex;gap:12px;padding-top:10px;font-size:12px;line-height:1.5}.error-detail-line>span:first-child{flex:0 0 56px;color:var(--muted)}.error-detail-line>span:last-child{min-width:0}.error-detail .stack{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.error-detail-block{margin-top:12px}.error-detail-block .report-label{margin:0}
 @media(prefers-reduced-motion:reduce){.error-detail-shell,.error-detail,.error-expand-icon{transition:none}}
 .error-summary .error-title,.error-message{display:block}
 .error-analysis-row{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid #edf0f4;font-size:12px;line-height:1.5}.error-analysis-row>span:first-child{flex:0 0 56px;color:var(--muted)}.error-analysis-button{border:1px solid #cbd8ee;border-radius:4px;background:#fff;color:var(--brand);padding:4px 9px;font:inherit;cursor:pointer}.error-analysis-button:hover:not(:disabled),.error-analysis-button:focus-visible{border-color:var(--brand);background:var(--brand-soft)}.error-analysis-button:disabled{color:#8492a6;cursor:wait}.error-analysis-result{min-width:0}.error-analysis-result .mono{display:block}.error-analysis-result pre{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.error-analysis-result .hint{margin-top:0}
-@media(max-width:700px){.error-list-head{display:none}.error-row{grid-template-columns:32px minmax(0,1fr) 16px;gap:4px 9px}.error-summary{grid-column:2}.error-expand-icon{grid-column:3;grid-row:1}.error-version,.error-time{grid-column:2}.error-version{grid-row:2}.error-time{grid-row:3}.error-version:before{content:'版本  '}.error-time:before{content:'时间  '}.error-detail{padding-left:56px}}
+@media(max-width:700px){.error-list-head{display:none}.error-row{grid-template-columns:32px minmax(0,1fr) 16px;gap:4px 9px}.error-summary{grid-column:2}.error-expand-icon{grid-column:3;grid-row:1}.error-phone,.error-user-name,.error-version,.error-time{grid-column:2}.error-phone{grid-row:2}.error-user-name{grid-row:3}.error-version{grid-row:4}.error-time{grid-row:5}.error-phone:before{content:'手机号  '}.error-user-name:before{content:'用户姓名  '}.error-version:before{content:'App版本  '}.error-time:before{content:'时间  '}.error-detail{padding-left:56px}}
 #errors .dimension-panels{grid-template-columns:repeat(3,minmax(220px,1fr));gap:16px}#errors .dimension-panel{min-height:215px;padding:15px;border:1px solid #e9edf3}#errors .dimension-panel h4{font-size:14px;font-weight:500}#errors .dimension-panel .report-label{margin:6px 0 12px}
 @media(max-width:860px){#errors .dimension-panels{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
 </style>
@@ -175,7 +175,7 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
       <div class="panel"><header><h3>整体趋势</h3><span id="error-trend-note" class="hint"></span></header><div id="error-trend" class="perception-chart error-trend"></div></div>
       <div class="perception-block error-distribution-block"><div class="perception-block-title"><h3>错误分布</h3><span class="hint">TOP5 · 按错误次数排序 · 占全部错误比例</span></div><div id="error-dimensions" class="dimension-panels"></div><div class="note">错误维度按当前筛选范围内的 page_error 记录聚合；缺失字段统一归入“未上报”。</div></div>
       <div class="panel"><header><h3>受影响页面</h3></header><div class="scroll"><table><thead><tr><th>页面路径</th><th class="numeric">错误次数</th><th class="numeric">占比</th><th>最近发生</th></tr></thead><tbody id="error-page-rows"></tbody></table></div><div id="error-page-empty" class="empty" hidden>暂无页面错误</div></div>
-      <div class="panel"><header><h3>最近错误</h3><span id="error-count" class="hint"></span></header><div id="error-list-head" class="error-list-head" hidden><span>序号</span><span>错误信息</span><span>版本</span><span>时间</span><span></span></div><div id="error-list"></div><div id="error-empty" class="empty" hidden>暂无错误数据</div><nav id="error-pager" class="error-pager" aria-label="最近错误分页" hidden></nav></div>
+      <div class="panel"><header><h3>最近错误</h3><span id="error-count" class="hint"></span></header><div id="error-list-head" class="error-list-head" hidden><span>序号</span><span>错误信息</span><span>手机号</span><span>用户姓名</span><span>App版本</span><span>时间</span><span></span></div><div id="error-list"></div><div id="error-empty" class="empty" hidden>暂无错误数据</div><nav id="error-pager" class="error-pager" aria-label="最近错误分页" hidden></nav></div>
     </section>
 
   </main>
@@ -183,7 +183,36 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
 <script>
 window.__SINK_BASE_PATH__ = __BASE_PATH__;
 var state = { range: '7days', elkEnvironment: 'test', userMode: 'p90', userTableMode: 'average', userPage: 0, errorPage: 0, pageFilter: '', userMetric: 'ttfb', errorMetric: 'errors', slowThreshold: 5000, clientTime: false, performanceFilters: {}, previousMetrics: null };
-var errorAnalysisJobs = Object.create(null);
+var ERROR_ANALYSIS_STORAGE_KEY = 'umeng-sink:error-analysis:v1';
+function readPersistedErrorAnalysis() {
+  var jobs = Object.create(null);
+  try {
+    var raw = window.localStorage && window.localStorage.getItem(ERROR_ANALYSIS_STORAGE_KEY);
+    var saved = raw ? JSON.parse(raw) : null;
+    if (!saved || typeof saved !== 'object' || !saved.jobs || typeof saved.jobs !== 'object') return jobs;
+    Object.keys(saved.jobs).forEach(function (key) {
+      var job = saved.jobs[key];
+      if (job && job.status === 'completed' && job.result && typeof job.result === 'object') jobs[key] = job;
+    });
+  } catch (_) {}
+  return jobs;
+}
+function persistCompletedErrorAnalysis(key, job) {
+  if (!key || !job || job.status !== 'completed' || !job.result) return;
+  try {
+    var raw = window.localStorage && window.localStorage.getItem(ERROR_ANALYSIS_STORAGE_KEY);
+    var saved = raw ? JSON.parse(raw) : null;
+    var jobs = saved && saved.jobs && typeof saved.jobs === 'object' ? saved.jobs : {};
+    jobs[key] = { status: 'completed', result: job.result, savedAt: new Date().toISOString() };
+    var keys = Object.keys(jobs);
+    if (keys.length > 500) {
+      keys.sort(function (left, right) { return String(jobs[left].savedAt || '').localeCompare(String(jobs[right].savedAt || '')); });
+      keys.slice(0, keys.length - 500).forEach(function (oldKey) { delete jobs[oldKey]; });
+    }
+    if (window.localStorage) window.localStorage.setItem(ERROR_ANALYSIS_STORAGE_KEY, JSON.stringify({ version: 1, jobs: jobs }));
+  } catch (_) {}
+}
+var errorAnalysisJobs = readPersistedErrorAnalysis();
 var userMetricLabels = { ttfb: '首字节响应时间(TTFB)', tcp: 'TCP连接', tti: '页面可交互时间(TTI)', pageLoad: '页面完全加载', oneSecondFastRate: '1秒快开比', twoSecondFastRate: '2秒快开比', fiveSecondSlowRate: '5秒慢开比' };
 var userMetricDescriptions = { ttfb: '从页面开始导航到收到服务器返回的第一个字节所经过的时间。', tcp: '建立 TCP 连接所经过的时间，数值越低表示网络连接建立越快。', tti: '页面达到可交互状态所经过的时间，表示用户可以开始稳定操作页面。', pageLoad: '从页面开始导航到页面加载完成事件触发所经过的时间。', oneSecondFastRate: '有效加载样本中，在 1 秒内完成加载的比例。', twoSecondFastRate: '有效加载样本中，在 2 秒内完成加载的比例。', fiveSecondSlowRate: '有效加载样本中，加载耗时超过 5 秒的比例。' };
 var errorTrendMetricLabels = { errors: '错误总数', affectedVisitors: '受影响访客数', issues: '独立问题', pageCount: '涉及页面' };
@@ -354,13 +383,24 @@ function autocompleteValues(field) {
   if (field === 'PAGE') return currentData && currentData.userPerception && currentData.userPerception.pageOptions || [];
   return currentData && currentData.userPerception && currentData.userPerception.filterOptions && currentData.userPerception.filterOptions[field] || [];
 }
-function closeAutocompleteOptions() {
-  document.querySelectorAll('.autocomplete-options').forEach(function (options) { options.hidden = true; options.replaceChildren(); });
+function closeAutocompleteOptions(except) {
+  document.querySelectorAll('.autocomplete-options').forEach(function (options) {
+    if (options === except) return;
+    options.hidden = true;
+    options.replaceChildren();
+  });
+}
+function closeFilterDetails(except) {
+  document.querySelectorAll('#user-ranges details[open], #user-dimension-filters details[open]').forEach(function (details) {
+    if (details !== except) details.open = false;
+  });
 }
 function renderAutocompleteOptions(input) {
   if (!input || !input.matches('[data-autocomplete-field]')) return;
   var field = input.dataset.autocompleteField;
   var options = input.closest('.autocomplete-field').querySelector('.autocomplete-options');
+  closeFilterDetails();
+  closeAutocompleteOptions(options);
   var query = input.value.trim().toLocaleLowerCase();
   var values = autocompleteValues(field).filter(function (value) { return String(value).toLocaleLowerCase().includes(query); }).slice(0, autocompleteLimit);
   options.replaceChildren();
@@ -544,6 +584,7 @@ function startErrorAnalysis(item, key) {
     var payload = await response.json().catch(function () { return {}; });
     if (!response.ok) throw new Error(payload.error || ('HTTP ' + response.status));
     errorAnalysisJobs[key] = payload;
+    persistCompletedErrorAnalysis(key, payload);
     if (currentData) renderRecentErrors(currentData);
     if (payload.status === 'queued' || payload.status === 'running') pollErrorAnalysis(payload.jobId, key);
   }).catch(function (error) {
@@ -557,6 +598,7 @@ function pollErrorAnalysis(jobId, key) {
       var payload = await response.json().catch(function () { return {}; });
       if (!response.ok) throw new Error(payload.error || ('HTTP ' + response.status));
       errorAnalysisJobs[key] = payload;
+      persistCompletedErrorAnalysis(key, payload);
       if (currentData) renderRecentErrors(currentData);
       if (payload.status === 'queued' || payload.status === 'running') pollErrorAnalysis(jobId, key);
     }).catch(function (error) {
@@ -598,7 +640,10 @@ function renderRecentErrors(data) {
     } else analysis = '<div class="error-analysis-result"><div class="hint">不确定：' + esc(job.result?.reason || '未能从候选源码中确定位置') + '</div></div>';
     var analysisBlock = '<div class="error-analysis-row"><span>AI 分析</span><span>' + analysis + '</span></div>';
     var isOpen = openKeys.has(key), detailId = 'error-detail-' + (start + index);
-    return '<article class="error-item" data-error-key="' + esc(key) + '"' + (isOpen ? ' data-open' : '') + '><button type="button" class="error-row" aria-expanded="' + isOpen + '" aria-controls="' + detailId + '"><span class="error-index">' + (start + index + 1) + '</span><span class="error-summary"><span class="error-title">' + esc(item.name || '未上报类型') + '</span><span class="error-message" title="' + esc(item.message || '未上报消息') + '">' + esc(item.message || '未上报消息') + '</span></span><span class="error-version" title="' + esc(item.version || '未上报') + '">' + esc(item.version || '未上报') + '</span><time class="error-time" datetime="' + esc(item.at || '') + '">' + esc(datetime(item.at)) + '</time><span class="error-expand-icon" aria-hidden="true">⌄</span></button><div id="' + detailId + '" class="error-detail-shell" aria-hidden="' + !isOpen + '"><div class="error-detail-clip"><div class="error-detail"><div class="error-detail-line"><span>页面路径</span><span class="mono">' + esc(item.page || '未上报') + '</span></div><div class="error-detail-line"><span>代码位置</span><span class="mono">' + location + '</span></div>' + sourcePosition + details + analysisBlock + stack + '</div></div></div></article>';
+    var phone = item.phone || '未上报';
+    var userName = item.userName || '未上报';
+    var appVersion = item.appVersion || item.version || '未上报';
+    return '<article class="error-item" data-error-key="' + esc(key) + '"' + (isOpen ? ' data-open' : '') + '><button type="button" class="error-row" aria-expanded="' + isOpen + '" aria-controls="' + detailId + '"><span class="error-index">' + (start + index + 1) + '</span><span class="error-summary"><span class="error-title">' + esc(item.name || '未上报类型') + '</span><span class="error-message" title="' + esc(item.message || '未上报消息') + '">' + esc(item.message || '未上报消息') + '</span></span><span class="error-phone" title="' + esc(phone) + '">' + esc(phone) + '</span><span class="error-user-name" title="' + esc(userName) + '">' + esc(userName) + '</span><span class="error-version" title="' + esc(appVersion) + '">' + esc(appVersion) + '</span><time class="error-time" datetime="' + esc(item.at || '') + '">' + esc(datetime(item.at)) + '</time><span class="error-expand-icon" aria-hidden="true">⌄</span></button><div id="' + detailId + '" class="error-detail-shell" aria-hidden="' + !isOpen + '"><div class="error-detail-clip"><div class="error-detail"><div class="error-detail-line"><span>页面路径</span><span class="mono">' + esc(item.page || '未上报') + '</span></div><div class="error-detail-line"><span>代码位置</span><span class="mono">' + location + '</span></div>' + sourcePosition + details + analysisBlock + stack + '</div></div></div></article>';
   }).join('');
   $('#error-empty').hidden = total > 0;
 }
@@ -824,18 +869,27 @@ document.addEventListener('click', function (event) {
     commitAutocompleteField(input.dataset.autocompleteField, option.dataset.autocompleteValue, input);
     return;
   }
-  if (event.target.closest('.autocomplete-field')) return;
+  var details = event.target.closest('#user-ranges details, #user-dimension-filters details');
+  if (details) {
+    closeAutocompleteOptions();
+    closeFilterDetails(details);
+    return;
+  }
+  if (event.target.closest('.autocomplete-field')) {
+    closeFilterDetails();
+    return;
+  }
+  closeFilterDetails();
   closeAutocompleteOptions();
 });
-$('#user-dimension-filters').addEventListener('toggle', function (event) {
-  if (!event.target.matches('details[open]')) return;
-  $('#user-dimension-filters').querySelectorAll('details').forEach(function (other) { if (other !== event.target) other.open = false; });
-  event.target.querySelector('input[type=search]').focus();
+document.addEventListener('toggle', function (event) {
+  if (!event.target.matches('#user-ranges details[open], #user-dimension-filters details[open]')) return;
+  closeFilterDetails(event.target);
+  closeAutocompleteOptions();
+  if (event.target.matches('#user-dimension-filters details')) {
+    event.target.querySelector('input[type=search]')?.focus();
+  }
 }, true);
-document.addEventListener('click', function (event) {
-  if (event.target.closest('#user-dimension-filters')) return;
-  $('#user-dimension-filters').querySelectorAll('details[open]').forEach(function (details) { details.open = false; });
-});
 $('#user-reset-all').addEventListener('click', function () {
   var viewport = { x: window.scrollX, y: window.scrollY };
   state.range = '7days'; state.performanceFilters = {}; state.pageFilter = ''; state.clientTime = false; state.userPage = 0; state.errorPage = 0;

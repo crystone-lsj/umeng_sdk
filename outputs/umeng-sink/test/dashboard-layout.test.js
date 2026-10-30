@@ -61,6 +61,30 @@ test("identity and page filters choose values from log-backed autocomplete optio
   );
 });
 
+test("top filter popovers are mutually exclusive", () => {
+  const script = dashboardHtml.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(script);
+  assert.match(script, /function closeFilterDetails\(except\)/);
+  assert.match(
+    script,
+    /#user-ranges details\[open\], #user-dimension-filters details\[open\]/,
+  );
+  assert.match(
+    script,
+    /document\.addEventListener\('toggle', function \(event\)/,
+  );
+  assert.match(
+    script,
+    /closeFilterDetails\(\);\s*closeAutocompleteOptions\(\);/,
+  );
+});
+
+test("dashboard client script remains syntactically valid", () => {
+  const script = dashboardHtml.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(script);
+  assert.doesNotThrow(() => new Function(script));
+});
+
 test("dimension and page filters reload silently while preserving the viewport", () => {
   const script = dashboardHtml.match(/<script>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(script);

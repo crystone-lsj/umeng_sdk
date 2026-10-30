@@ -19,7 +19,7 @@ test("recent errors paginate 15 at a time with numbered controls", () => {
   assert.match(dashboardHtml, /@media\(prefers-reduced-motion:reduce\)/);
   assert.match(
     dashboardHtml,
-    /id="error-list-head"[^>]*>.*?序号.*?错误信息.*?版本.*?时间/,
+    /id="error-list-head"[^>]*>.*?序号.*?错误信息.*?手机号.*?用户姓名.*?App版本.*?时间/,
   );
   const render = script.slice(
     script.indexOf("function renderRecentErrors(data)"),
@@ -70,6 +70,9 @@ test("recent errors paginate 15 at a time with numbered controls", () => {
       page: "/home",
       at: "2026-10-22",
       version: index === 0 ? "1.1.7" : null,
+      appVersion: index === 0 ? "1.1.7" : null,
+      phone: index === 0 ? "13800000000" : null,
+      userName: index === 0 ? "测试用户" : null,
       file: "https://example.com/a.js",
       line: 69,
       column: 20,
@@ -97,6 +100,14 @@ test("recent errors paginate 15 at a time with numbered controls", () => {
   assert.match(
     $("#error-list").innerHTML,
     /<span class="error-version" title="1\.1\.7">1\.1\.7<\/span>/,
+  );
+  assert.match(
+    $("#error-list").innerHTML,
+    /<span class="error-phone" title="13800000000">13800000000<\/span>/,
+  );
+  assert.match(
+    $("#error-list").innerHTML,
+    /<span class="error-user-name" title="测试用户">测试用户<\/span>/,
   );
   assert.match(
     $("#error-list").innerHTML,
@@ -220,4 +231,50 @@ test("recent errors paginate 15 at a time with numbered controls", () => {
   context.renderRecentErrors(data);
   assert.equal($("#error-pager").hidden, true);
   assert.equal($("#error-empty").hidden, false);
+});
+
+test("completed AI error analysis is restored from browser storage", () => {
+  const script = dashboardHtml.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(script);
+  assert.match(script, /localStorage\.setItem\(ERROR_ANALYSIS_STORAGE_KEY/);
+  assert.match(
+    script,
+    /var errorAnalysisJobs = readPersistedErrorAnalysis\(\);/,
+  );
+  const start = script.indexOf("var ERROR_ANALYSIS_STORAGE_KEY");
+  const end = script.indexOf("var userMetricLabels", start);
+  const persistence =
+    script.slice(start, end) +
+    "globalThis.__errorAnalysisJobs = errorAnalysisJobs;";
+  const storage = new Map();
+  const context = {
+    window: {
+      localStorage: {
+        getItem(key) {
+          return storage.get(key) ?? null;
+        },
+        setItem(key, value) {
+          storage.set(key, value);
+        },
+      },
+    },
+    Date,
+  };
+  runInNewContext(persistence, context);
+  context.__errorAnalysisJobs.sample = {
+    status: "completed",
+    result: {
+      status: "selected",
+      file: "src/page.vue",
+      line: 8,
+      lines: ["const value = 1;"],
+    },
+  };
+  runInNewContext(
+    "persistCompletedErrorAnalysis('sample', __errorAnalysisJobs.sample);",
+    context,
+  );
+  const restored = JSON.parse(storage.get("umeng-sink:error-analysis:v1"));
+  assert.equal(restored.jobs.sample.result.file, "src/page.vue");
+  assert.equal(restored.jobs.sample.result.line, 8);
 });
