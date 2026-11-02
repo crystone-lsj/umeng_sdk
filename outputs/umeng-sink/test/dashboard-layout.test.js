@@ -1078,6 +1078,12 @@ test("overview hides the entire iOS standalone snapshot panel", () => {
   assert.doesNotMatch(script, /#native-kpis|#native-note/);
 });
 
+test("overview omits the session-count card", () => {
+  const script = scriptFromDashboard(dashboardHtml);
+  assert.doesNotMatch(script, /card\('会话数'/);
+  assert.doesNotMatch(script, /'会话数':/);
+});
+
 test("overview and slow-loading reports share the user-perception typography and surfaces", () => {
   assert.doesNotMatch(dashboardHtml, /class="report-breadcrumb"/);
   assert.match(

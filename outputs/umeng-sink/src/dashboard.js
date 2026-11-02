@@ -342,7 +342,6 @@ var cardDescriptions = {
   '浏览量 PV': '统计当前筛选范围内收到的页面浏览事件；不同数据源的事件口径可能不同。',
   '已观测加载': '统计当前筛选范围内收到的 page_load 事件。',
   '独立访客 UV': '按照当前数据源提供的访客标识去重后的访客数量。',
-  '会话数': '按照当前数据源提供的会话标识去重后的会话数量。',
   'JS 错误': '统计当前筛选范围内收到的 JavaScript 异常记录，可在错误分析中查看详情。',
   '页面错误': '统计当前筛选范围内收到的 page_error 记录。',
   'API 请求': '统计当前筛选范围内收到的 API 请求记录；下方补充显示请求成功率。',
@@ -912,7 +911,7 @@ function render(data) {
   $('#status').textContent = isElk ? '已观测加载 ' + integer(data.overview.pageViews) + ' · 错误 ' + integer(data.overview.errors) + ' · 样本 ' + integer(perfCount) : (data.range ? datetime(data.range.from) + ' ~ ' + datetime(data.range.to) + '（本地时间）' : data.date + '（UTC 归档日）') + ' · PV ' + integer(data.overview.pageViews) + ' · 性能样本 ' + integer(perfCount) + '（内嵌导航回退 ' + integer(data.userPerception.navigationFallbackSamples || 0) + '）' + ' · iOS 快照 ' + integer(data.native.snapshots) + ' · 归档 ' + integer(data.archive.records) + ' 条';
   $('#perf-freshness').textContent = '';
   renderUserPerception(data); renderSlowLoading(data);
-  $('#overview-kpis').innerHTML = isElk ? [card('已观测加载', integer(data.overview.pageViews), ''), card('独立访客 UV', integer(data.overview.uniqueVisitors), ''), card('会话数', integer(data.overview.sessions), ''), card('页面错误', integer(data.overview.errors), ''), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '')].join('') : [card('浏览量 PV', integer(data.overview.pageViews), '页面 PV 事件'), card('独立访客 UV', integer(data.overview.uniqueVisitors), '按 uid 去重'), card('会话数', integer(data.overview.sessions), '按 sid 去重'), card('JS 错误', integer(data.overview.errors), '可展开查看堆栈'), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '按请求记录汇总')].join('');
+  $('#overview-kpis').innerHTML = isElk ? [card('已观测加载', integer(data.overview.pageViews), ''), card('独立访客 UV', integer(data.overview.uniqueVisitors), ''), card('页面错误', integer(data.overview.errors), ''), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '')].join('') : [card('浏览量 PV', integer(data.overview.pageViews), '页面 PV 事件'), card('独立访客 UV', integer(data.overview.uniqueVisitors), '按 uid 去重'), card('JS 错误', integer(data.overview.errors), '可展开查看堆栈'), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '按请求记录汇总')].join('');
   renderTrend(data.trend, data);
   renderRows('#api-rows', data.apis, function (api) { var rate = '<span class="' + (api.successRate != null && api.successRate < 95 ? 'bad-rate' : 'quality') + '">' + pct(api.successRate) + '</span>'; return ['<span class="mono">' + esc(api.api) + '</span>', integer(api.requests), integer(api.errors), rate, ms(api.averageRtMs), ms(api.p50RtMs), ms(api.p95RtMs)]; }, '#api-empty', [false, true, true, true, true, true, true]);
   renderErrors(data, isElk);
