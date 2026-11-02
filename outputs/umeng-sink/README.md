@@ -23,6 +23,30 @@ UMENG_SINK_PORT=8787 UMENG_SINK_DATA_DIR=./data npm start
 `UMENG_SINK_H5_APP_MAP` 只用于补充日志应用名到项目目录的别名，例如
 `{"学什么":"bx-app-h5"}`。新增子项目后需重启看板服务，源码目录本身不会暴露给浏览器。
 
+服务器部署时可显式切换到 Git 源码链路；本地开发若不设置
+`UMENG_SINK_H5_SOURCE_MODE`，仍完全走上面的本地目录逻辑：
+
+```bash
+UMENG_SINK_H5_SOURCE_MODE=git \
+UMENG_SINK_GIT_REPO_URL='https://gitlab.example/business-fe/gs-vue.git' \
+UMENG_SINK_GIT_BRANCH='PageAnalysis' \
+UMENG_SINK_GIT_WORKTREE='/data/umeng-sink/h5-source-repository' \
+UMENG_SINK_GIT_APPS_DIR='apps' \
+UMENG_SINK_GIT_USERNAME='<read-only-user>' \
+UMENG_SINK_GIT_PASSWORD='<read-only-password-or-token>' \
+node src/cli.js
+```
+
+Git 模式会在 AI 分析首次读取源码时建立 shallow clone，之后每 60 秒内复用同一份
+checkout，超时后按固定分支 fetch/reset。如果一次 fetch 失败（例如 GitLab 短暂不可达或
+网络抖动），服务不会让已有 checkout 变成不可用；AI 分析会继续使用最近一次成功同步的
+源码，并在默认 5 分钟后重试刷新。状态接口会返回 `refreshFailed: true` 提示当前使用的是
+可用但可能略旧的 checkout。服务端只会接管 remote 与配置一致的 checkout；
+Git 用户名和密码只保存在服务进程环境中，通过项目内置 credential helper 提供给 Git，
+不会写入 URL、命令行、日志或看板响应。`GET /__sink/api/h5-source/status` 可查看当前
+模式、分支、仓库地址、就绪状态和刷新降级状态。checkout 目录属于看板服务，不要在其中
+手工保存数据。
+
 | 参数          | 环境变量               | 默认值                                  |
 | ------------- | ---------------------- | --------------------------------------- |
 | `--port`      | `UMENG_SINK_PORT`      | `8787`                                  |

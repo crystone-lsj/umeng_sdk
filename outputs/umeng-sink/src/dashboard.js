@@ -35,19 +35,41 @@ body{--bg:#f6f7fa;--ink:#2d3144;--line:#e8ebf0;--brand:#3b82fe}
 .perception-title{height:48px;display:flex;align-items:center;gap:16px}.perception-title h2{font-size:18px;font-weight:500;margin:0}.perception-title h2 span{font-size:14px;color:#9aa3b1}.local-badge{font-size:11px;color:#7991b2}
 .perception-tip{background:#f5f9ff;padding:12px 16px;color:#56657b;font-size:12px;line-height:1.6;margin-bottom:16px}.perception-tip #perf-freshness{display:block;color:#8791a2}
 .perception-filter{background:#fff;padding:10px 20px 16px;margin-bottom:16px}.global-filter{margin-top:16px}.filter-row{min-height:46px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:13px;border-bottom:1px solid #f3f5f8}.filter-row:last-child{border:0}.filter-label{width:72px;flex:none;color:#2d3144}.filter-row label,.filter-note{font-size:12px;color:#8b95a3}.filter-row input,.filter-row select{height:30px;padding:0 8px;border:1px solid #d9dfe9;background:#fff;color:#374151;border-radius:2px;font-size:12px}.filter-row input[type=search]{width:230px}.filter-row .button{height:30px}.dimension-filters{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.dimension-filters select{max-width:170px;min-width:115px}.dimension-filter{position:relative}.dimension-filter>summary{list-style:none;border:1px solid #d9dfe9;background:#fff;color:#374151;border-radius:3px;font-size:12px;min-width:115px;max-width:180px;padding:7px 22px 7px 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}.dimension-filter>summary::-webkit-details-marker{display:none}.dimension-filter>summary:after{content:"⌄";position:absolute;right:8px}.dimension-filter[open]>summary{border-color:var(--brand);color:var(--brand)}.dimension-menu{position:absolute;top:calc(100% + 3px);left:0;z-index:12;min-width:220px;max-width:300px;background:#fff;border:1px solid #d9e0eb;box-shadow:0 9px 25px #17255425;border-radius:5px;padding:7px}.dimension-menu input[type=search]{box-sizing:border-box;width:100%;height:30px}.dimension-menu .app-name-form{display:flex;gap:5px;margin-top:7px}.dimension-menu .app-name-form input{min-width:0;flex:1;width:0}.dimension-options{max-height:230px;overflow:auto;margin-top:5px}.dimension-option{display:flex;align-items:center;gap:5px;min-height:30px;padding:3px 6px;cursor:pointer;overflow-wrap:anywhere}.dimension-option:hover{background:#f0f5ff}.dimension-option[hidden]{display:none}.dimension-option input{flex:none;height:auto}.dimension-empty{padding:9px;color:var(--muted);font-size:12px}
-.autocomplete-field{position:relative;display:inline-flex;align-items:center;min-width:0}.filter-row>.autocomplete-field{flex:none}.filter-row>.autocomplete-field>input{width:230px}.identity-filter{display:inline-flex;align-items:center;gap:5px;position:relative;white-space:nowrap}.identity-filter .autocomplete-field>input{width:150px}.autocomplete-options{position:absolute;top:calc(100% + 3px);left:0;z-index:20;box-sizing:border-box;min-width:230px;max-width:360px;max-height:240px;overflow:auto;padding:4px;border:1px solid #d9e0eb;border-radius:4px;background:#fff;box-shadow:0 9px 25px #17255425}.autocomplete-options[hidden]{display:none}.autocomplete-option{display:block;width:100%;padding:8px 9px;border:0;background:#fff;color:#374151;text-align:left;font-size:12px;line-height:1.3;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.autocomplete-option:hover,.autocomplete-option[aria-selected=true]{background:#f0f5ff;color:var(--brand)}.autocomplete-empty{padding:8px 9px;color:var(--muted);font-size:12px}
+.autocomplete-field{position:relative;display:inline-flex;align-items:center;min-width:0}.filter-row>.autocomplete-field{flex:none}.filter-row>.autocomplete-field>input{width:230px}.identity-filter{display:inline-flex;align-items:center;gap:5px;position:relative;white-space:nowrap}.identity-filter .autocomplete-field>input{width:150px}.autocomplete-options{position:absolute;top:calc(100% + 3px);left:0;z-index:20;box-sizing:border-box;min-width:230px;max-width:360px;max-height:240px;overflow:auto;padding:4px;border:1px solid #d9e0eb;border-radius:4px;background:#fff;box-shadow:0 9px 25px #17255425}.autocomplete-options[hidden]{display:none}.autocomplete-field input[type=search]::-webkit-search-cancel-button,.autocomplete-field input[type=search]::-webkit-search-decoration{display:none;-webkit-appearance:none;appearance:none}.autocomplete-field input[type=search]::-ms-clear{display:none}.autocomplete-option{display:block;width:100%;padding:8px 9px;border:0;background:#fff;color:#374151;text-align:left;font-size:12px;line-height:1.3;cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.autocomplete-option:hover,.autocomplete-option[aria-selected=true]{background:#f0f5ff;color:var(--brand)}.autocomplete-empty{padding:8px 9px;color:var(--muted);font-size:12px}
 .filter-row .client-time-option{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;flex:none;cursor:pointer}.filter-row .client-time-option input[type=checkbox]{width:14px;height:14px;margin:0;padding:0;flex:none;accent-color:var(--brand)}
-.perception-summary{background:#fff;margin:0 0 16px}.perception-summary>.perception-mode{padding:12px 20px 0}.perception-mode{display:flex;gap:0;align-items:center;flex-wrap:wrap;font-size:13px}.perception-mode label{padding:6px 16px;display:flex;gap:6px;align-items:center;cursor:pointer;white-space:nowrap;color:#465264}.perception-mode input{accent-color:var(--brand);margin:0}.perception-surface{padding:20px}
+.perception-summary{background:#fff;margin:0 0 16px}.perception-summary>.perception-mode{padding:12px 20px 0}.perception-mode{display:flex;gap:0;align-items:center;flex-wrap:wrap;font-size:13px}.perception-mode label{padding:6px 16px;display:flex;gap:6px;align-items:center;cursor:pointer;white-space:nowrap;color:#465264}.perception-mode input{accent-color:var(--brand);margin:0}.perception-mode label{position:relative}.mode-help{border-bottom:1px dotted #9ba8b9;cursor:help}.mode-help:focus-visible{outline:2px solid var(--brand);outline-offset:2px}.mode-tooltip{position:absolute;right:0;top:auto;bottom:calc(100% + 8px);left:auto;z-index:20;box-sizing:border-box;width:min(350px,max-content);max-width:min(350px,calc(100vw - 40px));padding:10px 12px;border:1px solid #cfd9e8;border-radius:4px;background:#fff;box-shadow:0 6px 20px #17255426;color:#334155;font-size:12px;line-height:1.55;text-align:left;white-space:normal;overflow-wrap:anywhere;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease}.mode-tooltip-title{display:block;margin-bottom:3px;font-weight:700;color:#172554}.mode-help:hover+.mode-tooltip,.mode-help:focus+.mode-tooltip{opacity:1;visibility:visible}.report-label{position:relative}.perception-surface{padding:20px}
 .metric-availability{margin:10px 0 0;padding:9px 12px;background:#f5f9ff;color:#56657b;font-size:12px;line-height:1.6}.metric-availability.is-empty{background:#fff8ed;color:#865b18}
 .perception-kpis{display:flex;gap:0;overflow-x:auto;padding-bottom:4px;scrollbar-width:thin}.perception-kpis .kpi{position:relative;flex:0 0 228px;min-height:117px;box-sizing:border-box;border:1px solid #e7ebf1;border-right:0;border-radius:0;box-shadow:none;padding:0}.perception-kpis .kpi[data-selected]{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}.perception-kpis .kpi[data-selected] .value{color:var(--brand)}.perception-kpis .kpi:last-child{border-right:1px solid #e7ebf1}.perception-kpi-content{display:block;width:100%;min-height:115px;box-sizing:border-box;border:0;background:transparent;color:var(--ink);padding:16px 42px 16px 20px;text-align:left;font:inherit;cursor:pointer}.perception-kpi-content:focus-visible,.perception-kpi-help:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}.perception-kpis .kpi .label{display:block;font-size:14px;color:#374151}.perception-kpis .kpi .value{font-weight:500;font-size:25px;margin:8px 0 2px}.perception-kpis .kpi .sub{font-size:11px;color:#98a3b2}.perception-kpis .kpi .period{font-size:11px;color:#8793a3;margin-top:4px;white-space:nowrap}.perception-kpis .kpi .period span{margin-left:10px}.perception-kpi-help{position:absolute;right:16px;top:16px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:19px;height:19px;padding:0;border:1px solid #9ba8b9;border-radius:50%;background:#fff;color:#667085;font:600 12px/1 Arial,sans-serif;cursor:help}.perception-kpi-help span{display:block;line-height:1;transform:translateY(-1px)}.perception-kpi-help:hover,.perception-kpi-help:focus-visible{border-color:var(--brand);color:var(--brand)}.perception-kpi-tooltip{position:absolute;left:10px;top:42px;z-index:10;box-sizing:border-box;width:max-content;max-width:min(260px,calc(100vw - 60px));padding:9px 11px;border:1px solid #cfd9e8;border-radius:4px;background:#fff;box-shadow:0 6px 20px #17255426;color:#334155;font-size:12px;line-height:1.5;overflow-wrap:anywhere;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease}.perception-kpi-help:hover+.perception-kpi-tooltip,.perception-kpi-help:focus+.perception-kpi-tooltip{opacity:1;visibility:visible}
 .perception-block{padding:20px 0 24px;border-bottom:1px solid #edf0f4}.perception-block:last-child{border:0}.perception-block h3{margin:0 0 16px;font-size:18px;font-weight:500}.perception-block-title{display:flex;align-items:center;justify-content:space-between;gap:12px}.perception-block-title select{font-size:12px;height:30px;border:1px solid #dce2eb;background:#fff;color:#455366}.perception-chart{min-height:250px}.perception-chart .line-chart{height:260px}.perception-samples{max-width:620px;min-height:150px}.perception-samples .dist-row{grid-template-columns:90px 1fr 100px;margin:16px 0}.metric-dim-row{display:grid;grid-template-columns:minmax(90px,1fr) 60px 70px;align-items:center;gap:6px;margin:11px 0;font-size:12px}.metric-dim-row>span:first-child{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.metric-dim-row strong{text-align:right;font-size:12px;font-weight:500}.metric-dim-row small{grid-column:1/-1;color:#98a3b2;text-align:right;font-size:10px}.perception-block .note{border:0;font-size:11px;padding:0}
 #userPerception .dimension-panels{grid-template-columns:repeat(3,minmax(220px,1fr));gap:16px}#userPerception .dimension-panel{min-height:0;padding:15px;border:1px solid #e9edf3}#userPerception .dimension-panel h4{font-size:14px;font-weight:500}#userPerception .dimension-panel .report-label{margin:6px 0 10px}
 .perception-table-panel{margin-top:16px;border:0;border-radius:2px;box-shadow:none}.perception-table-panel>header{padding:20px;border:0}.perception-table-panel h3{font-size:18px;font-weight:500}.perception-table-tools{padding:0 20px 15px;display:flex;justify-content:space-between;align-items:center;gap:10px}.perception-table-panel th{background:#fafbfc;color:#616d7c}.perception-table-panel th,.perception-table-panel td{padding:12px 10px;border-bottom:1px solid #edf0f4}.perception-pager{display:flex;align-items:center;justify-content:flex-end;gap:12px;padding:16px 20px;color:#7b8797;font-size:12px}.perception-pager .button:disabled{opacity:.4;cursor:default}
 @media(max-width:860px){.app{grid-template-columns:1fr}.side{position:relative;height:auto}#userPerception .dimension-panels{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
- .range-buttons{display:flex;gap:4px;align-items:center;flex-wrap:wrap}.range-buttons button,.range-buttons summary{border:1px solid #d9e0eb;background:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;color:#344054;font:inherit}.range-buttons button[aria-pressed="true"]{color:#2f6bff;border-color:#2f6bff;background:#f0f5ff}.range-buttons details{position:relative}.range-more{position:absolute;z-index:10;top:100%;right:0;background:#fff;border:1px solid #d9e0eb;border-radius:5px;box-shadow:0 8px 24px #17255422;display:grid;min-width:120px;padding:5px}.range-more button{text-align:left;border:0;white-space:nowrap}
+ .range-buttons{display:flex;gap:4px;align-items:center;flex-wrap:wrap}.range-buttons button,.range-buttons summary{border:1px solid #d9e0eb;background:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;color:#344054;font:inherit}.range-buttons button[aria-pressed="true"]{color:#2f6bff;border-color:#2f6bff;background:#f0f5ff}.range-buttons details{position:relative}.range-buttons details>summary:after{content:"⌄";display:inline-block;margin-left:6px;transition:transform .2s ease}.range-buttons details[open]>summary:after{transform:rotate(180deg)}.range-more{position:absolute;z-index:10;top:100%;right:0;background:#fff;border:1px solid #d9e0eb;border-radius:5px;box-shadow:0 8px 24px #17255422;display:grid;min-width:120px;padding:5px}.range-more button{text-align:left;border:0;white-space:nowrap}
+
+/* Match the overview and slow-loading reports to the user-perception surface. */
+#overview .section-header,#slowLoading .section-header{display:block;margin:0;padding:20px 0 16px}
+#overview .section-header h2,#slowLoading .section-header h2{font-size:18px;font-weight:500;line-height:1.4;margin:0}
+#overview .section-header p,#slowLoading .section-header p{margin:6px 0 0;color:#56657b;font-size:12px;line-height:1.6}
+#overview-kpis,#slow-kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:0;margin-bottom:16px}
+#overview-kpis .kpi,#slow-kpis .kpi{position:relative;min-width:0;min-height:117px;box-sizing:border-box;padding:16px 20px;border:1px solid #e7ebf1;border-right:0;border-radius:0;box-shadow:none}
+#overview-kpis .kpi:last-child,#slow-kpis .kpi:last-child{border-right:1px solid #e7ebf1}
+#overview-kpis .kpi .label,#slow-kpis .kpi .label{display:block;color:#374151;font-size:14px;font-weight:400;line-height:1.4}
+#overview-kpis .kpi .value,#slow-kpis .kpi .value{display:block;margin-top:8px;font-size:25px;font-weight:500;line-height:1.25;font-variant-numeric:tabular-nums}
+#overview-kpis .kpi .sub,#slow-kpis .kpi .sub{font-size:11px;color:#98a3b2;margin-top:4px}
+#overview .panel,#slowLoading .panel{margin-top:16px;border:0;border-top:1px solid #edf0f4;border-bottom:1px solid #edf0f4;border-radius:0;box-shadow:none;overflow:visible;background:transparent}
+#overview .panel>header,#slowLoading .panel>header{padding:20px 0 12px;border-bottom:1px solid #edf0f4}
+#overview .panel h3,#slowLoading .panel h3{font-size:18px;font-weight:500;line-height:1.4}
+#overview .panel .body,#slowLoading .panel .body{padding:0 0 20px}
+#slowLoading .scroll{overflow:auto}
+#slowLoading table th,#slowLoading table td{padding:12px 10px;border-bottom:1px solid #edf0f4}
+#slowLoading table th{background:#fafbfc;color:#616d7c;font-size:11px;font-weight:600}
+#slowLoading table td{font-size:12px;color:#374151}
+#slowLoading .empty{padding:27px 0}
+#trend .bar{background:#8eb1f4}#trend .bar.api{background:#49bd84}#trend .bar.error{background:#e36d76}
+@media(max-width:860px){#overview-kpis,#slow-kpis{grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}#overview-kpis .kpi:nth-child(2n),#slow-kpis .kpi:nth-child(2n){border-right:1px solid #e7ebf1}}
 .error-trend{padding:0 15px 10px}.error-trend .line-chart{height:260px}
 #error-kpis{grid-template-columns:repeat(4,minmax(0,216px));gap:0}.error-kpi{position:relative;min-width:0;min-height:117px;box-sizing:border-box;padding:0;border-color:#e7ebf1;border-radius:0;box-shadow:none}.error-kpi:not(:last-child){border-right:0}.error-kpi[data-selected]{border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}.error-kpi[data-selected] .value{color:var(--brand)}.error-kpi-content{display:block;box-sizing:border-box;width:100%;min-height:115px;border:0;background:transparent;color:inherit;padding:16px 42px 16px 20px;text-align:left;font:inherit;cursor:pointer}.error-kpi-content:focus-visible,.error-kpi-help:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}.error-kpi .label{display:block;color:#374151;font-size:14px;font-weight:400;line-height:1.4}.error-kpi .value{display:block;margin-top:8px;font-size:25px;font-weight:500;line-height:1.25;font-variant-numeric:tabular-nums}.error-kpi-help{position:absolute;right:16px;top:16px;display:flex;align-items:center;justify-content:center;box-sizing:border-box;width:19px;height:19px;padding:0;border:1px solid #9ba8b9;border-radius:50%;background:#fff;color:#667085;font:600 12px/1 Arial,sans-serif;cursor:help}.error-kpi-help span{display:block;line-height:1;transform:translateY(-1px)}.error-kpi-help:hover,.error-kpi-help:focus-visible{border-color:var(--brand);color:var(--brand)}.error-kpi-tooltip{position:absolute;right:10px;top:42px;z-index:10;box-sizing:border-box;width:max-content;max-width:min(260px,calc(100vw - 60px));padding:9px 11px;border:1px solid #cfd9e8;border-radius:4px;background:#fff;box-shadow:0 6px 20px #17255426;color:#334155;font-size:12px;line-height:1.5;overflow-wrap:anywhere;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease}.error-kpi-help:hover+.error-kpi-tooltip,.error-kpi-help:focus+.error-kpi-tooltip{opacity:1;visibility:visible}
-.series-error{stroke:var(--bad)}.series-area-error{fill:#e5484d1f}.series-dot-error{stroke:var(--bad)}.trend-bars{pointer-events:none}.trend-bar{fill:var(--chart);opacity:.16}.trend-bar-error{fill:var(--bad);opacity:.18}
+.series-error{stroke:var(--bad)}.series-area-error{fill:#e5484d1f}.series-dot-error{stroke:var(--bad)}.trend-bars{pointer-events:none}.trend-bar{fill:#2f6bff;opacity:.3}.trend-bar-error{fill:#e5484d;opacity:.32}.trend-hit-area{fill:transparent;pointer-events:all;cursor:crosshair}.chart-tooltip{position:absolute;z-index:20;pointer-events:none;min-width:120px;max-width:240px;padding:8px 10px;border:1px solid #cfd9e8;border-radius:4px;background:#fff;box-shadow:0 6px 20px #17255426;color:#334155;font-size:12px;line-height:1.5;white-space:nowrap;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .12s ease,transform .12s ease}.chart-tooltip.is-visible{opacity:1;visibility:visible;transform:translateY(0)}
 .error-distribution-block{padding-top:20px}.error-distribution-block .dimension-panel .dist-row{grid-template-columns:minmax(85px,1fr) 1fr 95px}.error-distribution-block .dimension-panel .dist-name{min-width:0}.error-item{padding:13px 15px;border-bottom:1px solid var(--line)}.error-item:last-child{border:0}.error-head{display:flex;align-items:start;justify-content:space-between;gap:15px}.error-head>div:first-child{min-width:0}.error-title{font-weight:600;font-size:13px}.error-item .mono{overflow-wrap:anywhere;white-space:normal}.error-item .hint{margin-top:7px;overflow-wrap:anywhere}.error-item .tag{white-space:nowrap}
 @media(max-width:1080px){#error-kpis{grid-template-columns:repeat(2,minmax(0,216px))}.error-kpi:nth-child(2){border-right:1px solid #e7ebf1}.error-kpi:nth-child(-n+2){border-bottom:0}}
 @media(max-width:520px){#error-kpis{grid-template-columns:minmax(0,min(216px,100%))}.error-kpi:not(:last-child){border-right:1px solid #e7ebf1;border-bottom:0}}
@@ -56,7 +78,8 @@ body{--bg:#f6f7fa;--ink:#2d3144;--line:#e8ebf0;--brand:#3b82fe}
 .error-list-head,.error-row{display:grid;grid-template-columns:36px minmax(0,1fr) 120px 100px 100px 170px 16px;gap:12px;align-items:center}.error-list-head{padding:10px 15px;background:#f8fafc;border-bottom:1px solid var(--line);color:var(--muted);font-size:12px}.error-list-head[hidden]{display:none}.error-item{padding:0}.error-row{box-sizing:border-box;width:100%;border:0;background:transparent;color:inherit;font:inherit;text-align:left;padding:12px 15px;cursor:pointer}.error-row:hover{background:#f8faff}.error-row:focus-visible{outline:2px solid var(--brand);outline-offset:-2px}.error-item[data-open] .error-row{background:#f8faff}.error-index,.error-phone,.error-user-name,.error-version,.error-time{color:#667085;font-size:12px;font-variant-numeric:tabular-nums}.error-summary{min-width:0}.error-summary .error-title{font-size:13px}.error-message{margin-top:4px;color:#667085;font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error-phone,.error-user-name,.error-version{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.error-time{white-space:nowrap}.error-expand-icon{color:#8492a6;text-align:center;transition:transform .28s ease}.error-item[data-open] .error-expand-icon{transform:rotate(180deg)}.error-detail-shell{display:grid;grid-template-rows:0fr;transition:grid-template-rows .28s ease}.error-item[data-open] .error-detail-shell{grid-template-rows:1fr}.error-detail-clip{min-height:0;overflow:hidden}.error-detail{padding:0 15px 16px 63px;border-top:1px solid var(--line);overflow-wrap:anywhere;opacity:0;transform:translateY(-6px);transition:opacity .22s ease,transform .28s ease}.error-item[data-open] .error-detail{opacity:1;transform:translateY(0)}.error-detail-line{display:flex;gap:12px;padding-top:10px;font-size:12px;line-height:1.5}.error-detail-line>span:first-child{flex:0 0 56px;color:var(--muted)}.error-detail-line>span:last-child{min-width:0}.error-detail .stack{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.error-detail-block{margin-top:12px}.error-detail-block .report-label{margin:0}
 @media(prefers-reduced-motion:reduce){.error-detail-shell,.error-detail,.error-expand-icon{transition:none}}
 .error-summary .error-title,.error-message{display:block}
-.error-analysis-row{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid #edf0f4;font-size:12px;line-height:1.5}.error-analysis-row>span:first-child{flex:0 0 56px;color:var(--muted)}.error-analysis-button{border:1px solid #cbd8ee;border-radius:4px;background:#fff;color:var(--brand);padding:4px 9px;font:inherit;cursor:pointer}.error-analysis-button:hover:not(:disabled),.error-analysis-button:focus-visible{border-color:var(--brand);background:var(--brand-soft)}.error-analysis-button:disabled{color:#8492a6;cursor:wait}.error-analysis-result{min-width:0}.error-analysis-result .mono{display:block}.error-analysis-result pre{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.error-analysis-result .hint{margin-top:0}
+.error-analysis-row{display:flex;align-items:flex-start;gap:10px;margin-top:12px;padding-top:10px;border-top:1px solid #edf0f4;font-size:12px;line-height:1.5}.error-analysis-row>span:first-child{flex:0 0 56px;color:var(--muted)}.error-analysis-row>span:last-child{flex:1;min-width:0}.error-analysis-button{border:1px solid #cbd8ee;border-radius:4px;background:#fff;color:var(--brand);padding:4px 9px;font:inherit;cursor:pointer}.error-analysis-button:hover:not(:disabled),.error-analysis-button:focus-visible{border-color:var(--brand);background:var(--brand-soft)}.error-analysis-button:disabled{color:#8492a6;cursor:wait}.error-analysis-result{min-width:0}.error-analysis-result .mono{display:block}.error-analysis-result pre{margin:6px 0 0;overflow-wrap:anywhere;white-space:pre-wrap}.error-analysis-result .hint{margin-top:0}
+.error-analysis-result-header{display:flex;justify-content:flex-end;align-items:center;min-height:24px;margin-bottom:4px}.error-analysis-toggle-button{border:1px solid #cbd8ee;border-radius:4px;background:#fff;color:#667085;padding:3px 8px;font:inherit;font-size:11px;cursor:pointer}.error-analysis-toggle-button:hover,.error-analysis-toggle-button:focus-visible{border-color:var(--brand);color:var(--brand);background:var(--brand-soft)}.error-analysis-content[hidden]{display:none}
 @media(max-width:700px){.error-list-head{display:none}.error-row{grid-template-columns:32px minmax(0,1fr) 16px;gap:4px 9px}.error-summary{grid-column:2}.error-expand-icon{grid-column:3;grid-row:1}.error-phone,.error-user-name,.error-version,.error-time{grid-column:2}.error-phone{grid-row:2}.error-user-name{grid-row:3}.error-version{grid-row:4}.error-time{grid-row:5}.error-phone:before{content:'手机号  '}.error-user-name:before{content:'用户姓名  '}.error-version:before{content:'App版本  '}.error-time:before{content:'时间  '}.error-detail{padding-left:56px}}
 #errors .dimension-panels{grid-template-columns:repeat(3,minmax(220px,1fr));gap:16px}#errors .dimension-panel{min-height:215px;padding:15px;border:1px solid #e9edf3}#errors .dimension-panel h4{font-size:14px;font-weight:500}#errors .dimension-panel .report-label{margin:6px 0 12px}
 @media(max-width:860px){#errors .dimension-panels{grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}}
@@ -66,6 +89,7 @@ body{--bg:#f6f7fa;--ink:#2d3144;--line:#e8ebf0;--brand:#3b82fe}
 /* The three H5 views share a compact filter header and report-style panels.
    These styles are original; no third-party font, icon or artwork is loaded. */
 body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;color:var(--ink)}
+body{overflow-anchor:none}
 :root{--bg:#f5f7fa;--line:#e7ebf0;--ink:#273244;--brand:#3778f6;--brand-soft:#eff5ff}
 .side{background:#fff;color:#374151;border-right:1px solid var(--line);padding:17px 12px}
 .brand{padding:3px 0 16px;border-bottom:1px solid var(--line)}.brand b{color:#263448}
@@ -81,12 +105,17 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
 .waterfall-item{padding:12px;border:1px solid var(--line);background:#fbfcff;min-width:0}
 .waterfall-item strong{font-size:16px;font-variant-numeric:tabular-nums}.waterfall-item small{display:block;color:var(--muted);margin-top:5px}
 .waterfall-track{height:5px;border-radius:9px;background:#e9eef8;margin-top:12px;overflow:hidden}.waterfall-track i{display:block;height:100%;background:var(--brand)}
-.dist-row{grid-template-columns:minmax(0,1fr) auto;gap:12px;margin:7px 0;padding:10px 12px;background:#eef5ff}.dist-value{color:#334155}.perception-samples .dist-row{grid-template-columns:90px minmax(0,1fr) 100px;gap:8px;margin:16px 0;padding:0;background:transparent}.perception-samples .dist-bar{display:block}.metric-dim-row{grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;margin:4px 0;padding:6px 12px;background:#eef5ff}.metric-dim-row strong{color:#334155;font-variant-numeric:tabular-nums}.metric-dim-row small{color:#8b98aa}.error-distribution-block .dimension-panel .dist-row{grid-template-columns:minmax(0,1fr) auto}
+.dist-row{grid-template-columns:minmax(0,1fr) auto;gap:12px;margin:7px 0;padding:10px 12px;background:#eef5ff}.dist-bar{background:#2f6bff}.dist-value{color:#334155}.perception-samples .dist-row{grid-template-columns:90px minmax(0,1fr) 100px;gap:8px;margin:16px 0;padding:0;background:transparent}.perception-samples .dist-bar{display:block}.metric-dim-row{grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;margin:4px 0;padding:6px 12px;background:#eef5ff}.metric-dim-row strong{color:#334155;font-variant-numeric:tabular-nums}.metric-dim-row small{color:#8b98aa}.error-distribution-block .dimension-panel .dist-row{grid-template-columns:minmax(0,1fr) auto}
 .dimension-panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
 .dimension-panel{border:1px solid var(--line);padding:13px;min-height:90px}.dimension-panel h4{margin:0 0 4px;font-size:13px}.dimension-panel .report-label{margin-bottom:10px}
 .dim-detail{display:block;color:var(--brand);font-size:11px;margin-top:8px}
 @media(max-width:860px){.side{border-right:0;border-bottom:1px solid var(--line)}.brand{border:0;padding:0}.report-controls{width:100%}}
- .range-buttons{display:flex;gap:4px;align-items:center;flex-wrap:wrap}.range-buttons button,.range-buttons summary{border:1px solid #d9e0eb;background:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;color:#344054;font:inherit}.range-buttons button[aria-pressed="true"]{color:#2f6bff;border-color:#2f6bff;background:#f0f5ff}.range-buttons details{position:relative}.range-more{position:absolute;z-index:10;top:100%;right:0;background:#fff;border:1px solid #d9e0eb;border-radius:5px;box-shadow:0 8px 24px #17255422;display:grid;min-width:120px;padding:5px}.range-more button{text-align:left;border:0;white-space:nowrap}
+ .range-buttons{display:flex;gap:4px;align-items:center;flex-wrap:wrap}.range-buttons button,.range-buttons summary{border:1px solid #d9e0eb;background:#fff;padding:6px 10px;border-radius:4px;cursor:pointer;color:#344054;font:inherit}.range-buttons button[aria-pressed="true"]{color:#2f6bff;border-color:#2f6bff;background:#f0f5ff}.range-buttons details{position:relative}.range-buttons details>summary:after{content:"⌄";display:inline-block;margin-left:6px;transition:transform .2s ease}.range-buttons details[open]>summary:after{transform:rotate(180deg)}.range-more{position:absolute;z-index:10;top:100%;right:0;background:#fff;border:1px solid #d9e0eb;border-radius:5px;box-shadow:0 8px 24px #17255422;display:grid;min-width:120px;padding:5px}.range-more button{text-align:left;border:0;white-space:nowrap}
+/* Keep native details accessible while animating the menu instead of using display:none. */
+.dimension-filter> .dimension-menu,.range-buttons details> .range-more{display:block;max-height:0;overflow:hidden;opacity:0;visibility:hidden;pointer-events:none;transform:translateY(-8px) scaleY(.96);transform-origin:top center;transition:max-height .22s ease,opacity .18s ease,transform .22s ease,visibility 0s linear .22s}
+.dimension-filter[open]> .dimension-menu,.range-buttons details[open]> .range-more{max-height:320px;opacity:1;visibility:visible;pointer-events:auto;transform:translateY(0) scaleY(1);transition-delay:0s}
+.dimension-filter>summary:after{transition:transform .2s ease}.dimension-filter[open]>summary:after{transform:rotate(180deg)}
+@media(prefers-reduced-motion:reduce){.dimension-filter> .dimension-menu,.range-buttons details> .range-more,.range-buttons details>summary:after,.dimension-filter>summary:after{transition:none}}
 </style>
 </head>
 <body>
@@ -98,7 +127,6 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
       <button type="button" data-section="overview">总览</button>
       <button type="button" data-section="userPerception" aria-selected="true">用户感知</button>
       <button type="button" data-section="slowLoading">慢加载</button>
-      <button type="button" data-section="apis">API 监控</button>
       <button type="button" data-section="errors">错误分析</button>
     </nav>
   </aside>
@@ -117,35 +145,34 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
 
     <div id="global-filters" class="perception-filter global-filter">
       <div class="filter-row"><span class="filter-label">时间范围:</span><div class="range-buttons" id="user-ranges" role="group" aria-label="时间范围"><button type="button" data-range="hour">过去一个小时</button><button type="button" data-range="48hours">过去48小时</button><button type="button" data-range="today">今天</button><button type="button" data-range="7days" aria-pressed="true">最近七天</button><details id="user-more"><summary>更多</summary><div class="range-more"><button type="button" data-range="30days">最近30天</button><button type="button" data-range="60days">最近60天</button><button type="button" data-range="90days">最近90天</button></div></details></div><label for="user-date">自定义单日</label><input id="user-date" type="date" aria-label="自定义单日"><label class="client-time-option"><input id="client-time" type="checkbox">客户端发生时间</label><span id="range-label" class="filter-note">按接收时间筛选</span></div>
-      <div class="filter-row"><span class="filter-label">筛选维度:</span><div id="user-dimension-filters" class="dimension-filters"></div><button type="button" class="button" id="user-reset-all">重置全部</button><span class="filter-note">应用于当前看板全部页面和指标；未采集字段无可选值。</span></div>
+      <div class="filter-row"><span class="filter-label">筛选维度:</span><div id="user-dimension-filters" class="dimension-filters"></div><button type="button" class="button" id="user-reset-all">重置全部</button></div>
       <div class="filter-row"><span class="filter-label">页面筛选:</span><span class="autocomplete-field"><input id="page-filter" data-autocomplete-field="PAGE" type="search" placeholder="搜索页面 URL 或路径" aria-label="搜索页面 URL 或路径" autocomplete="off"><div id="page-filter-options" class="autocomplete-options" role="listbox" hidden></div></span><button class="button" id="user-reset" type="button">重置页面筛选</button><span class="filter-note">应用于总览、趋势、页面、接口、错误和性能数据。</span></div>
     </div>
 
     <section id="userPerception" class="section">
-      <div class="perception-title"><h2>用户感知 <span title="页面性能来自本地采集，不受友盟采样率约束">ⓘ</span></h2><span class="local-badge">自建数据看板 · 非官方采样</span></div>
+      <div class="perception-title"><h2>用户感知 <span title="页面性能来自本地采集，不受友盟采样率约束">ⓘ</span></h2></div>
       <div class="perception-tip">本模块展示 H5 页面加载过程中的用户感知指标。所有数值来自本地接收的真实性能事件，未采集的字段显示 —。样本量仅计算收到的 perf 事件，不等于 PV。<span id="perf-freshness"></span></div>
       <div class="perception-summary">
         <div class="perception-mode" id="user-mode" role="group" aria-label="整体指标口径">
-          <label><input type="radio" name="user-mode" value="average">平均值</label><label><input type="radio" name="user-mode" value="p50">50%分位值</label><label><input type="radio" name="user-mode" value="p90" checked>90%分位值</label><label><input type="radio" name="user-mode" value="p95">95%分位值</label>
+          <label><input type="radio" name="user-mode" value="average"><span class="mode-help" tabindex="0" aria-describedby="user-mode-tip-average">平均值</span><span id="user-mode-tip-average" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">平均值</span>所有已测得加载样本耗时的算术平均值；慢样本会使平均值升高。</span></label><label><input type="radio" name="user-mode" value="p50"><span class="mode-help" tabindex="0" aria-describedby="user-mode-tip-p50">50%分位值</span><span id="user-mode-tip-p50" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">50%分位值</span>按耗时从小到大排序后位于 50% 位置的值，即中位数；约一半样本不慢于它。</span></label><label><input type="radio" name="user-mode" value="p90" checked><span class="mode-help" tabindex="0" aria-describedby="user-mode-tip-p90">90%分位值</span><span id="user-mode-tip-p90" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">90%分位值</span>按耗时从小到大排序后位于 90% 位置的值；约 90% 样本不超过它，用于观察偏慢情况。</span></label><label><input type="radio" name="user-mode" value="p95"><span class="mode-help" tabindex="0" aria-describedby="user-mode-tip-p95">95%分位值</span><span id="user-mode-tip-p95" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">95%分位值</span>按耗时从小到大排序后位于 95% 位置的值；约 95% 样本不超过它，用于观察尾部慢加载。</span></label>
         </div>
         <div class="perception-surface">
           <div id="user-kpis" class="perception-kpis"></div><div id="metric-availability" class="metric-availability" role="status"></div>
           <div class="perception-block"><div class="perception-block-title"><h3>整体趋势</h3><select id="user-metric" aria-label="用户感知趋势指标"></select></div><div id="user-trend" class="perception-chart"></div></div>
-          <div class="perception-block"><h3>样本分布</h3><div id="sample-distribution" class="perception-samples"></div><div class="note">本地分档：良好 ≤ 2s、一般 2–5s、较差 &gt; 5s；不是官网私有分桶口径。仅计算带 total（缺失时回退 load）的性能样本。</div></div>
+          <div class="perception-block"><h3>样本分布</h3><div id="sample-distribution" class="perception-samples"></div><div class="note">本地分档：良好 ≤ 2s、一般 2–5s、较差 &gt; 5s；仅计算带 total（缺失时回退 load）的性能样本。</div></div>
           <div class="perception-block"><div class="perception-block-title"><h3>维度分布</h3><span class="hint">TOP5 · 有来源的性能样本 · 点击上方指标卡切换</span></div><div id="user-dimensions" class="dimension-panels"></div><div class="note" id="context-note"></div></div>
         </div>
       </div>
       <div class="panel perception-table-panel">
         <header><h3>指标列表</h3><span class="hint">按 Host + Path 聚合，列表筛选不影响上方整体指标</span></header>
-        <div class="perception-table-tools"><div class="perception-mode" id="user-table-mode" role="group" aria-label="指标列表口径"><label><input type="radio" name="user-table-mode" value="average" checked>平均值</label><label><input type="radio" name="user-table-mode" value="p50">50%分位值</label><label><input type="radio" name="user-table-mode" value="p90">90%分位值</label><label><input type="radio" name="user-table-mode" value="p95">95%分位值</label></div><button class="button" id="user-export" type="button">导出 CSV</button></div>
+        <div class="perception-table-tools"><div class="perception-mode" id="user-table-mode" role="group" aria-label="指标列表口径"><label><input type="radio" name="user-table-mode" value="average" checked><span class="mode-help" tabindex="0" aria-describedby="user-table-mode-tip-average">平均值</span><span id="user-table-mode-tip-average" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">平均值</span>所有已测得加载样本耗时的算术平均值；慢样本会使平均值升高。</span></label><label><input type="radio" name="user-table-mode" value="p50"><span class="mode-help" tabindex="0" aria-describedby="user-table-mode-tip-p50">50%分位值</span><span id="user-table-mode-tip-p50" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">50%分位值</span>按耗时从小到大排序后位于 50% 位置的值，即中位数；约一半样本不慢于它。</span></label><label><input type="radio" name="user-table-mode" value="p90"><span class="mode-help" tabindex="0" aria-describedby="user-table-mode-tip-p90">90%分位值</span><span id="user-table-mode-tip-p90" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">90%分位值</span>按耗时从小到大排序后位于 90% 位置的值；约 90% 样本不超过它，用于观察偏慢情况。</span></label><label><input type="radio" name="user-table-mode" value="p95"><span class="mode-help" tabindex="0" aria-describedby="user-table-mode-tip-p95">95%分位值</span><span id="user-table-mode-tip-p95" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">95%分位值</span>按耗时从小到大排序后位于 95% 位置的值；约 95% 样本不超过它，用于观察尾部慢加载。</span></label></div><button class="button" id="user-export" type="button">导出 CSV</button></div>
         <div class="scroll"><table><thead><tr><th>页面</th><th class="numeric">首字节响应时间(TTFB)</th><th class="numeric">TCP连接</th><th class="numeric">页面可交互时间(TTI)</th><th class="numeric">页面完全加载</th><th class="numeric">1秒快开比</th><th class="numeric">2秒快开比</th><th class="numeric">5秒慢开比</th><th class="numeric">样本量</th></tr></thead><tbody id="user-rows"></tbody></table></div>
         <div id="user-empty" class="empty" hidden>暂无页面数据</div><div class="perception-pager"><span id="user-page-count"></span><button class="button" id="user-prev" type="button">上一页</button><span id="user-page-number">1</span><button class="button" id="user-next" type="button">下一页</button><span>10 条/页</span></div>
       </div>
     </section>
 
     <section id="slowLoading" class="section" hidden>
-      <div class="report-breadcrumb">性能分析 / H5 页面分析 / <strong>慢加载</strong></div>
-      <div class="section-header"><div><h2 class="panel-title-with-help">慢加载<button type="button" class="panel-title-help" aria-label="慢加载说明" aria-describedby="slow-loading-section-tip"><span aria-hidden="true">?</span></button><span id="slow-loading-section-tip" class="panel-title-tooltip" role="tooltip">按设定阈值统计页面完全加载耗时超过阈值的性能样本，用于定位加载明显偏慢的页面。</span></h2><p>页面加载时间定义为 loadEventEnd - fetchStart，对应 SDK total 字段。</p></div></div>
+      <div class="section-header"><div><h2 class="panel-title-with-help">慢加载<button type="button" class="panel-title-help" aria-label="慢加载说明" aria-describedby="slow-loading-section-tip"><span aria-hidden="true">?</span></button><span id="slow-loading-section-tip" class="panel-title-tooltip" role="tooltip">按设定阈值统计页面完全加载耗时超过阈值的性能样本，用于定位加载明显偏慢的页面。</span></h2><p>页面加载时间定义为 loadEventEnd - fetchStart。</p></div></div>
       <div id="slow-kpis" class="grid"></div>
       <div class="panel">
         <header><h3 class="panel-title-with-help">慢加载 URL 列表<button type="button" class="panel-title-help" aria-label="慢加载 URL 列表说明" aria-describedby="slow-url-list-tip"><span aria-hidden="true">?</span></button><span id="slow-url-list-tip" class="panel-title-tooltip" role="tooltip">按页面 URL 汇总超过当前阈值的加载样本，仅展示存在慢加载样本的页面。</span></h3><label class="hint" for="slow-threshold">慢加载阈值</label><select id="slow-threshold"><option value="1000">1 秒</option><option value="2000">2 秒</option><option value="3000">3 秒</option><option value="5000" selected>5 秒</option><option value="10000">10 秒</option></select></header>
@@ -157,16 +184,10 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
     <section id="overview" class="section" hidden>
       <div class="section-header"><div><h2 class="panel-title-with-help">总览<button type="button" class="panel-title-help" aria-label="总览说明" aria-describedby="overview-section-tip"><span aria-hidden="true">?</span></button><span id="overview-section-tip" class="panel-title-tooltip" role="tooltip">汇总当前时间范围、页面和筛选条件下的 H5 访问、会话、错误及接口数据。</span></h2><p>H5 直报数据整体概览。</p></div></div>
       <div id="overview-kpis" class="grid"></div>
-      <div class="panel"><header><h3 class="panel-title-with-help">iOS 独立运行快照<button type="button" class="panel-title-help" aria-label="iOS 独立运行快照说明" aria-describedby="overview-ios-tip"><span aria-hidden="true">?</span></button><span id="overview-ios-tip" class="panel-title-tooltip" role="tooltip">展示 iOS Reporter 独立上报的运行上下文和系统诊断摘要，不代表友盟原生 APM 的完整崩溃、卡顿或 OOM 指标。</span></h3><span class="hint">Reporter 自行采集，非友盟原生 APM 上报数据；不代表崩溃、卡顿或 OOM 检测</span></header><div class="body"><div id="native-kpis" class="grid"></div><div class="note" id="native-note"></div></div></div>
       <div class="panel">
         <header><h3 class="panel-title-with-help">24 小时趋势<button type="button" class="panel-title-help" aria-label="24 小时趋势说明" aria-describedby="overview-trend-tip"><span aria-hidden="true">?</span></button><span id="overview-trend-tip" class="panel-title-tooltip" role="tooltip">按小时展示当前筛选范围内的页面访问、API 请求和页面错误数量；不同时间范围会使用对应的时间粒度。</span></h3><div class="legend"><span><i style="background:#dbe6f6"></i>PV</span><span><i style="background:#91d8b4"></i>API</span><span><i style="background:#f1a5aa"></i>错误</span></div></header>
         <div class="body"><div id="trend" class="trend"></div><div id="hour-labels" class="hour-labels"></div></div>
       </div>
-    </section>
-
-    <section id="apis" class="section" hidden>
-      <div class="section-header"><div><h2>API 监控</h2><p>2xx 视为成功。</p></div></div>
-      <div class="panel"><div class="scroll"><table><thead><tr><th>接口</th><th class="numeric">请求数</th><th class="numeric">失败数</th><th class="numeric">成功率</th><th class="numeric">平均耗时</th><th class="numeric">P50</th><th class="numeric">P95</th></tr></thead><tbody id="api-rows"></tbody></table></div><div id="api-empty" class="empty" hidden>暂无 API 数据</div></div>
     </section>
 
     <section id="errors" class="section" hidden>
@@ -176,6 +197,11 @@ body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Micros
       <div class="perception-block error-distribution-block"><div class="perception-block-title"><h3>错误分布</h3><span class="hint">TOP5 · 按错误次数排序 · 占全部错误比例</span></div><div id="error-dimensions" class="dimension-panels"></div><div class="note">错误维度按当前筛选范围内的 page_error 记录聚合；缺失字段统一归入“未上报”。</div></div>
       <div class="panel"><header><h3>受影响页面</h3></header><div class="scroll"><table><thead><tr><th>页面路径</th><th class="numeric">错误次数</th><th class="numeric">占比</th><th>最近发生</th></tr></thead><tbody id="error-page-rows"></tbody></table></div><div id="error-page-empty" class="empty" hidden>暂无页面错误</div></div>
       <div class="panel"><header><h3>最近错误</h3><span id="error-count" class="hint"></span></header><div id="error-list-head" class="error-list-head" hidden><span>序号</span><span>错误信息</span><span>手机号</span><span>用户姓名</span><span>App版本</span><span>时间</span><span></span></div><div id="error-list"></div><div id="error-empty" class="empty" hidden>暂无错误数据</div><nav id="error-pager" class="error-pager" aria-label="最近错误分页" hidden></nav></div>
+    </section>
+
+    <section id="apis" class="section" hidden aria-hidden="true">
+      <div class="section-header"><div><h2>API 监控</h2><p>2xx 视为成功。</p></div></div>
+      <div class="panel"><div class="scroll"><table><thead><tr><th>接口</th><th class="numeric">请求数</th><th class="numeric">失败数</th><th class="numeric">成功率</th><th class="numeric">平均耗时</th><th class="numeric">P50</th><th class="numeric">P95</th></tr></thead><tbody id="api-rows"></tbody></table></div><div id="api-empty" class="empty" hidden>暂无 API 数据</div></div>
     </section>
 
   </main>
@@ -213,6 +239,7 @@ function persistCompletedErrorAnalysis(key, job) {
   } catch (_) {}
 }
 var errorAnalysisJobs = readPersistedErrorAnalysis();
+var errorAnalysisCollapsed = Object.create(null);
 var userMetricLabels = { ttfb: '首字节响应时间(TTFB)', tcp: 'TCP连接', tti: '页面可交互时间(TTI)', pageLoad: '页面完全加载', oneSecondFastRate: '1秒快开比', twoSecondFastRate: '2秒快开比', fiveSecondSlowRate: '5秒慢开比' };
 var userMetricDescriptions = { ttfb: '从页面开始导航到收到服务器返回的第一个字节所经过的时间。', tcp: '建立 TCP 连接所经过的时间，数值越低表示网络连接建立越快。', tti: '页面达到可交互状态所经过的时间，表示用户可以开始稳定操作页面。', pageLoad: '从页面开始导航到页面加载完成事件触发所经过的时间。', oneSecondFastRate: '有效加载样本中，在 1 秒内完成加载的比例。', twoSecondFastRate: '有效加载样本中，在 2 秒内完成加载的比例。', fiveSecondSlowRate: '有效加载样本中，加载耗时超过 5 秒的比例。' };
 var errorTrendMetricLabels = { errors: '错误总数', affectedVisitors: '受影响访客数', issues: '独立问题', pageCount: '涉及页面' };
@@ -257,8 +284,6 @@ var cardDescriptions = {
   '内存警告': '统计 iOS 系统内存警告通知触发的 Reporter 快照数量。',
   '最近常驻内存': '最近一次 iOS Reporter 快照中的应用自身进程常驻内存，不是系统总内存。',
   '网络变化': '统计由网络状态变化通知触发的 iOS Reporter 快照。',
-  'MetricKit 崩溃': '最近收到的 MetricKit 诊断期崩溃摘要，不代表当前时间范围内的实时崩溃数。',
-  'MetricKit 卡顿': '最近收到的 MetricKit 诊断期卡顿摘要，通常会延迟送达，不能与当前 H5 样本直接相加。',
   '慢加载次数': '统计页面完全加载耗时超过当前阈值的性能样本数量。',
   '慢加载率': '慢加载样本数占有效加载样本数的比例。',
   '受影响页面': '当前筛选范围内存在至少一个慢加载样本的页面数量。',
@@ -311,11 +336,32 @@ function renderTrendChart(selector, trend, getValue, formatValue, data, seriesNa
     return '<rect class="trend-bar' + barClass + '" x="' + (x(point.index) - barWidth / 2).toFixed(1) + '" y="' + topY.toFixed(1) + '" width="' + barWidth.toFixed(1) + '" height="' + barHeight.toFixed(1) + '" rx="1"><title>' + esc(point.hour + ' · ' + formatValue(point.value)) + '</title></rect>';
   }).join('');
   var dots = points.map(function (point) { return '<circle class="series-dot' + dotClass + '" cx="' + x(point.index).toFixed(1) + '" cy="' + y(point.value).toFixed(1) + '" r="3"><title>' + esc(point.hour + ' · ' + formatValue(point.value)) + '</title></circle>'; }).join('');
+  var hitAreas = points.map(function (point) { return '<rect class="trend-hit-area" data-trend-index="' + point.index + '" x="' + (x(point.index) - Math.max(14, barWidth) / 2).toFixed(1) + '" y="' + top + '" width="' + Math.max(14, barWidth).toFixed(1) + '" height="' + (height - top - bottom) + '"></rect>'; }).join('');
   var labels = [0, 0.25, 0.5, 0.75, 1].map(function (fraction) { var index = Math.round((trend.length - 1) * fraction); return '<text x="' + x(index) + '" y="' + (height - 7) + '" font-size="10" fill="#667085" text-anchor="middle">' + esc(trendLabel(trend[index], index, data)) + '</text>'; }).join('');
-  $(selector).innerHTML = '<svg class="line-chart" viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + esc(ariaLabel || '趋势图') + '">' + grid + '<g class="trend-bars" aria-hidden="true">' + barsMarkup + '</g><path class="series-area' + areaClass + '" d="' + area + '"></path><path class="series' + lineClass + '" d="' + path + '"></path>' + dots + labels + '</svg>';
+  var host = $(selector);
+  host.style.position = 'relative';
+  host.innerHTML = '<svg class="line-chart" viewBox="0 0 ' + width + ' ' + height + '" role="img" aria-label="' + esc(ariaLabel || '趋势图') + '">' + grid + '<g class="trend-bars" aria-hidden="true">' + barsMarkup + '</g><path class="series-area' + areaClass + '" d="' + area + '"></path><path class="series' + lineClass + '" d="' + path + '"></path>' + dots + '<g class="trend-hit-areas" aria-hidden="true">' + hitAreas + '</g>' + labels + '</svg><div class="chart-tooltip" role="status"></div>';
+  var tooltip = host.querySelector('.chart-tooltip');
+  var showTooltip = function (event, point) {
+    var rect = host.getBoundingClientRect();
+    tooltip.innerHTML = '<strong>' + esc(point.hour) + '</strong><br>' + esc(ariaLabel || '趋势图') + '：' + esc(formatValue(point.value));
+    tooltip.classList.add('is-visible');
+    var left = event.clientX - rect.left + 12;
+    var topPosition = event.clientY - rect.top - tooltip.offsetHeight - 10;
+    tooltip.style.left = Math.max(8, Math.min(left, host.clientWidth - tooltip.offsetWidth - 8)) + 'px';
+    tooltip.style.top = Math.max(8, topPosition) + 'px';
+  };
+  var hideTooltip = function () { tooltip.classList.remove('is-visible'); };
+  host.querySelectorAll('.trend-hit-area').forEach(function (target) {
+    var point = points.find(function (entry) { return String(entry.index) === target.dataset.trendIndex; });
+    if (!point) return;
+    target.addEventListener('mouseenter', function (event) { showTooltip(event, point); });
+    target.addEventListener('mousemove', function (event) { showTooltip(event, point); });
+    target.addEventListener('mouseleave', hideTooltip);
+  });
 }
 function renderLineChart(selector, trend, id, mode, data) {
-  renderTrendChart(selector, trend, function (item) { return trendValue(item.metrics[id], id, mode); }, function (value) { return formatTrendValue(id, value); }, data, '', '趋势图');
+  renderTrendChart(selector, trend, function (item) { return trendValue(item.metrics[id], id, mode); }, function (value) { return formatTrendValue(id, value); }, data, '', userMetricLabels[id] || '趋势图');
 }
 function renderErrorTrendChart(selector, trend, metric, data) {
   renderTrendChart(selector, trend, function (item) { return item[metric] == null ? 0 : item[metric]; }, function (value) { return integer(Math.round(value)); }, data, 'error', errorTrendMetricLabels[metric] || '错误趋势');
@@ -366,12 +412,23 @@ function perceptionCard(id, label, value, sub) {
   var selected = state.userMetric === id;
   return '<div class="kpi"' + (selected ? ' data-selected' : '') + '><button type="button" class="perception-kpi-content" data-metric="' + esc(id) + '" aria-pressed="' + selected + '"><span class="label">' + esc(label) + '</span><div class="value">' + esc(value) + '</div><span class="period" title="按本地同长时间窗口和相同指标口径重算，非官网私有算法">前一周期 <span>' + esc(previousValue || '—') + '</span></span><span class="sub">' + esc(sub) + '</span></button><button type="button" class="perception-kpi-help" aria-label="' + esc(label) + '说明" aria-describedby="' + tooltipId + '"><span aria-hidden="true">?</span></button><span id="' + tooltipId + '" class="perception-kpi-tooltip" role="tooltip">' + esc(userMetricDescriptions[id] || '') + '</span></div>';
 }
+function metricModeTooltip(mode, idPrefix) {
+  var labels = { average:'平均值',p50:'50%分位值',p90:'90%分位值',p95:'95%分位值' };
+  var descriptions = {
+    average:'所有已测得加载样本耗时的算术平均值；慢样本会使平均值升高。',
+    p50:'按耗时从小到大排序后位于 50% 位置的值，即中位数；约一半样本不慢于它。',
+    p90:'按耗时从小到大排序后位于 90% 位置的值；约 90% 样本不超过它，用于观察偏慢情况。',
+    p95:'按耗时从小到大排序后位于 95% 位置的值；约 95% 样本不超过它，用于观察尾部慢加载。'
+  };
+  var tooltipId = idPrefix + '-' + esc(mode) + '-tip';
+  return '<span class="mode-help" tabindex="0" aria-describedby="' + tooltipId + '">' + esc(labels[mode] || mode) + '</span><span id="' + tooltipId + '" class="mode-tooltip" role="tooltip"><span class="mode-tooltip-title">' + esc(labels[mode] || mode) + '</span>' + esc(descriptions[mode] || '') + '</span>';
+}
 function renderMetricDimensionPanels(dimensions, metricId, mode) {
   var labels = { deviceModel: '设备机型', osVersion: '操作系统', appVersion: '应用版本', networkType: '网络类型' };
   var isRatio = metricId.indexOf('Rate') !== -1;
   return Object.keys(labels).map(function (field) {
     var rows = dimensions && dimensions[field] || [];
-    return '<div class="dimension-panel"><h4>' + labels[field] + '</h4><span class="report-label">TOP5 · ' + esc(userMetricLabels[metricId]) + ' · ' + (isRatio ? '比例' : esc({ average:'平均值',p50:'50%分位值',p90:'90%分位值',p95:'95%分位值' }[mode])) + '</span>' +
+    return '<div class="dimension-panel"><h4>' + labels[field] + '</h4><span class="report-label">TOP5 · ' + esc(userMetricLabels[metricId]) + ' · ' + (isRatio ? '比例' : metricModeTooltip(mode, 'metric-dim-' + esc(field))) + '</span>' +
       (rows.length ? rows.map(function (row) { var summary = row[metricId]; var value = isRatio ? ratioMetric(summary.rate) : metricValue(summary, mode); return '<div class="metric-dim-row"><span title="' + esc(row.value) + '">' + esc(row.value) + '</span><strong>' + esc(value) + '</strong></div>'; }).join('') : '<div class="hint">暂无来源数据</div>') + '</div>';
   }).join('');
 }
@@ -379,9 +436,13 @@ function nativeLookback(data) { return data.native && data.native.lookbackContex
 var performanceFilterLabels = { AN:'应用名', AV:'全部 App 版本', OT:'全部系统类型', OV:'全部系统版本', EV:'全部事件类型' };
 var identityFilterLabels = { UNAME:'用户姓名', PHONE:'手机号' };
 var autocompleteLimit = 30;
+var autocompleteFocusLimit = 10;
 function autocompleteValues(field) {
   if (field === 'PAGE') return currentData && currentData.userPerception && currentData.userPerception.pageOptions || [];
   return currentData && currentData.userPerception && currentData.userPerception.filterOptions && currentData.userPerception.filterOptions[field] || [];
+}
+function selectedAutocompleteValue(field) {
+  return field === 'PAGE' ? state.pageFilter : state.performanceFilters[field] || '';
 }
 function closeAutocompleteOptions(except) {
   document.querySelectorAll('.autocomplete-options').forEach(function (options) {
@@ -395,14 +456,22 @@ function closeFilterDetails(except) {
     if (details !== except) details.open = false;
   });
 }
-function renderAutocompleteOptions(input) {
+function renderAutocompleteOptions(input, showAll) {
   if (!input || !input.matches('[data-autocomplete-field]')) return;
   var field = input.dataset.autocompleteField;
   var options = input.closest('.autocomplete-field').querySelector('.autocomplete-options');
   closeFilterDetails();
   closeAutocompleteOptions(options);
-  var query = input.value.trim().toLocaleLowerCase();
-  var values = autocompleteValues(field).filter(function (value) { return String(value).toLocaleLowerCase().includes(query); }).slice(0, autocompleteLimit);
+  var query = showAll ? '' : input.value.trim().toLocaleLowerCase();
+  var selected = selectedAutocompleteValue(field);
+  var values = autocompleteValues(field).map(String).filter(function (value) { return !query || value.toLocaleLowerCase().includes(query); });
+  if (showAll) {
+    values = values.filter(function (value) { return value !== selected; });
+    if (selected) values.unshift(selected);
+    values = values.slice(0, autocompleteFocusLimit);
+  } else {
+    values = values.slice(0, autocompleteLimit);
+  }
   options.replaceChildren();
   if (!values.length) {
     options.innerHTML = '<div class="autocomplete-empty">暂无匹配的日志选项</div>';
@@ -410,22 +479,28 @@ function renderAutocompleteOptions(input) {
     return;
   }
   values.forEach(function (value, index) {
-    var option = document.createElement('button'); option.type = 'button'; option.className = 'autocomplete-option'; option.dataset.autocompleteOption = ''; option.dataset.autocompleteValue = String(value); option.setAttribute('role', 'option'); option.setAttribute('aria-selected', String(index === 0)); option.textContent = value;
+    var option = document.createElement('button'); option.type = 'button'; option.className = 'autocomplete-option'; option.dataset.autocompleteOption = ''; option.dataset.autocompleteValue = String(value); option.setAttribute('role', 'option'); option.setAttribute('aria-selected', String(selected ? value === selected : index === 0)); option.textContent = value;
     options.appendChild(option);
   });
   options.hidden = false;
 }
 function resetAutocompleteField(field, input) {
+  var changed = false;
   if (field === 'PAGE') {
-    if (!state.pageFilter) return;
+    changed = Boolean(state.pageFilter);
     state.pageFilter = '';
   } else {
-    if (!state.performanceFilters[field]) return;
+    changed = Boolean(state.performanceFilters[field]);
     delete state.performanceFilters[field];
   }
   input.value = '';
   state.userPage = 0; state.errorPage = 0;
-  closeAutocompleteOptions(); loadFilterSilently();
+  closeAutocompleteOptions();
+  var reopen = function () {
+    if (document.activeElement === input && !input.value.trim()) renderAutocompleteOptions(input, true);
+  };
+  if (changed) loadFilterSilently().then(reopen);
+  else reopen();
 }
 function commitAutocompleteField(field, value, input) {
   input.value = value;
@@ -449,7 +524,11 @@ function selectAutocompleteOption(input) {
 function handleAutocompleteKeydown(event) {
   var input = event.target;
   if (!input.matches('[data-autocomplete-field]')) return;
-  if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); renderAutocompleteOptions(input); moveAutocompleteSelection(input, event.key === 'ArrowDown' ? 1 : -1); }
+  if (event.key === 'Delete') {
+    event.preventDefault();
+    input.value = '';
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+  } else if (event.key === 'ArrowDown' || event.key === 'ArrowUp') { event.preventDefault(); renderAutocompleteOptions(input); moveAutocompleteSelection(input, event.key === 'ArrowDown' ? 1 : -1); }
   else if (event.key === 'Enter') { event.preventDefault(); selectAutocompleteOption(input); }
   else if (event.key === 'Escape') { closeAutocompleteOptions(); }
 }
@@ -544,8 +623,7 @@ function renderUserPerception(data) {
   renderLineChart('#user-trend', data.trend, state.userMetric, mode, data);
   renderSampleDistribution('#sample-distribution', data.userPerception.sampleDistribution);
   $('#user-dimensions').innerHTML = renderMetricDimensionPanels(data.userPerception.metricDimensions, state.userMetric, mode);
-  var coverage = data.userPerception.contextCoverage || { total: 0, exact: 0, singleContextFallback: 0, h5NetworkOnly: 0, none: 0, contexts: 0 };
-  $('#context-note').textContent = 'iOS 上下文 ' + integer(coverage.contexts) + ' 条 · 精确关联 ' + integer(coverage.exact) + ' / ' + integer(coverage.total) + ' 个加载样本 · 单上下文回退 ' + integer(coverage.singleContextFallback) + ' · 仅 H5 网络字段 ' + integer(coverage.h5NetworkOnly) + '。机型、系统、应用版本、运营商、地域来自 iOS 副本；未关联且无来源的维度不虚构。';
+  $('#context-note').textContent = '';
   if (state.range === 'date') $('#user-date').value = $('#date').value;
   syncRangeButtons();
   var rows = filteredPages(data.userPerception.pages);
@@ -574,6 +652,7 @@ function errorTrendCard(id, label, value, sub) {
 }
 function startErrorAnalysis(item, key) {
   if (!currentData || (errorAnalysisJobs[key] && ['queued', 'running'].indexOf(errorAnalysisJobs[key].status) >= 0)) return;
+  delete errorAnalysisCollapsed[key];
   errorAnalysisJobs[key] = { status: 'queued', result: null, error: null };
   renderRecentErrors(currentData);
   fetch(apiPath('/__sink/api/error-analysis'), { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ error: {
@@ -633,11 +712,18 @@ function renderRecentErrors(data) {
     if (!job) analysis = '<button type="button" class="error-analysis-button" data-error-analysis="' + esc(key) + '">AI 分析</button>';
     else if (job.status === 'queued' || job.status === 'running') analysis = '<button type="button" class="error-analysis-button" disabled>AI 分析中</button>';
     else if (job.status === 'failed') analysis = '<div class="error-analysis-result"><div class="hint">' + esc(job.error || 'AI 分析失败') + '</div><button type="button" class="error-analysis-button" data-error-analysis="' + esc(key) + '">重新分析</button></div>';
-    else if (job.result && job.result.status === 'selected') {
+    else if (job.result) {
       var result = job.result;
-      var lines = Array.isArray(result.lines) ? result.lines.map(function (line, offset) { return (Number(result.startLine) + offset) + '  ' + line; }).join('\n') : '';
-      analysis = '<div class="error-analysis-result"><span class="mono">' + esc(result.file) + ':' + esc(result.line) + (result.column != null ? ':' + esc(result.column) : '') + '</span><pre class="stack">' + esc(lines) + '</pre><div class="hint">' + esc(result.reason || '已从本地候选源码中定位') + ' · 置信度 ' + esc(result.confidence || 'low') + (result.precision ? ' · 精度 ' + esc(result.precision) : '') + (result.matchReason ? ' · 依据 ' + esc(result.matchReason) : '') + (result.sourceVersion ? ' · 版本 ' + esc(result.sourceVersion) : '') + '</div></div>';
-    } else analysis = '<div class="error-analysis-result"><div class="hint">不确定：' + esc(job.result?.reason || '未能从候选源码中确定位置') + '</div></div>';
+      var analysisBody;
+      if (result.status === 'selected') {
+        var lines = Array.isArray(result.lines) ? result.lines.map(function (line, offset) { return (Number(result.startLine) + offset) + '  ' + line; }).join('\n') : '';
+        analysisBody = '<span class="mono">' + esc(result.file) + ':' + esc(result.line) + (result.column != null ? ':' + esc(result.column) : '') + '</span><pre class="stack">' + esc(lines) + '</pre><div class="hint">' + esc(result.reason || '已从本地候选源码中定位') + ' · 置信度 ' + esc(result.confidence || 'low') + (result.precision ? ' · 精度 ' + esc(result.precision) : '') + (result.matchReason ? ' · 依据 ' + esc(result.matchReason) : '') + (result.sourceVersion ? ' · 版本 ' + esc(result.sourceVersion) : '') + '</div>';
+      } else {
+        analysisBody = '<div class="hint">不确定：' + esc(result.reason || '未能从候选源码中确定位置') + '</div>';
+      }
+      var collapsed = errorAnalysisCollapsed[key] === true;
+      analysis = '<div class="error-analysis-result"><div class="error-analysis-result-header"><button type="button" class="error-analysis-toggle-button" data-error-analysis-toggle="' + esc(key) + '" aria-expanded="' + String(!collapsed) + '">' + (collapsed ? '展开' : '收起') + '</button></div><div class="error-analysis-content"' + (collapsed ? ' hidden' : '') + '>' + analysisBody + '</div></div>';
+    }
     var analysisBlock = '<div class="error-analysis-row"><span>AI 分析</span><span>' + analysis + '</span></div>';
     var isOpen = openKeys.has(key), detailId = 'error-detail-' + (start + index);
     var phone = item.phone || '未上报';
@@ -670,24 +756,18 @@ function render(data) {
   var isElk = storage.source === 'elk';
   var environment = storage.environment === 'online' ? 'online' : 'test';
   $('#storage-source').value = environment;
-  if (isElk) document.querySelector('.perception-tip').firstChild.nodeValue = '页面加载指标来自' + (environment === 'online' ? '线上' : '测试') + '环境 ELK；缺失的指标显示 —。加载次数不等于完整 PV。';
+  if (isElk) document.querySelector('.perception-tip').firstChild.nodeValue = '本模块展示 H5 页面加载过程中的用户感知指标。';
   $('#storage-status').title = isElk ? storage.sampleSemantics : storage.source === 'sls' ? '已验证完整镜像' : (storage.reason || '查询已回退');
-  document.querySelector('[data-section="apis"]').hidden = isElk;
-  if (isElk && document.body.dataset.section === 'apis') selectSection('overview');
   if (!$('#date').value) $('#date').value = data.date;
   state.slowThreshold = data.slowLoading.thresholdMs;
   fillSelect('#user-metric', data.userPerception.metricOrder, userMetricLabels, state.userMetric);
   $('#slow-threshold').value = String(state.slowThreshold);
   var perfCount = data.overview.logTypes.perf || 0;
   if (Object.keys(state.performanceFilters).length) perfCount = data.userPerception.contextCoverage.total || 0;
-  var latestPerf = data.userPerception.pages.reduce(function (latest, page) { return page.lastPerfAt && (!latest || page.lastPerfAt > latest) ? page.lastPerfAt : latest; }, null);
   $('#status').textContent = isElk ? '已观测加载 ' + integer(data.overview.pageViews) + ' · 错误 ' + integer(data.overview.errors) + ' · 样本 ' + integer(perfCount) : (data.range ? datetime(data.range.from) + ' ~ ' + datetime(data.range.to) + '（本地时间）' : data.date + '（UTC 归档日）') + ' · PV ' + integer(data.overview.pageViews) + ' · 性能样本 ' + integer(perfCount) + '（内嵌导航回退 ' + integer(data.userPerception.navigationFallbackSamples || 0) + '）' + ' · iOS 快照 ' + integer(data.native.snapshots) + ' · 归档 ' + integer(data.archive.records) + ' 条';
-  $('#perf-freshness').textContent = isElk ? '从测试环境读取；加载次数不等于完整 PV，未实测的指标留空。最近加载样本（本地时间）：' + (latestPerf ? datetime(latestPerf) : '暂无') : (state.clientTime ? '客户端时间有效记录 ' + integer(data.clientTimeCoverage.valid) + ' 条，缺失/偏差超过24小时的日志 ' + integer(data.clientTimeCoverage.missingOrSkewed) + ' 条。' : '') + '最近性能采样（本地时间）：' + (latestPerf ? datetime(latestPerf) : '尚未收到') + (Object.keys(state.performanceFilters).length || state.pageFilter ? '；当前筛选已应用于全部看板指标。' : (data.overview.pageViews > perfCount ? '；已有新 PV 不代表产生了新 perf 样本。' : '。'));
+  $('#perf-freshness').textContent = '';
   renderUserPerception(data); renderSlowLoading(data);
-  $('#overview-kpis').innerHTML = isElk ? [card('已观测加载', integer(data.overview.pageViews), '仅 page_load；非完整 PV'), card('独立访客 UV', integer(data.overview.uniqueVisitors), '按 contextId 去重'), card('会话数', integer(data.overview.sessions), '按 sessionId 去重'), card('页面错误', integer(data.overview.errors), '仅 page_error'), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '按已测得耗时汇总')].join('') : [card('浏览量 PV', integer(data.overview.pageViews), '页面 PV 事件'), card('独立访客 UV', integer(data.overview.uniqueVisitors), '按 uid 去重'), card('会话数', integer(data.overview.sessions), '按 sid 去重'), card('JS 错误', integer(data.overview.errors), '可展开查看堆栈'), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '按请求记录汇总')].join('');
-  var native = data.native || { contexts: 0, snapshots: 0, memoryWarnings: 0, latestResidentMemoryBytes: null, networkChanges: 0 };
-  $('#native-kpis').innerHTML = [card('iOS 上下文', integer(native.contexts), '有真实运行快照的上下文'), card('上报快照', integer(native.snapshots), '按真实接收记录计数'), card('Reporter 启动', integer(native.starts), '独立快照，非官方启动性能指标'), card('进入前台', integer(native.foregrounds), '通知触发的快照'), card('进入后台', integer(native.backgrounds), '尽力上报，进程可能挂起'), card('内存警告', integer(native.memoryWarnings), '各进程最近快照累计'), card('最近常驻内存', native.latestResidentMemoryBytes == null ? '—' : (native.latestResidentMemoryBytes / 1048576).toFixed(1) + ' MiB', '仅应用自身进程'), card('网络变化', integer(native.networkChanges), '通知触发的快照'), card('MetricKit 崩溃', native.latestDiagnostics ? integer(native.latestDiagnostics.crashes) : '—', '最近收到的诊断期摘要；非官方 SDK 原始上报'), card('MetricKit 卡顿', native.latestDiagnostics ? integer(native.latestDiagnostics.hangs) : '—', '通常延迟送达；不能与当前 H5 样本混算')].join('');
-  $('#native-note').textContent = (native.latestAt ? '最近快照 ' + datetime(native.latestAt) + ' · 触发原因 ' + (native.latestTrigger || '未知') : '尚未收到 iOS Reporter 快照；H5 页面上报与此独立。') + (native.latestDiagnostics ? ' · MetricKit 最近诊断期 ' + datetime(native.latestDiagnostics.periodStart) + ' ~ ' + datetime(native.latestDiagnostics.periodEnd) + '（接收 ' + datetime(native.latestDiagnostics.receivedAt) + '；可能重送，不累计）' : '');
+  $('#overview-kpis').innerHTML = isElk ? [card('已观测加载', integer(data.overview.pageViews), ''), card('独立访客 UV', integer(data.overview.uniqueVisitors), ''), card('会话数', integer(data.overview.sessions), ''), card('页面错误', integer(data.overview.errors), ''), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '')].join('') : [card('浏览量 PV', integer(data.overview.pageViews), '页面 PV 事件'), card('独立访客 UV', integer(data.overview.uniqueVisitors), '按 uid 去重'), card('会话数', integer(data.overview.sessions), '按 sid 去重'), card('JS 错误', integer(data.overview.errors), '可展开查看堆栈'), card('API 请求', integer(data.overview.apiRequests), '成功率 ' + pct(data.overview.apiSuccessRate)), card('API 平均耗时', ms(data.overview.averageApiRtMs), '按请求记录汇总')].join('');
   renderTrend(data.trend, data);
   renderRows('#api-rows', data.apis, function (api) { var rate = '<span class="' + (api.successRate != null && api.successRate < 95 ? 'bad-rate' : 'quality') + '">' + pct(api.successRate) + '</span>'; return ['<span class="mono">' + esc(api.api) + '</span>', integer(api.requests), integer(api.errors), rate, ms(api.averageRtMs), ms(api.p50RtMs), ms(api.p95RtMs)]; }, '#api-empty', [false, true, true, true, true, true, true]);
   renderErrors(data, isElk);
@@ -784,13 +864,15 @@ async function load(options) {
     }
   }
 }
-function selectSection(name) {
+if (typeof history !== 'undefined' && 'scrollRestoration' in history) history.scrollRestoration = 'manual';
+function selectSection(name, viewport) {
   document.querySelectorAll('.nav button').forEach(function (button) { button.setAttribute('aria-selected', String(button.dataset.section === name)); });
   document.querySelectorAll('.section').forEach(function (section) { section.hidden = section.id !== name; });
   document.body.dataset.section = name;
+  if (viewport) restoreViewport(viewport);
 }
 document.querySelectorAll('.nav button').forEach(function (button) { button.addEventListener('click', function () {
-  selectSection(button.dataset.section);
+  selectSection(button.dataset.section, { x: window.scrollX, y: window.scrollY });
   if (location.hash !== '#' + button.dataset.section) history.pushState(null, '', location.pathname + location.search + '#' + button.dataset.section);
 }); });
 $('#client-time').addEventListener('change', function (event) { state.clientTime = event.target.checked; state.errorPage = 0; load(); });
@@ -824,10 +906,10 @@ $('#user-mode').addEventListener('change', function (event) { if (event.target.m
 $('#user-table-mode').addEventListener('change', function (event) { if (event.target.matches('input')) { state.userTableMode = event.target.value; if (currentData) render(currentData); } });
 $('#page-filter').addEventListener('input', function (event) {
   var input = event.target;
-  renderAutocompleteOptions(input);
   if (!input.value.trim()) resetAutocompleteField(input.dataset.autocompleteField, input);
+  else renderAutocompleteOptions(input);
 });
-$('#page-filter').addEventListener('focus', function (event) { renderAutocompleteOptions(event.target); });
+$('#page-filter').addEventListener('focus', function (event) { renderAutocompleteOptions(event.target, true); });
 $('#user-dimension-filters').addEventListener('change', function (event) {
   var radio = event.target.closest('input[type=radio]'); if (!radio) return;
   var dropdown = radio.closest('[data-field]');
@@ -848,8 +930,8 @@ $('#user-dimension-filters').addEventListener('submit', function (event) {
 });
 $('#user-dimension-filters').addEventListener('input', function (event) {
   if (event.target.matches('[data-identity-field]')) {
-    renderAutocompleteOptions(event.target);
     if (!event.target.value.trim()) resetAutocompleteField(event.target.dataset.identityField, event.target);
+    else renderAutocompleteOptions(event.target);
     return;
   }
   if (!event.target.matches('input[type=search]')) return;
@@ -859,7 +941,7 @@ $('#user-dimension-filters').addEventListener('input', function (event) {
   });
 });
 $('#user-dimension-filters').addEventListener('focusin', function (event) {
-  if (event.target.matches('[data-identity-field]')) renderAutocompleteOptions(event.target);
+  if (event.target.matches('[data-identity-field]')) renderAutocompleteOptions(event.target, true);
 });
 document.addEventListener('keydown', handleAutocompleteKeydown);
 document.addEventListener('click', function (event) {
@@ -917,6 +999,14 @@ $('#user-kpis').addEventListener('click', function (event) { var button = event.
 $('#error-kpis').addEventListener('click', function (event) { var button = event.target.closest('[data-error-metric]'); if (button) { state.errorMetric = button.dataset.errorMetric; if (currentData) render(currentData); } });
 $('#error-pager').addEventListener('click', function (event) { var button = event.target.closest('[data-error-page]'); if (!button || !currentData) return; var page = Number(button.dataset.errorPage); if (Number.isInteger(page) && page >= 0 && page < Math.ceil(currentData.errors.length / 15)) { state.errorPage = page; renderRecentErrors(currentData); } });
 $('#error-list').addEventListener('click', function (event) {
+  var toggleButton = event.target.closest('.error-analysis-toggle-button');
+  if (toggleButton && $('#error-list').contains(toggleButton)) {
+    event.stopPropagation();
+    var toggleKey = toggleButton.dataset.errorAnalysisToggle;
+    errorAnalysisCollapsed[toggleKey] = toggleButton.getAttribute('aria-expanded') === 'true';
+    if (currentData) renderRecentErrors(currentData);
+    return;
+  }
   var button = event.target.closest('.error-analysis-button');
   if (button && $('#error-list').contains(button)) {
     event.stopPropagation();
@@ -934,7 +1024,7 @@ $('#error-list').addEventListener('click', function (event) {
 $('#slow-threshold').addEventListener('change', function (event) { state.slowThreshold = Number(event.target.value); load(); });
 function selectLocationSection() {
   var section = document.getElementById(location.hash.slice(1));
-  selectSection(section && section.classList.contains('section') ? section.id : 'userPerception');
+  selectSection(section && section.classList.contains('section') ? section.id : 'userPerception', { x: window.scrollX, y: window.scrollY });
 }
 window.addEventListener('hashchange', selectLocationSection);
 window.addEventListener('popstate', selectLocationSection);

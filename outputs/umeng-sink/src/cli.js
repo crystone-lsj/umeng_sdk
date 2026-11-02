@@ -12,6 +12,13 @@
  *   UMENG_SINK_H5_DEFAULT_APP      default app directory (default bx-app-h5)
  *   UMENG_SINK_H5_APP_MAP          optional JSON aliases: log app -> apps child directory;
  *                                  direct apps children are discovered automatically
+ *   UMENG_SINK_H5_SOURCE_MODE      local (default) or git; git is intended for deployment
+ *   UMENG_SINK_GIT_REPO_URL        HTTPS repository URL without embedded credentials
+ *   UMENG_SINK_GIT_BRANCH          branch to analyze (default PageAnalysis)
+ *   UMENG_SINK_GIT_WORKTREE        persistent server-side checkout directory
+ *   UMENG_SINK_GIT_APPS_DIR        apps directory inside the monorepo (default apps)
+ *   UMENG_SINK_GIT_USERNAME        server-side Git username (never returned to clients)
+ *   UMENG_SINK_GIT_PASSWORD        server-side Git password/token (never returned to clients)
  */
 
 import { createSinkServer } from "./server.js";
@@ -95,6 +102,14 @@ const elkClients = elkBaseUrl
 const h5AppMap = process.env.UMENG_SINK_H5_APP_MAP ?? {};
 // Validate the map during startup, before the HTTP server begins listening.
 parseH5AppMap(h5AppMap);
+const h5SourceMode = process.env.UMENG_SINK_H5_SOURCE_MODE ?? "local";
+const h5GitRepoUrl = process.env.UMENG_SINK_GIT_REPO_URL ?? null;
+if (h5SourceMode === "git" && !h5GitRepoUrl)
+  throw new Error("UMENG_SINK_GIT_REPO_URL is required in git source mode");
+if (h5SourceMode !== "local" && h5SourceMode !== "git")
+  throw new Error("UMENG_SINK_H5_SOURCE_MODE must be local or git");
+const configuredDataDir =
+  args["data-dir"] ?? process.env.UMENG_SINK_DATA_DIR ?? "./data";
 
 const slsSettings = [
   "UMENG_SINK_SLS_ENDPOINT",
@@ -132,6 +147,15 @@ const sink = createSinkServer({
   h5AppsRoot: process.env.UMENG_SINK_H5_APPS_ROOT ?? null,
   h5DefaultApp: process.env.UMENG_SINK_H5_DEFAULT_APP ?? "bx-app-h5",
   h5AppMap,
+  h5SourceMode,
+  h5GitRepoUrl,
+  h5GitBranch: process.env.UMENG_SINK_GIT_BRANCH ?? "PageAnalysis",
+  h5GitWorktree:
+    process.env.UMENG_SINK_GIT_WORKTREE ??
+    resolve(configuredDataDir, "h5-source-repository"),
+  h5GitAppsDir: process.env.UMENG_SINK_GIT_APPS_DIR ?? "apps",
+  h5GitUsername: process.env.UMENG_SINK_GIT_USERNAME ?? null,
+  h5GitPassword: process.env.UMENG_SINK_GIT_PASSWORD ?? null,
   aiProvider:
     process.env.UMENG_SINK_AI_PROVIDER === "ccswitch"
       ? createCcswitchProvider()

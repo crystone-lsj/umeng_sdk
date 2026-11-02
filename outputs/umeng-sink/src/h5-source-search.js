@@ -208,6 +208,9 @@ export async function findH5SourceCandidates(
   catalog,
   { app, file, line, column, message, stack, page } = {},
 ) {
+  // A Git-backed catalog may need to clone or refresh its server-side checkout
+  // before its synchronous path resolution methods can see repository files.
+  if (typeof catalog.prepare === "function") await catalog.prepare();
   if (!catalog?.configured)
     return {
       status: "unavailable",

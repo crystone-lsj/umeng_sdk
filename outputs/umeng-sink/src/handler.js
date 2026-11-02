@@ -36,6 +36,7 @@ import {
   MAX_UPLOAD_BYTES,
 } from "./source-map-upload.js";
 import { H5SourceCatalog } from "./h5-source-catalog.js";
+import { GitH5SourceCatalog } from "./git-h5-source-catalog.js";
 import { ErrorAnalysisService } from "./error-analysis.js";
 
 const ONE_PIXEL_GIF = Buffer.from(
@@ -55,6 +56,13 @@ export const DEFAULT_OPTIONS = Object.freeze({
   h5AppsRoot: null,
   h5DefaultApp: "bx-app-h5",
   h5AppMap: {},
+  h5SourceMode: "local",
+  h5GitRepoUrl: null,
+  h5GitBranch: "PageAnalysis",
+  h5GitWorktree: null,
+  h5GitAppsDir: "apps",
+  h5GitUsername: null,
+  h5GitPassword: null,
   quiet: false,
   logger: null,
   elkIndexPattern: "log-fe-*-gsl_test",
@@ -188,11 +196,25 @@ export function createRequestHandler(options = {}) {
     });
   const h5SourceCatalog =
     options.h5SourceCatalog ??
-    new H5SourceCatalog({
-      appsRoot: config.h5AppsRoot,
-      defaultApp: config.h5DefaultApp,
-      appMap: config.h5AppMap,
-    });
+    (config.h5SourceMode === "git"
+      ? new GitH5SourceCatalog({
+          repoUrl: config.h5GitRepoUrl,
+          branch: config.h5GitBranch,
+          worktree: config.h5GitWorktree,
+          appsDir: config.h5GitAppsDir,
+          username: config.h5GitUsername,
+          password: config.h5GitPassword,
+          logger: (message) => {
+            if (!config.quiet) process.stdout.write(`${message}\n`);
+          },
+          defaultApp: config.h5DefaultApp,
+          appMap: config.h5AppMap,
+        })
+      : new H5SourceCatalog({
+          appsRoot: config.h5AppsRoot,
+          defaultApp: config.h5DefaultApp,
+          appMap: config.h5AppMap,
+        }));
   const now = options.now ?? (() => new Date());
   const log = (message) => {
     if (config.quiet) return;

@@ -34,7 +34,7 @@
   ],
   "scripts": {
     "start": "node src/cli.js",
-    "test": "node --test",
+    "test": "node --test \"test/*.test.js\"",
     "verify": "node scripts/e2e-verify.mjs",
     "verify:failure": "node scripts/failure-verify.mjs",
     "gate-check": "node scripts/h5-gate-check.mjs"
