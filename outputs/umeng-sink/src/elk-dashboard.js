@@ -1,6 +1,47 @@
 import { aggregateDashboard } from "./aggregate.js";
 
 const DAY_MS = 86400000;
+const ELK_CACHE_TTL_MS = 60000;
+const MAX_ELK_CACHE_ENTRIES = 24;
+const elkCaches = new WeakMap();
+
+function cachesFor(client) {
+  let cache = elkCaches.get(client);
+  if (!cache) {
+    cache = { sources: new Map(), apps: new Map() };
+    elkCaches.set(client, cache);
+  }
+  return cache;
+}
+
+function cachedElkValue(cache, key, nowMs, load) {
+  const existing = cache.get(key);
+  if (existing && existing.expiresAt > nowMs) return existing.promise;
+  const entry = { expiresAt: nowMs + ELK_CACHE_TTL_MS, pending: true };
+  const promise = Promise.resolve()
+    .then(load)
+    .then((value) => {
+      entry.pending = false;
+      entry.value = value;
+      cache.delete(key);
+      cache.set(key, entry);
+      while (cache.size > MAX_ELK_CACHE_ENTRIES) {
+        const evictable = [...cache.entries()].find(
+          ([, candidate]) => !candidate.pending,
+        );
+        if (!evictable) break;
+        cache.delete(evictable[0]);
+      }
+      return value;
+    })
+    .catch((error) => {
+      if (cache.get(key) === entry) cache.delete(key);
+      throw error;
+    });
+  entry.promise = promise;
+  cache.set(key, entry);
+  return promise;
+}
 
 function detail(source) {
   if (typeof source.DTL !== "string") return {};
@@ -12,6 +53,15 @@ function detail(source) {
   } catch {
     return {};
   }
+}
+
+function businessUserId(source, details) {
+  const candidate = source.USERID ?? details.USERID;
+  return typeof candidate === "string" &&
+    candidate.trim().length > 0 &&
+    candidate.length <= 256
+    ? candidate
+    : undefined;
 }
 
 function measured(value) {
@@ -67,6 +117,7 @@ function sourcePosition(value) {
 export function projectH5Analysis(source) {
   if (!source || source.MOD !== "h5PageAnalysis") return null;
   const details = detail(source);
+  const userId = businessUserId(source, details);
   const eventType = source.eventType ?? details.eventType;
   const kinds = {
     "xsm.H5PageLoad": ["page_load", "apm_perf", "apm_perf_fcp", "apm_perf_fid"],
@@ -260,6 +311,7 @@ export function projectH5Analysis(source) {
         sid: common.sid,
         uid: value("contextId"),
         pid: value("projectId"),
+        ...(userId == null ? {} : { userId }),
       },
       logs,
     },
@@ -301,6 +353,8 @@ export async function queryElkDashboard(
     environment = "test",
   } = {},
 ) {
+  const requestedAt = now();
+  const requestedAtMs = requestedAt.getTime();
   // Validate the public query contract before making any remote request.
   const empty = {
     async availableDates() {
@@ -319,23 +373,58 @@ export async function queryElkDashboard(
   const start = options.from
     ? Date.parse(options.from)
     : Date.parse(
-        `${options.date ?? now().toISOString().slice(0, 10)}T00:00:00.000Z`,
+        `${options.date ?? requestedAt.toISOString().slice(0, 10)}T00:00:00.000Z`,
       );
   const end = options.to ? Date.parse(options.to) : start + DAY_MS;
   const skew = DAY_MS; // Contexts from the preceding day can join today's visits.
   const selectedApp = options.performanceFilters?.AN ?? appName;
-  const sources = await elkClient.scanWindow({
-    from: new Date(start - skew).toISOString(),
-    to: new Date(end + skew).toISOString(),
-    an: selectedApp,
-    mod: "h5PageAnalysis",
-    evs: [
-      "xsm.H5PageLoad",
-      "xsm.H5PageError",
-      "xsm.H5ApiRequest",
-      "xsm.H5NativeContext",
-    ],
-  });
+  const scanFrom = new Date(start - skew).toISOString();
+  const scanTo = new Date(end + skew).toISOString();
+  const eventTypes = [
+    "xsm.H5PageLoad",
+    "xsm.H5PageError",
+    "xsm.H5ApiRequest",
+    "xsm.H5NativeContext",
+  ];
+  const caches = cachesFor(elkClient);
+  const scanKey = JSON.stringify([
+    scanFrom,
+    scanTo,
+    selectedApp,
+    "h5PageAnalysis",
+    eventTypes,
+  ]);
+  const sourcesPromise = cachedElkValue(
+    caches.sources,
+    scanKey,
+    requestedAtMs,
+    () =>
+      elkClient.scanWindow({
+        from: scanFrom,
+        to: scanTo,
+        an: selectedApp,
+        mod: "h5PageAnalysis",
+        evs: eventTypes,
+      }),
+  );
+  const appsFrom = new Date(start).toISOString();
+  const appsTo = new Date(end).toISOString();
+  const appKey = JSON.stringify([appsFrom, appsTo, "h5PageAnalysis"]);
+  const appNamesPromise =
+    typeof elkClient.listApps === "function"
+      ? cachedElkValue(caches.apps, appKey, requestedAtMs, () =>
+          elkClient.listApps({
+            from: appsFrom,
+            to: appsTo,
+            mod: "h5PageAnalysis",
+          }),
+        )
+      : Promise.resolve([]);
+  const [cachedSources, appNames] = await Promise.all([
+    sourcesPromise,
+    appNamesPromise,
+  ]);
+  const sources = [...cachedSources];
   const records = new Map();
   const seen = new Set();
   const navigationsWithFcp = new Set(
@@ -384,14 +473,6 @@ export async function queryElkDashboard(
   });
   await enrichUploadedH5Errors(result.errors, sourceMapStore);
   result.userPerception.activeFilters.AN = selectedApp;
-  const appNames =
-    typeof elkClient.listApps === "function"
-      ? await elkClient.listApps({
-          from: new Date(start).toISOString(),
-          to: new Date(end).toISOString(),
-          mod: "h5PageAnalysis",
-        })
-      : [];
   result.userPerception.filterOptions.AN = [
     ...new Set([...appNames, selectedApp]),
   ].sort((a, b) => a.localeCompare(b));

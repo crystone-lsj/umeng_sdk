@@ -6,16 +6,23 @@ import test from "node:test";
 
 import { aggregateDashboard, isValidDate } from "../src/aggregate.js";
 
-function record(
-  channel,
-  receivedAt,
-  logs,
-  header = { pid: "pid", sid: "session-1", uid: "user-1" },
-) {
+function record(channel, receivedAt, logs, header = {}) {
+  const resolvedHeader = {
+    pid: "pid",
+    sid: "session-1",
+    uid: "user-1",
+    ...header,
+  };
+  if (!Object.hasOwn(header, "userId")) {
+    resolvedHeader.userId =
+      typeof resolvedHeader.uid === "string"
+        ? `business-${resolvedHeader.uid}`
+        : "business-user-1";
+  }
   return JSON.stringify({
     receivedAt,
     channel,
-    parsed: { header, logs, logCount: logs.length },
+    parsed: { header: resolvedHeader, logs, logCount: logs.length },
   });
 }
 
@@ -107,7 +114,7 @@ test("aggregates H5 pages, APIs, errors, visitors and performance by archive day
     );
     await writeFile(
       join(dataDir, "h5-beacon-2026-01-01.ndjson"),
-      `${record("h5-beacon", "2026-01-01T11:15:00.000Z", beaconLogs, { pid: "pid" })}\n`,
+      `${record("h5-beacon", "2026-01-01T11:15:00.000Z", beaconLogs, { pid: "pid", sid: undefined, userId: "business-user-2" })}\n`,
     );
     await writeFile(
       join(dataDir, "h5-logs-2025-12-31.ndjson"),
@@ -421,7 +428,12 @@ test("aggregates page-performance stages, perception ratios and slow-loading thr
           receivedAt: "2026-04-01T01:00:00.000Z",
           channel: "h5-beacon",
           parsed: {
-            header: { pid: "pid", sid: "s1", uid: "u1" },
+            header: {
+              pid: "pid",
+              sid: "s1",
+              uid: "u1",
+              userId: "business-u1",
+            },
             logs: [
               homePerf,
               {
@@ -437,7 +449,12 @@ test("aggregates page-performance stages, perception ratios and slow-loading thr
           receivedAt: "2026-04-01T02:00:00.000Z",
           channel: "h5-beacon",
           parsed: {
-            header: { pid: "pid", sid: "s2", uid: "u2" },
+            header: {
+              pid: "pid",
+              sid: "s2",
+              uid: "u2",
+              userId: "business-u2",
+            },
             logs: [coursePerf],
             logCount: 1,
           },
@@ -635,6 +652,188 @@ test("affected visitors include only identities attached to slow samples", async
       JSON.stringify(result.slowLoading.pages).includes("slowVisitorIds"),
       false,
     );
+  } finally {
+    await rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("uses business USERID scoped by App for overview and page UV", async () => {
+  const dataDir = await mkdtemp();
+  try {
+    const pv = {
+      type: "pv",
+      common: { page: "https://h5.example.com/home" },
+      log: {},
+    };
+    await writeFile(
+      join(dataDir, "h5-beacon-2026-04-04.ndjson"),
+      [
+        record("h5-beacon", "2026-04-04T10:00:00.000Z", [pv], {
+          uid: "context-1",
+          sid: "s1",
+          userId: "same-user",
+        }),
+        record("h5-beacon", "2026-04-04T10:01:00.000Z", [pv], {
+          uid: "context-2",
+          sid: "s2",
+          userId: "same-user",
+        }),
+        record("h5-beacon", "2026-04-04T10:02:00.000Z", [pv], {
+          uid: "context-1",
+          sid: "s3",
+          userId: "other-user",
+        }),
+        record("h5-beacon", "2026-04-04T10:03:00.000Z", [pv], {
+          AN: "app-a",
+          uid: "context-3",
+          sid: "s4",
+          userId: "same-user",
+        }),
+        record("h5-beacon", "2026-04-04T10:04:00.000Z", [pv], {
+          AN: "app-b",
+          uid: "context-3",
+          sid: "s5",
+          userId: "same-user",
+        }),
+      ].join("\n") + "\n",
+    );
+
+    const result = await aggregateDashboard({ dataDir, date: "2026-04-04" });
+    assert.equal(result.overview.pageViews, 5);
+    assert.equal(result.overview.uniqueVisitors, 4);
+    assert.equal(result.pages[0].pageViews, 5);
+    assert.equal(result.pages[0].uniqueVisitors, 4);
+  } finally {
+    await rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("records without USERID keep event counts but not visitor counts", async () => {
+  const dataDir = await mkdtemp();
+  try {
+    const page = "https://h5.example.com/no-user";
+    const logs = [
+      { type: "pv", common: { page }, log: {} },
+      {
+        type: "error",
+        common: { page },
+        log: { name: "TypeError", msg: "missing user" },
+      },
+      { type: "perf", common: { page }, log: { total: "6000" } },
+    ];
+    await writeFile(
+      join(dataDir, "h5-beacon-2026-04-05.ndjson"),
+      `${record("h5-beacon", "2026-04-05T10:00:00.000Z", logs, {
+        uid: "context-without-user",
+        userId: undefined,
+      })}\n`,
+    );
+
+    const result = await aggregateDashboard({ dataDir, date: "2026-04-05" });
+    assert.equal(result.overview.pageViews, 1);
+    assert.equal(result.overview.errors, 1);
+    assert.equal(result.overview.uniqueVisitors, 0);
+    assert.equal(result.pages[0].uniqueVisitors, 0);
+    assert.equal(result.errorAnalysis.affectedVisitors, 0);
+    assert.equal(result.slowLoading.overview.slowLoadingCount, 1);
+    assert.equal(result.slowLoading.overview.affectedVisitors, 0);
+    assert.equal(result.trend[10].affectedVisitors, 0);
+  } finally {
+    await rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("deduplicates error and slow-loading affected users by USERID", async () => {
+  const dataDir = await mkdtemp();
+  try {
+    const page = "https://h5.example.com/deduplicate";
+    const error = {
+      type: "error",
+      common: { page },
+      log: { name: "TypeError", msg: "same failure" },
+    };
+    const slow = { type: "perf", common: { page }, log: { total: "6000" } };
+    await writeFile(
+      join(dataDir, "h5-beacon-2026-04-06.ndjson"),
+      [
+        record("h5-beacon", "2026-04-06T10:00:00.000Z", [error, slow], {
+          uid: "context-a",
+          sid: "s1",
+          userId: "user-a",
+        }),
+        record("h5-beacon", "2026-04-06T10:01:00.000Z", [error, slow], {
+          uid: "context-b",
+          sid: "s2",
+          userId: "user-a",
+        }),
+        record("h5-beacon", "2026-04-06T10:02:00.000Z", [error, slow], {
+          uid: "context-c",
+          sid: "s3",
+          userId: "user-b",
+        }),
+      ].join("\n") + "\n",
+    );
+
+    const result = await aggregateDashboard({ dataDir, date: "2026-04-06" });
+    assert.equal(result.overview.errors, 3);
+    assert.equal(result.errorAnalysis.affectedVisitors, 2);
+    assert.equal(result.slowLoading.overview.slowLoadingCount, 3);
+    assert.equal(result.slowLoading.overview.affectedVisitors, 2);
+    assert.equal(result.errorAnalysis.issues[0].visitors, 2);
+  } finally {
+    await rm(dataDir, { recursive: true, force: true });
+  }
+});
+
+test("native context linkage keeps contextId identity when USERID changes", async () => {
+  const dataDir = await mkdtemp();
+  try {
+    const context = {
+      schema: "ios-context-v1",
+      contextId: "context-0001",
+      device: { model: "iPhone", os: "iOS", osVersion: "18.2" },
+      app: { version: "1.2.3" },
+    };
+    await writeFile(
+      join(dataDir, "ios-context-2026-04-07.ndjson"),
+      `${JSON.stringify({ channel: "ios-context", context })}\n`,
+    );
+    const logs = [
+      {
+        type: "pv",
+        common: { page: "https://h5.example.com/linked" },
+        log: {},
+      },
+      {
+        type: "perf",
+        common: { page: "https://h5.example.com/linked" },
+        log: { total: "1200" },
+      },
+    ];
+    await writeFile(
+      join(dataDir, "h5-beacon-2026-04-07.ndjson"),
+      [
+        record("h5-beacon", "2026-04-07T10:00:00.000Z", logs, {
+          uid: context.contextId,
+          sid: "s1",
+          userId: "user-a",
+        }),
+        record("h5-beacon", "2026-04-07T10:01:00.000Z", logs, {
+          uid: context.contextId,
+          sid: "s2",
+          userId: "user-b",
+        }),
+      ].join("\n") + "\n",
+    );
+
+    const result = await aggregateDashboard({ dataDir, date: "2026-04-07" });
+    assert.equal(result.overview.uniqueVisitors, 2);
+    assert.equal(result.userPerception.contextCoverage.exact, 2);
+    assert.equal(result.native.matchedPageViews, 2);
+    assert.equal(result.native.matchedVisitors, 1);
+    assert.deepEqual(result.native.linkedPageViewDimensions.deviceModel, [
+      { value: "iPhone", count: 1, rate: 100 },
+    ]);
   } finally {
     await rm(dataDir, { recursive: true, force: true });
   }

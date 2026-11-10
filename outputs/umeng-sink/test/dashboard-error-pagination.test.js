@@ -22,7 +22,7 @@ test("recent errors paginate 15 at a time with numbered controls", () => {
     /id="error-list-head"[^>]*>.*?序号.*?错误信息.*?手机号.*?用户姓名.*?App版本.*?时间/,
   );
   const render = script.slice(
-    script.indexOf("function renderRecentErrors(data)"),
+    script.indexOf("function errorAnalysisKey(item)"),
     script.indexOf("function renderErrors(data, isElk)"),
   );
   const click = script
@@ -172,12 +172,15 @@ test("recent errors paginate 15 at a time with numbered controls", () => {
   assert.equal(secondRow.item.hasAttribute("data-open"), true);
   $("#error-list").openRows = [0, 1].map((index) => ({
     dataset: {
-      errorKey: JSON.stringify([
-        data.errors[index].at,
-        data.errors[index].name,
-        data.errors[index].message,
-        data.errors[index].page,
-      ]),
+      errorRowKey:
+        JSON.stringify([
+          data.errors[index].at,
+          data.errors[index].name,
+          data.errors[index].message,
+          data.errors[index].page,
+        ]) +
+        ":row:" +
+        index,
     },
   }));
   context.renderRecentErrors(data);
@@ -231,6 +234,137 @@ test("recent errors paginate 15 at a time with numbered controls", () => {
   context.renderRecentErrors(data);
   assert.equal($("#error-pager").hidden, true);
   assert.equal($("#error-empty").hidden, false);
+});
+
+test("duplicate errors keep independent expansion while AI analysis runs", () => {
+  const script = dashboardHtml.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(script);
+  const render = script.slice(
+    script.indexOf("function errorAnalysisKey(item)"),
+    script.indexOf("function renderErrors(data, isElk)"),
+  );
+  const clickRow = script.match(
+    /\$\('#error-list'\)\.addEventListener\('click', function \(event\) \{[\s\S]*?\n\}\);/,
+  )?.[0];
+  assert.ok(clickRow);
+  const elements = new Map();
+  const $ = (selector) => {
+    if (!elements.has(selector))
+      elements.set(selector, {
+        addEventListener(_name, listener) {
+          this.click = listener;
+        },
+        querySelectorAll() {
+          return this.openRows || [];
+        },
+        contains(node) {
+          return node.insideList;
+        },
+      });
+    return elements.get(selector);
+  };
+  const context = {
+    $,
+    state: { errorPage: 0 },
+    integer: String,
+    datetime: String,
+    esc: (value) =>
+      String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;"),
+    apiPath: (path) => path,
+    fetch: () => new Promise(() => {}),
+    errorAnalysisJobs: Object.create(null),
+    errorAnalysisCollapsed: Object.create(null),
+  };
+  runInNewContext(render, context);
+  runInNewContext(clickRow, context);
+  const duplicate = {
+    errorKey: "same-error",
+    name: "TypeError",
+    message: "Cannot read properties of null",
+    page: "/same-page",
+    at: "2026-11-02 10:00:00",
+    file: "https://example.com/app.js",
+    line: 10,
+  };
+  const data = {
+    overview: { errors: 2 },
+    errors: [
+      { ...duplicate, eventId: "event-1" },
+      { ...duplicate, eventId: "event-2" },
+    ],
+  };
+  context.currentData = data;
+  $("#error-list").openRows = [
+    { dataset: { errorRowKey: "same-error:row:0" } },
+  ];
+  context.renderRecentErrors(data);
+
+  let articles = $("#error-list").innerHTML.split("</article>");
+  assert.match(articles[0], /data-open/);
+  assert.doesNotMatch(articles[1], /data-open/);
+  assert.equal(
+    ($("#error-list").innerHTML.match(/>AI 分析<\/button>/g) || []).length,
+    2,
+  );
+
+  $("#error-list").click({
+    stopPropagation() {},
+    target: {
+      closest: (selector) =>
+        selector === ".error-analysis-button"
+          ? {
+              dataset: {
+                errorAnalysis: "same-error",
+                errorItemIndex: "0",
+              },
+              insideList: true,
+            }
+          : null,
+    },
+  });
+  articles = $("#error-list").innerHTML.split("</article>");
+  assert.match(articles[0], /data-open/);
+  assert.doesNotMatch(articles[1], /data-open/);
+  assert.equal(
+    ($("#error-list").innerHTML.match(/>AI 分析中<\/button>/g) || []).length,
+    2,
+  );
+
+  const attributes = new Map([["data-open", ""]]);
+  const detail = {
+    setAttribute(name, value) {
+      attributes.set(name, value);
+    },
+  };
+  const item = {
+    insideList: true,
+    hasAttribute(name) {
+      return attributes.has(name);
+    },
+    toggleAttribute(name, value) {
+      if (value) attributes.set(name, "");
+      else attributes.delete(name);
+    },
+    querySelector() {
+      return detail;
+    },
+  };
+  const row = {
+    insideList: true,
+    parentElement: item,
+    setAttribute(name, value) {
+      attributes.set(name, value);
+    },
+  };
+  $("#error-list").click({
+    target: {
+      closest: (selector) => (selector === ".error-row" ? row : null),
+    },
+  });
+  assert.equal(item.hasAttribute("data-open"), false);
+  assert.equal(attributes.get("aria-hidden"), "true");
 });
 
 test("completed AI error analysis is restored from browser storage", () => {

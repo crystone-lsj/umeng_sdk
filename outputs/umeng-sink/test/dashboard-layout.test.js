@@ -18,6 +18,25 @@ test("client time checkbox and label stay aligned as one filter-row item", () =>
   );
 });
 
+test("custom date input aligns its placeholder and uses the selected range focus style", () => {
+  assert.match(
+    dashboardHtml,
+    /\.date-placeholder\{justify-content:flex-start;padding-left:9px;border-radius:3px 0 0 3px\}/,
+  );
+  assert.match(
+    dashboardHtml,
+    /\.date-input-wrap:focus-within input\[type=date\]\{border-color:#2f6bff;background:#f0f5ff\}/,
+  );
+  assert.match(
+    dashboardHtml,
+    /\.date-input-wrap:focus-within \.date-placeholder\{background:#f0f5ff\}/,
+  );
+  assert.match(
+    dashboardHtml,
+    /\.filter-row \.date-input-wrap input\[type=date\]:focus\{outline:0\}/,
+  );
+});
+
 test("identity and page filters choose values from log-backed autocomplete options", () => {
   const script = dashboardHtml.match(/<script>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(script);
@@ -220,7 +239,11 @@ test("top filter dropdowns provide slide animations and respect reduced motion",
   );
   assert.match(
     dashboardHtml,
-    /\.range-buttons details>summary:after\{content:"⌄"/,
+    /\.range-buttons details>summary\{list-style:none\}/,
+  );
+  assert.match(
+    dashboardHtml,
+    /\.range-buttons details>summary:after,\.dimension-filter>summary:after\{content:"";display:inline-block;width:6px;height:6px;.*border-right:1px solid #667085/,
   );
 });
 
@@ -279,7 +302,7 @@ test("dimension and page filters reload silently while preserving the viewport",
     "$('#page-filter').addEventListener('input'",
   );
   const resetStart = script.indexOf(
-    "$('#user-reset-all').addEventListener",
+    "$('#filters-reset').addEventListener",
     pageFilterStart,
   );
   const pageFilterListeners = script.slice(pageFilterStart, resetStart);
@@ -298,6 +321,37 @@ test("dimension and page filters reload silently while preserving the viewport",
     /load\(\{ preserveViewport: viewport, silent: true \}\)/g,
   );
   assert.doesNotMatch(resetListeners, /user-host|userHost|pageHost/);
+  assert.match(resetListeners, /state\.range = '7days'/);
+  assert.match(resetListeners, /state\.performanceFilters = \{\}/);
+  assert.match(resetListeners, /state\.pageFilter = ''/);
+  assert.match(resetListeners, /state\.clientTime = false/);
+  assert.match(resetListeners, /state\.userPage = 0/);
+  assert.match(resetListeners, /state\.errorPage = 0/);
+  assert.match(resetListeners, /\$\('#date'\)\.value = ''/);
+  assert.match(resetListeners, /\$\('#user-date'\)\.value = ''/);
+  assert.match(resetListeners, /\$\('#client-time'\)\.checked = false/);
+  assert.match(resetListeners, /\$\('#page-filter'\)\.value = ''/);
+  assert.match(resetListeners, /syncRangeButtons\(\)/);
+  assert.match(resetListeners, /closeFilterDetails\(\)/);
+  assert.match(resetListeners, /closeAutocompleteOptions\(\)/);
+});
+
+test("top filters place one reset control beside the page search", () => {
+  assert.match(
+    dashboardHtml,
+    /<div id="page-filter-options"[^>]*><\/div><\/span><button type="button" class="button filter-reset-button" id="filters-reset">重置<\/button>/,
+  );
+  assert.doesNotMatch(
+    dashboardHtml,
+    /<span id="range-label" class="filter-note">按接收时间筛选<\/span><button type="button" class="button filter-reset-button" id="filters-reset">重置<\/button>/,
+  );
+  assert.match(
+    dashboardHtml,
+    /\.filter-row \.filter-reset-button\{margin-left:0\}/,
+  );
+  assert.doesNotMatch(dashboardHtml, /id="user-reset-all"/);
+  assert.doesNotMatch(dashboardHtml, /id="user-reset"/);
+  assert.equal((dashboardHtml.match(/id="filters-reset"/g) || []).length, 1);
 });
 
 test("time range changes are optimistic and load silently without moving the viewport", () => {
@@ -324,6 +378,19 @@ test("time range changes are optimistic and load silently without moving the vie
     rangeListener,
     /load\(\{ preserveViewport: viewport, silent: true \}\)/,
   );
+});
+
+test("filter changes reuse the active query window and abort superseded requests", () => {
+  const script = dashboardHtml.match(/<script>([\s\S]*?)<\/script>/)?.[1];
+  assert.ok(script);
+  assert.match(script, /function stableRangeWindow\(key\) \{/);
+  assert.match(
+    script,
+    /activeQueryWindow\.key === key && now - activeQueryWindow\.createdAt < 60000/,
+  );
+  assert.match(script, /loadController\.abort\(\)/);
+  assert.match(script, /stableRangeWindow\(state\.range\)/);
+  assert.match(script, /signal:controller \? controller\.signal : undefined/);
 });
 
 test("dashboard hides HTTP status distribution and carrier/region perception dimensions", () => {
@@ -1239,7 +1306,7 @@ test("error summary cards use large titles, separate values and accessible help 
   );
 });
 
-test("AI analysis results provide a collapse control", () => {
+test("AI analysis results provide an animated collapse control", () => {
   const script = dashboardHtml.match(/<script>([\s\S]*?)<\/script>/)?.[1];
   assert.ok(script);
   assert.match(
@@ -1248,19 +1315,46 @@ test("AI analysis results provide a collapse control", () => {
   );
   assert.match(
     dashboardHtml,
-    /\.error-analysis-content\[hidden\]\{display:none\}/,
+    /\.error-analysis-content\{[^}]*grid-template-rows:1fr[^}]*transition:grid-template-rows \.24s ease,opacity \.18s ease/,
+  );
+  assert.match(
+    dashboardHtml,
+    /\.error-analysis-content\[data-collapsed="true"\]\{grid-template-rows:0fr;opacity:0\}/,
+  );
+  assert.match(
+    dashboardHtml,
+    /@media\(prefers-reduced-motion:reduce\)\{\.error-analysis-content\{transition:none\}\}/,
   );
   const render = script.slice(
-    script.indexOf("function renderRecentErrors(data)"),
+    script.indexOf("function errorAnalysisKey(item)"),
     script.indexOf("function renderErrors(data, isElk)"),
   );
   assert.match(render, /data-error-analysis-toggle/);
-  assert.match(render, /errorAnalysisCollapsed\[key\] === true/);
+  assert.match(render, /data-collapsed="' \+ String\(collapsed\)/);
+  assert.match(render, /error-analysis-content-inner/);
+  assert.match(render, /errorAnalysisCollapsed\[rowKey\] === true/);
+  assert.match(render, /data-error-row-key/);
+  assert.match(render, /data-error-item-index/);
   assert.match(script, /data-error-analysis-toggle/);
   assert.match(
     script,
-    /errorAnalysisCollapsed\[toggleKey\] = toggleButton\.getAttribute\('aria-expanded'\) === 'true'/,
+    /var collapsed = toggleButton\.getAttribute\('aria-expanded'\) === 'true'/,
   );
+  assert.match(
+    script,
+    /content\.setAttribute\('data-collapsed', String\(collapsed\)\)/,
+  );
+  assert.match(
+    script,
+    /toggleButton\.textContent = collapsed \? '展开' : '收起'/,
+  );
+  const toggleListener = script.slice(
+    script.indexOf("$('#error-list').addEventListener('click'"),
+    script.indexOf(
+      "var button = event.target.closest('.error-analysis-button')",
+    ),
+  );
+  assert.doesNotMatch(toggleListener, /renderRecentErrors/);
   assert.match(
     dashboardHtml,
     /\.error-analysis-row>span:last-child\{flex:1;min-width:0\}/,

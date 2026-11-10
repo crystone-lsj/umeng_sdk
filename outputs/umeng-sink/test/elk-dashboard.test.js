@@ -11,6 +11,8 @@ const load = {
   eventType: "page_load",
   eventId: "load-1",
   timestamp: String(at),
+  AN: "学什么",
+  USERID: "business-user-1",
   route: "/bx-app-h5/learningIndex?token=hidden",
   contextId: "A".repeat(32),
   sessionId: "session-1",
@@ -29,6 +31,7 @@ const error = {
   eventId: "error-1",
   timestamp: String(at + 300),
   AN: "学什么",
+  USERID: "business-user-1",
   AV: "1.1.7",
   UNAME: "测试用户",
   PHONE: "13800000000",
@@ -56,6 +59,8 @@ const api = {
   eventType: "apm_api",
   eventId: "api-1",
   timestamp: String(at + 400),
+  AN: "学什么",
+  USERID: "business-user-1",
   route: "/bx-app-h5/learningIndex",
   DTL: JSON.stringify({
     apiHost: "api.example.com",
@@ -98,7 +103,30 @@ test("projects ELK fields without interpreting missing timing as zero or exposin
   assert.equal(record.parsed.logs[1].log.fcp, 420);
   assert.equal(record.parsed.logs[1].log.tti, 442);
   assert.equal(record.parsed.header.uid, "A".repeat(32));
+  assert.equal(record.parsed.header.userId, "business-user-1");
   assert.equal(record.parsed.logs[1].log.tcp, undefined);
+  assert.equal(
+    projectH5Analysis({
+      ...load,
+      USERID: undefined,
+      DTL: JSON.stringify({ USERID: "legacy-user" }),
+    }).parsed.header.userId,
+    "legacy-user",
+  );
+  assert.equal(
+    projectH5Analysis({
+      ...load,
+      USERID: "top-level-user",
+      DTL: JSON.stringify({ USERID: "legacy-user" }),
+    }).parsed.header.userId,
+    "top-level-user",
+  );
+  for (const USERID of [undefined, "", "   ", "x".repeat(257)]) {
+    assert.equal(
+      projectH5Analysis({ ...load, USERID }).parsed.header.userId,
+      undefined,
+    );
+  }
   const projectedError = projectH5Analysis(error).parsed.logs[0].log;
   assert.equal(
     projectH5Analysis(error).parsed.logs[0].common.appVersion,
@@ -214,6 +242,7 @@ test("ELK dashboard aggregates independent EVs, joins native snapshots and never
     assert.equal(data.errors[0].appVersion, "5.29.2");
     assert.equal(data.errors[0].userName, "测试用户");
     assert.equal(data.errors[0].phone, "13800000000");
+    assert.equal(data.errors[0].visitorId, undefined);
     assert.equal(data.overview.sessions, 1);
     assert.equal(data.overview.uniqueVisitors, 1);
     assert.equal(data.overview.apiRequests, 1);
@@ -367,6 +396,7 @@ test("page-load FCP with the same validated navigation ID does not double-count 
 
 test("dashboard filters ELK data by log dimensions and exposes log-backed identity and page options", async () => {
   const calls = [];
+  const appListCalls = [];
   const taggedLoad = {
     ...load,
     AN: "学什么",
@@ -398,7 +428,8 @@ test("dashboard filters ELK data by log dimensions and exposes log-backed identi
         (record) => record.AN === options.an,
       );
     },
-    async listApps() {
+    async listApps(options) {
+      appListCalls.push(options);
       return ["学什么", "另一应用"];
     },
   };
@@ -470,6 +501,8 @@ test("dashboard filters ELK data by log dimensions and exposes log-backed identi
     assert.equal(calls.at(-1).an, "另一应用");
     assert.equal(other.overview.pageViews, 1);
     assert.equal(other.overview.errors, 0);
+    assert.equal(calls.length, 2);
+    assert.equal(appListCalls.length, 1);
     assert.equal((await post({ "dim.PHONE": "" })).status, 400);
     assert.equal((await post({ "dim.unknown": "x" })).status, 400);
     assert.equal(
@@ -486,6 +519,53 @@ test("dashboard filters ELK data by log dimensions and exposes log-backed identi
       ).status,
       200,
     );
+  } finally {
+    await store.close();
+  }
+});
+
+test("deduplicates in-flight ELK scans and caches app options for repeated filters", async () => {
+  let scanCalls = 0;
+  let appListCalls = 0;
+  const client = {
+    indexPattern: "log-fe-*-gsl_test",
+    async scanWindow() {
+      scanCalls += 1;
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      return [load];
+    },
+    async listApps() {
+      appListCalls += 1;
+      await new Promise((resolve) => setTimeout(resolve, 5));
+      return ["学什么"];
+    },
+  };
+  const { handle, store } = createRequestHandler({
+    dataDir: "/tmp/elk-dashboard-query-cache",
+    elkClient: client,
+    dashboardSource: "elk",
+    quiet: true,
+  });
+  const post = (fields = {}) =>
+    handle({
+      method: "POST",
+      url: "/__sink/api/dashboard",
+      headers: {
+        "content-type": "application/x-www-form-urlencoded;charset=UTF-8",
+      },
+      body: new URLSearchParams({ date: "2026-10-20", ...fields }).toString(),
+    });
+  try {
+    const [first, second] = await Promise.all([
+      post(),
+      post({ "dim.AV": "1.1.7" }),
+    ]);
+    assert.equal(first.status, 200);
+    assert.equal(second.status, 200);
+    const third = await post({ "dim.OT": "iOS" });
+    assert.equal(third.status, 200);
+    assert.equal(scanCalls, 1);
+    assert.equal(appListCalls, 1);
   } finally {
     await store.close();
   }
@@ -548,10 +628,16 @@ test("ELK dashboard fails closed when unconfigured or incomplete", async () => {
 
 test("ELK reader splits large time windows without truncating records", async () => {
   const requests = [];
+  let inFlight = 0;
+  let maxInFlight = 0;
   const client = createElasticsearchClient({
     baseUrl: "https://es.invalid",
     indexPattern: "log-fe-*-gsl_test",
+    scanConcurrency: 2,
     fetchImpl: async (_url, init) => {
+      inFlight += 1;
+      maxInFlight = Math.max(maxInFlight, inFlight);
+      await new Promise((resolve) => setTimeout(resolve, 1));
       const body = JSON.parse(init.body);
       requests.push(body);
       const start = Date.parse(body.query.bool.filter[0].range.timestamp.gte);
@@ -561,6 +647,7 @@ test("ELK reader splits large time windows without truncating records", async ()
           ? Array.from({ length: 1000 }, () => ({ _source: load }))
           : [{ _source: load }];
       const total = end - start > 500 ? 1001 : 1;
+      inFlight -= 1;
       return {
         ok: true,
         async text() {
@@ -580,6 +667,7 @@ test("ELK reader splits large time windows without truncating records", async ()
   });
   assert.equal(records.length, 2);
   assert.equal(requests.length, 3);
+  assert.equal(maxInFlight, 2);
   assert.equal(requests[0].query.bool.filter[1].match_phrase.AN, "学什么");
   assert.equal(requests[0]._source.includes("PHONE"), true);
 });

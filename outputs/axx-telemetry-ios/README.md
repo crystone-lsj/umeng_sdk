@@ -2,6 +2,10 @@
 
 独立的 iOS 原生遥测副本与 WKWebView 上下文关联 SDK。
 
+完整接入流程、Bridge 协议、字段归属和验收清单见 [`INTEGRATION.md`](./INTEGRATION.md)。
+
+> README 下列边界针对本目录的独立直传源码；当前业务 Handler 版接入请以 `INTEGRATION.md` 为准。
+
 ## 边界
 
 - 只向配置的自建接收端发送副本，不修改、拦截或替换官方友盟 SDK 流量。

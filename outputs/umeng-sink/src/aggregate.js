@@ -282,7 +282,7 @@ function timestampFor(record, commonLog) {
   return clientTimestamp(record, commonLog) ?? record.receivedAt ?? null;
 }
 
-function errorSummary(typeLog, commonLog, record, visitorId, clientVersion) {
+function errorSummary(typeLog, commonLog, record, clientVersion) {
   const name = typeLog.name ?? null;
   const message = typeLog.msg ?? typeLog.message ?? null;
   const summary = {
@@ -300,7 +300,6 @@ function errorSummary(typeLog, commonLog, record, visitorId, clientVersion) {
     line: typeLog.line ?? null,
     column: typeLog.col ?? null,
     codeSnippet: typeLog.codeSnippet ?? null,
-    visitorId,
     appVersion: clientVersion ?? commonLog.appVersion ?? null,
     // Keep the legacy field for existing dashboard consumers and archived data.
     version: clientVersion ?? commonLog.appVersion ?? null,
@@ -333,6 +332,18 @@ function errorSummary(typeLog, commonLog, record, visitorId, clientVersion) {
     )
     .digest("hex");
   return summary;
+}
+
+function visitorKey(header, commonLog) {
+  const userId = header.userId;
+  if (
+    typeof userId !== "string" ||
+    userId.trim().length === 0 ||
+    userId.length > 256
+  )
+    return null;
+  const app = header.AN ?? commonLog.AN ?? "";
+  return JSON.stringify([typeof app === "string" ? app : "", userId]);
 }
 
 function compareVersionLabels(left, right) {
@@ -815,11 +826,12 @@ function visitRecord(context, record) {
     const type = item?.type;
     const commonLog = item?.common ?? {};
     const typeLog = item?.log ?? {};
-    const visitorId = header.uid ?? commonLog.uid ?? null;
+    const contextId = header.uid ?? commonLog.uid ?? null;
+    const visitorId = visitorKey(header, commonLog);
     const linked =
-      visitorId == null
+      contextId == null
         ? null
-        : resolveContext(String(visitorId), record.receivedAt);
+        : resolveContext(String(contextId), record.receivedAt);
     const fallbackContext =
       linked ??
       (hasSingleContext && singleContext?.receivedAt == null
@@ -859,13 +871,13 @@ function visitRecord(context, record) {
       result.overview.pageViews += 1;
       page.pageViews += 1;
       const linkedPvContext =
-        visitorId == null
+        contextId == null
           ? null
-          : resolveContext(String(visitorId), record.receivedAt);
+          : resolveContext(String(contextId), record.receivedAt);
       if (linkedPvContext) {
         result.native.matchedPageViews += 1;
-        pvContextVisitors.add(String(visitorId));
-        pvLinkedContexts.set(String(visitorId), linkedPvContext);
+        pvContextVisitors.add(String(contextId));
+        pvLinkedContexts.set(String(contextId), linkedPvContext);
       }
       if (trend) trend.pageViews += 1;
     } else if (type === "api") {
@@ -887,13 +899,7 @@ function visitRecord(context, record) {
       page.errors += 1;
       const clientVersion =
         commonLog.appVersion ?? fallbackContext?.appVersion ?? null;
-      const summary = errorSummary(
-        typeLog,
-        commonLog,
-        record,
-        visitorId,
-        clientVersion,
-      );
+      const summary = errorSummary(typeLog, commonLog, record, clientVersion);
       if (errors.length < 200) errors.push(summary);
       else if (
         summary.at &&
@@ -1011,9 +1017,9 @@ function visitRecord(context, record) {
         collectDimension(dimensions, field, commonLog[source]);
       }
       const linkedContext =
-        visitorId == null
+        contextId == null
           ? null
-          : resolveContext(String(visitorId), record.receivedAt);
+          : resolveContext(String(contextId), record.receivedAt);
       const dimensionContext =
         linkedContext ??
         (hasSingleContext && singleContext.receivedAt == null
